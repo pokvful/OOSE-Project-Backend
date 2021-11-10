@@ -1,14 +1,13 @@
 version: '3'
 services:
   db:
-    image: postgres
+    image: mysql:5.7
     restart: always
     environment:
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'oose'
+      MYSQL_ROOT_PASSWORD: 'password'
     volumes:
       - ./database:/docker-entrypoint-initdb.d
-  adminer:
+  phpmyadmin:
     image: adminer
     restart: always
     ports:
