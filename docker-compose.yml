@@ -5,10 +5,15 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: lbc
     volumes:
       - ./database:/docker-entrypoint-initdb.d
   phpmyadmin:
-    image: adminer
+    image: phpmyadmin
     restart: always
     ports:
-      - 8081:8080
+      - 8081:80
+    links:
+      - db
+    depends_on:
+      - db

@@ -1,17 +1,16 @@
-CREATE DATABASE lbc;
 use lbc;
+
+create table if not exists role (
+role VARCHAR(255) PRIMARY KEY
+);
 
 create table if not exists users (
 user_id INT(6) UNSIGNED auto_increment PRIMARY KEY,
 username VARCHAR(100),
 password VARCHAR(100),
 email VARCHAR(100),
-role VARCHAR(255),
-FOREIGN KEY (role) REFERENCES role(role)
-);
-
-create table if not exists role (
-role VARCHAR(255) auto_increment PRIMARY KEY
+`role` VARCHAR(255),
+FOREIGN KEY (`role`) REFERENCES `role`(`role`)
 );
 
 create table if not exists token (

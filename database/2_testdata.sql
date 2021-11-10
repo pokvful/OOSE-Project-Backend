@@ -51,49 +51,49 @@ INSERT INTO answers (answer_id, answer) values (1, "Is de kerk groot?");
 
 
 
-SELECT * FROM answer;
+-- SELECT * FROM answer;
 
-select * from area;
-select * from franchise;
-select * from geofence;
-select * from intervention;
-select * from token
-select * from question
-select * from answer
-
-
-SELECT area.area_id, area.area_name, area.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `area` INNER JOIN `geofence` ON area.geofence_id=geofence.geofence_id;
+-- select * from area;
+-- select * from franchise;
+-- select * from geofence;
+-- select * from intervention;
+-- select * from token
+-- select * from question
+-- select * from answer
 
 
-WITH cats AS (SELECT franchise.franchise_id AS franchise_id FROM franchise WHERE franchise.franchise_id IN (SELECT location.franchise_id FROM location WHERE location.location_id=1)),
-ints AS (SELECT intervention.intervention_id FROM intervention WHERE intervention.franchise_id IN (SELECT * FROM cats)),
-qii as (SELECT ints.intervention_id, question_in_intervention.question_id FROM question_in_intervention INNER JOIN ints ON question_in_intervention.intervention_id=ints.intervention_id),
-questions as (SELECT question.question_id, question.question, question.type, qii.intervention_id FROM question INNER JOIN qii ON question.question_id=qii.question_id)
-SELECT * FROM ints LEFT OUTER JOIN questions LEFT OUTER JOIN range_question ON questions.question_id=range_question.question_id ON ints.intervention_id=questions.intervention_id;
+-- SELECT area.area_id, area.area_name, area.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `area` INNER JOIN `geofence` ON area.geofence_id=geofence.geofence_id;
+
+
+-- WITH cats AS (SELECT franchise.franchise_id AS franchise_id FROM franchise WHERE franchise.franchise_id IN (SELECT location.franchise_id FROM location WHERE location.location_id=1)),
+-- ints AS (SELECT intervention.intervention_id FROM intervention WHERE intervention.franchise_id IN (SELECT * FROM cats)),
+-- qii as (SELECT ints.intervention_id, question_in_intervention.question_id FROM question_in_intervention INNER JOIN ints ON question_in_intervention.intervention_id=ints.intervention_id),
+-- questions as (SELECT question.question_id, question.question, question.type, qii.intervention_id FROM question INNER JOIN qii ON question.question_id=qii.question_id)
+-- SELECT * FROM ints LEFT OUTER JOIN questions LEFT OUTER JOIN range_question ON questions.question_id=range_question.question_id ON ints.intervention_id=questions.intervention_id;
 
 
 
-SELECT location.location_id, location.area_id,  location.location_name, geofence.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `location` INNER JOIN geofence
-                     ON location.geofence_id=geofence.geofence_id 
-                     WHERE location.area_id=2;
+-- SELECT location.location_id, location.area_id,  location.location_name, geofence.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `location` INNER JOIN geofence
+--                      ON location.geofence_id=geofence.geofence_id 
+--                      WHERE location.area_id=2;
                      
                      
-WITH answers AS (SELECT * FROM answer_to_question WHERE answer_to_question.question_id=1 ),
-completeanswers AS (SELECT answers.* FROM answers INNER JOIN answer ON answers.answer_id=answer.answer_id)
-                     SELECT * FROM completeanswers 
-                     LEFT OUTER JOIN followup_question
-                     ON completeanswers.answer_id=followup_question.original_answer_id
-                     LEFT OUTER JOIN choice_answer
-                     ON choice_answer.answer_id=completeanswers.answer_id
-                     LEFT OUTER JOIN range_answer
-                     ON range_answer.answer_id=completeanswers.answer_id
-                     LEFT OUTER JOIN sensitivity_action
-                     ON sensitivity_action.question_id=completeanswers.question_id
-                     LEFT OUTER JOIN action
-                     ON action.action_id=sensitivity_action.action_id;
+-- WITH answers AS (SELECT * FROM answer_to_question WHERE answer_to_question.question_id=1 ),
+-- completeanswers AS (SELECT answers.* FROM answers INNER JOIN answer ON answers.answer_id=answer.answer_id)
+--                      SELECT * FROM completeanswers 
+--                      LEFT OUTER JOIN followup_question
+--                      ON completeanswers.answer_id=followup_question.original_answer_id
+--                      LEFT OUTER JOIN choice_answer
+--                      ON choice_answer.answer_id=completeanswers.answer_id
+--                      LEFT OUTER JOIN range_answer
+--                      ON range_answer.answer_id=completeanswers.answer_id
+--                      LEFT OUTER JOIN sensitivity_action
+--                      ON sensitivity_action.question_id=completeanswers.question_id
+--                      LEFT OUTER JOIN action
+--                      ON action.action_id=sensitivity_action.action_id;
                      
-SELECT area.area_id, area.area_name, area.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `area`
-		INNER JOIN `geofence` ON area.geofence_id=geofence.geofence_id
+-- SELECT area.area_id, area.area_name, area.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `area`
+-- 		INNER JOIN `geofence` ON area.geofence_id=geofence.geofence_id
         
         
-        select * from geofence
+--         select * from geofence
