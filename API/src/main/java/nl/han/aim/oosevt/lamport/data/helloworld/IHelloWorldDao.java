@@ -1,5 +1,5 @@
 package nl.han.aim.oosevt.lamport.data.helloworld;
 
-public interface IHelloWorldDao {
+public interface IHelloWorldDAO {
     String getHelloWorld();
 }

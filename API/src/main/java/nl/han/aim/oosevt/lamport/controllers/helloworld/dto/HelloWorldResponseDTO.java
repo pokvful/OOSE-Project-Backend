@@ -1,9 +1,9 @@
 package nl.han.aim.oosevt.lamport.controllers.helloworld.dto;
 
-public class HelloWorldResponseDto {
+public class HelloWorldResponseDTO {
     private String message;
 
-    public HelloWorldResponseDto(String message){
+    public HelloWorldResponseDTO(String message){
         this.message = message;
     }
 

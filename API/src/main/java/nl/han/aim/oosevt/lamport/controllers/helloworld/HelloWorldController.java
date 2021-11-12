@@ -1,6 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.helloworld;
 
-import nl.han.aim.oosevt.lamport.controllers.helloworld.dto.HelloWorldResponseDto;
+import nl.han.aim.oosevt.lamport.controllers.helloworld.dto.HelloWorldResponseDTO;
 import nl.han.aim.oosevt.lamport.services.helloworld.IHelloWorldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,17 +18,17 @@ public class HelloWorldController {
     }
 
     @GetMapping("")
-    public ResponseEntity<HelloWorldResponseDto> get () {
+    public ResponseEntity<HelloWorldResponseDTO> get () {
         return new ResponseEntity<>(
-                new HelloWorldResponseDto(helloWorldService.getMessage()),
+                new HelloWorldResponseDTO(helloWorldService.getMessage()),
                 HttpStatus.OK
         );
     }
 
     @PutMapping("")
-    public ResponseEntity<HelloWorldResponseDto> put (String message) {
+    public ResponseEntity<HelloWorldResponseDTO> put (String message) {
         return new ResponseEntity<>(
-                new HelloWorldResponseDto(message),
+                new HelloWorldResponseDTO(message),
                 HttpStatus.OK
         );
     }

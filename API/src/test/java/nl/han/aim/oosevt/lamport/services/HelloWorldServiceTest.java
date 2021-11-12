@@ -1,6 +1,6 @@
 package nl.han.aim.oosevt.lamport.services;
 
-import nl.han.aim.oosevt.lamport.data.helloworld.HelloWorldDao;
+import nl.han.aim.oosevt.lamport.data.helloworld.HelloWorldDAO;
 import nl.han.aim.oosevt.lamport.services.helloworld.HelloWorldService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ public class HelloWorldServiceTest {
 
     @BeforeEach
     private void setup() {
-        final HelloWorldDao helloWorldDao = Mockito.mock(HelloWorldDao.class);
+        final HelloWorldDAO helloWorldDao = Mockito.mock(HelloWorldDAO.class);
         Mockito.when(helloWorldDao.getHelloWorld()).thenReturn("Hello world!");
         helloWorldService = new HelloWorldService(helloWorldDao);
     }
