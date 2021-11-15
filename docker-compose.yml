@@ -1,15 +1,19 @@
 version: '3'
 services:
   db:
-    image: postgres
+    image: mysql:5.7
     restart: always
     environment:
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'oose'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: lbc
     volumes:
       - ./database:/docker-entrypoint-initdb.d
-  adminer:
-    image: adminer
+  phpmyadmin:
+    image: phpmyadmin
     restart: always
     ports:
-      - 8081:8080
+      - 8081:80
+    links:
+      - db
+    depends_on:
+      - db
