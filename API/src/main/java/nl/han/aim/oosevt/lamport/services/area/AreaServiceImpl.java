@@ -39,11 +39,14 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public void deleteArea(int id) {
-
+        if(dataAccess.getArea(id) == null) {
+            throw new NotFoundException();
+        }
+        dataAccess.deleteArea(id);
     }
 
     @Override
-    public AreaResponseDTO getArea(int id) throws NotFoundException {
+    public AreaResponseDTO getArea(int id) {
 
         final Area area = this.dataAccess.getArea(id);
 

@@ -18,4 +18,8 @@ public class AreaDAOImpl implements AreaDAO {
     public Area getArea(int areaId) {
         return null;
     }
+    @Override
+    public void deleteArea(int id) {
+
+    }
 }
