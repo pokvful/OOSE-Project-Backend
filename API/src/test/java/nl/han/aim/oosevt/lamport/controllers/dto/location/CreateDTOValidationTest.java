@@ -1,7 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.dto.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
