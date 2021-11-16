@@ -11,4 +11,9 @@ public class AreaDAOImpl implements AreaDAO {
     public List<Area> getAreas() {
         return null;
     }
+
+    @Override
+    public void createArea(String name, double longitude, double latitude, int radius) {
+
+    }
 }
