@@ -21,7 +21,6 @@ class AreaServiceImplTest {
         this.sut = new AreaServiceImpl(this.mockDAO);
     }
 
-
     @Test
     void getAreasCallsDAO() {
 
