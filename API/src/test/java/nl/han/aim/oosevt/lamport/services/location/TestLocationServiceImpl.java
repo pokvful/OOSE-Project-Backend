@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
+import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ public class TestLocationServiceImpl {
     private final double longitude = 4.32132;
     private final double latitude = 51.32132431;
     private final int radius = 30;
+    private final int areaId = 1;
 
     private LocationServiceImpl sut;
     private LocationDAO locationDAOFixture;
@@ -18,7 +20,7 @@ public class TestLocationServiceImpl {
 
     @BeforeEach
     public void setup() {
-        realCreateLocationRequestDTO = new CreateLocationRequestDTO();
+        CreateLocationRequestDTO realCreateLocationRequestDTO = new CreateLocationRequestDTO();
         createLocationRequestDTO = Mockito.spy(realCreateLocationRequestDTO);
 
         createLocationRequestDTO.setName(name);
@@ -26,6 +28,7 @@ public class TestLocationServiceImpl {
         createLocationRequestDTO.setLongitude(longitude);
         createLocationRequestDTO.setLatitude(latitude);
         createLocationRequestDTO.setRadius(radius);
+        createLocationRequestDTO.setAreaId(areaId);
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
 
@@ -38,7 +41,7 @@ public class TestLocationServiceImpl {
         sut.createLocation(createLocationRequestDTO);
 
         // Assert
-        Mockito.verify(createLocationRequestDTO).verify();
+        Mockito.verify(createLocationRequestDTO).validate();
     }
 
     @Test
@@ -52,7 +55,8 @@ public class TestLocationServiceImpl {
             delay,
             longitude,
             latitude,
-            radius
+            radius,
+            areaId
         );
     }
 }
