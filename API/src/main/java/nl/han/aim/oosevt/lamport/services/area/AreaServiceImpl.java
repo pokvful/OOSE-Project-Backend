@@ -41,15 +41,13 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public AreaResponseDTO getArea(int id) {
+    public AreaResponseDTO getArea(int id) throws NotFoundException {
 
-        try {
+        final Area area = this.dataAccess.getArea(id);
 
-            return new AreaResponseDTO().fromData(this.dataAccess.getArea(id));
+        if(area == null) throw new NotFoundException();
 
-        }catch (NullPointerException e) {
-            throw new NotFoundException();
-        }
+        return new AreaResponseDTO().fromData(area);
     }
 
     @Override
