@@ -37,7 +37,9 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public void deleteArea(int id) {
-        //todo check if area exists
+        if(dataAccess.getArea(id) == null) {
+            throw new NotFoundException();
+        }
         dataAccess.deleteArea(id);
     }
 
