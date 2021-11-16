@@ -19,7 +19,6 @@ public class UpdateAreaRequestDTO extends AreaRequestDTO {
         this.id = id;
     }
 
-
     @Override
     protected void validateSpecificDto() {
         if(id == 0) {
