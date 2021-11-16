@@ -46,7 +46,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public AreaResponseDTO getArea(int id) throws NotFoundException {
+    public AreaResponseDTO getArea(int id) {
 
         final Area area = this.dataAccess.getArea(id);
 

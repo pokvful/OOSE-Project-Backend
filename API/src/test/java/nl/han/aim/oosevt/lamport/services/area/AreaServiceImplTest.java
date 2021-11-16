@@ -82,8 +82,8 @@ class AreaServiceImplTest {
     void deleteAreaCallsDAO() {
 
         //Arrange
-        Mockito.when(mockDAO.getArea(1)).thenReturn(new Area());
-        Mockito.doNothing().when(this.mockDAO).deleteArea(1);
+        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
+        Mockito.doNothing().when(this.mockDAO).deleteArea(Mockito.anyInt());
 
         //Act
         this.sut.deleteArea(1);
@@ -96,7 +96,7 @@ class AreaServiceImplTest {
     void deleteAreaThrowsExceptionOnNotExistingArea() {
 
         //Arrange
-        Mockito.when(mockDAO.getArea(1)).thenReturn(null);
+        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
 
         //Act
         Assertions.assertThrows(NotFoundException.class, () -> this.sut.deleteArea(1));
