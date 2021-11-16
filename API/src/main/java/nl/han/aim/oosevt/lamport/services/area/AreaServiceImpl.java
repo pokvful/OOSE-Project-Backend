@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class AreaServiceImpl implements AreaService {
 
-    AreaDAO dataAccess;
-
+    private final AreaDAO dataAccess;
 
     @Autowired
     public AreaServiceImpl(AreaDAO dataAccess) {
@@ -48,9 +47,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<AreaResponseDTO> getAreas() {
 
-        List<Area> allAreas = this.dataAccess.getAreas();
-
-        return allAreas.stream()
+        return this.dataAccess.getAreas().stream()
                 .map((areaEntity) -> new AreaResponseDTO().fromData(areaEntity))
                 .collect(Collectors.toList());
     }
