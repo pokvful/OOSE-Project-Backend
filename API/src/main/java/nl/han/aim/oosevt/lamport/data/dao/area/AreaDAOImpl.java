@@ -13,7 +13,7 @@ public class AreaDAOImpl implements AreaDAO {
     }
 
     @Override
-    public Area getArea(int anyInt) {
+    public Area getArea(int areaId) {
         return null;
     }
 }

@@ -8,5 +8,5 @@ public interface AreaDAO {
 
     List<Area> getAreas();
 
-    Area getArea(int anyInt);
+    Area getArea(int areaId);
 }
