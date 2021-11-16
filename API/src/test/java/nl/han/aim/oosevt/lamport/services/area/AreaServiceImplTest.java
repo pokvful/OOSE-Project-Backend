@@ -29,7 +29,7 @@ class AreaServiceImplTest {
     void getAreaCallsDAO() {
 
         //Arrange
-        Mockito.doNothing().when(this.mockDAO.getArea(Mockito.anyInt()));
+        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
 
         //Act
         this.sut.getArea(0);
@@ -56,7 +56,7 @@ class AreaServiceImplTest {
     void getNoArea() {
 
         //Arrange
-        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenThrow(new NotFoundException());
+        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
 
         //Assert
         Assertions.assertThrows(NotFoundException.class, (() -> this.sut.getArea(0)));
