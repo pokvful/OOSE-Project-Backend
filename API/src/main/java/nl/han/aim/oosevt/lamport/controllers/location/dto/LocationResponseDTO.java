@@ -4,22 +4,24 @@ import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 
 public class LocationResponseDTO extends GeoFenceResponseDTO {
-    private int id;
+    private int locationId;
+    private String name;
 
     public LocationResponseDTO() {
     }
 
-    public LocationResponseDTO(int id, double longitude, double latitude, int radius) {
+    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius) {
         super(longitude, latitude, radius);
-        this.id = id;
+        this.locationId = locationId;
+        this.name = name;
     }
 
     public int getId() {
-        return id;
+        return locationId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.locationId = locationId;
     }
 
     public LocationResponseDTO fromData(Location location) {
