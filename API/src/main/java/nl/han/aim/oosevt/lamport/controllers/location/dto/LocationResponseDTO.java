@@ -16,12 +16,20 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.name = name;
     }
 
-    public int getId() {
+    public int getLocationId() {
         return locationId;
     }
 
-    public void setId(int id) {
+    public void setLocationId(int locationId) {
         this.locationId = locationId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocationResponseDTO fromData(Location location) {
