@@ -77,6 +77,19 @@ class AreaServiceImplTest {
     }
 
     @Test
+    void deleteAreaCallsDAO() {
+
+        //Arrange
+        Mockito.doNothing().when(this.mockDAO).deleteArea(1);
+
+        //Act
+        this.sut.deleteArea(1);
+
+        //Assert
+        Mockito.verify(this.mockDAO).deleteArea(1);
+    }
+
+    @Test
     void getExistingAreas() {
 
         //Arrange
