@@ -9,7 +9,6 @@ import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +24,12 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public void createArea(CreateAreaRequestDTO createAreaRequestDTO) {
-
-
+    public void createArea(CreateAreaRequestDTO requestDTO) {
+        dataAccess.createArea(
+                requestDTO.getName(),
+                requestDTO.getLongitude(),
+                requestDTO.getLatitude(),
+                requestDTO.getRadius());
     }
 
     @Override
