@@ -45,7 +45,9 @@ public class AreaServiceImpl implements AreaService {
 
         final Area area = this.dataAccess.getArea(id);
 
-        if(area == null) throw new NotFoundException();
+        if(area == null) {
+            throw new NotFoundException();
+        }
 
         return new AreaResponseDTO().fromData(area);
     }
