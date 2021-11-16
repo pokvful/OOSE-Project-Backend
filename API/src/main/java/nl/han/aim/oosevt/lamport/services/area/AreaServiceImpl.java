@@ -5,6 +5,7 @@ import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,14 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public AreaResponseDTO getArea(int id) {
-        return null;
+
+        try {
+
+            return new AreaResponseDTO().fromData(this.dataAccess.getArea(id));
+
+        }catch (NullPointerException e) {
+            throw new NotFoundException();
+        }
     }
 
     @Override
