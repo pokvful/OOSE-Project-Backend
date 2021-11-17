@@ -30,13 +30,13 @@ class AreaServiceImplTest {
 
         //Arrange
         var areaId = 0;
-        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
+        Mockito.when(this.mockDAO.getAreaById(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
 
         //Act
         this.sut.getArea(areaId);
 
         //Assert
-        Mockito.verify(this.mockDAO).getArea(Mockito.anyInt());
+        Mockito.verify(this.mockDAO).getAreaById(Mockito.anyInt());
     }
 
     @Test
@@ -44,7 +44,7 @@ class AreaServiceImplTest {
 
         //Arrange
         var areaId = 0;
-        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
+        Mockito.when(this.mockDAO.getAreaById(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
         var expected = new AreaResponseDTO();
 
         //Act
@@ -58,7 +58,7 @@ class AreaServiceImplTest {
     void getNoArea() {
 
         //Arrange
-        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
+        Mockito.when(this.mockDAO.getAreaById(Mockito.anyInt())).thenReturn(null);
 
         //Assert
         Assertions.assertThrows(NotFoundException.class, (() -> this.sut.getArea(Mockito.anyInt())));
@@ -83,7 +83,7 @@ class AreaServiceImplTest {
 
         //Arrange
         var areaId = 0;
-        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
+        Mockito.when(mockDAO.getAreaById(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
         Mockito.doNothing().when(this.mockDAO).deleteArea(Mockito.anyInt());
 
         //Act
@@ -97,7 +97,7 @@ class AreaServiceImplTest {
     void deleteAreaThrowsExceptionOnNotExistingArea() {
 
         //Arrange
-        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
+        Mockito.when(mockDAO.getAreaById(Mockito.anyInt())).thenReturn(null);
 
         //Act
         Assertions.assertThrows(NotFoundException.class, () -> this.sut.deleteArea(0));
@@ -155,7 +155,7 @@ class AreaServiceImplTest {
 
         //Arrange
         var areaId = 0;
-        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
+        Mockito.when(mockDAO.getAreaById(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
         Mockito.doNothing().when(this.mockDAO).updateArea(Mockito.anyInt(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
 
         //Act
@@ -169,7 +169,7 @@ class AreaServiceImplTest {
     void updateAreaThrowsExceptionOnNotExistingArea() {
 
         //Arrange
-        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
+        Mockito.when(mockDAO.getAreaById(Mockito.anyInt())).thenReturn(null);
 
         //Act
         Assertions.assertThrows(NotFoundException.class, () -> this.sut.updateArea(new UpdateAreaRequestDTO(1, "test", 10D, 10D, 10)));
