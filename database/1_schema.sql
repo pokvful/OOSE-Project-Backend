@@ -86,6 +86,7 @@ franchise_id INT(6) UNSIGNED,
 area_id INT(6) UNSIGNED,
 geofence_id INT(6) UNSIGNED,
 location_name VARCHAR(100),
+delay INT(6) UNSIGNED,
 FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id),
 FOREIGN KEY (area_id) REFERENCES area(area_id),
 FOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id)

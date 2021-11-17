@@ -48,7 +48,7 @@ INSERT INTO users (username, password) VALUES ("wur", "password");
 
 INSERT INTO answers (answer_id, answer) values (1, "Is de kerk groot?");
 
-
+CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3);
 
 
 -- SELECT * FROM answer;
