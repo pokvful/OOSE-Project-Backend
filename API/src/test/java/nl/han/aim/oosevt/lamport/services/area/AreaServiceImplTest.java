@@ -1,8 +1,7 @@
 package nl.han.aim.oosevt.lamport.services.area;
 
-import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAOImpl;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
@@ -10,8 +9,6 @@ import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -33,10 +30,11 @@ class AreaServiceImplTest {
     void getAreaCallsDAO() {
 
         //Arrange
-        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
+        var areaId = 0;
+        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
 
         //Act
-        this.sut.getArea(0);
+        this.sut.getArea(areaId);
 
         //Assert
         Mockito.verify(this.mockDAO).getArea(Mockito.anyInt());
@@ -46,11 +44,12 @@ class AreaServiceImplTest {
     void getExistingArea() {
 
         //Arrange
-        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
+        var areaId = 0;
+        Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
         var expected = new AreaResponseDTO();
 
         //Act
-        var actual = this.sut.getArea(0);
+        var actual = this.sut.getArea(areaId);
 
         //Assert
         Assertions.assertEquals(expected.getClass(), actual.getClass());
@@ -63,7 +62,7 @@ class AreaServiceImplTest {
         Mockito.when(this.mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
 
         //Assert
-        Assertions.assertThrows(NotFoundException.class, (() -> this.sut.getArea(0)));
+        Assertions.assertThrows(NotFoundException.class, (() -> this.sut.getArea(Mockito.anyInt())));
     }
 
 
@@ -84,14 +83,15 @@ class AreaServiceImplTest {
     void deleteAreaCallsDAO() {
 
         //Arrange
-        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
+        var areaId = 0;
+        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
         Mockito.doNothing().when(this.mockDAO).deleteArea(Mockito.anyInt());
 
         //Act
-        this.sut.deleteArea(1);
+        this.sut.deleteArea(areaId);
 
         //Assert
-        Mockito.verify(this.mockDAO).deleteArea(1);
+        Mockito.verify(this.mockDAO).deleteArea(Mockito.anyInt());
     }
 
     @Test
@@ -101,32 +101,34 @@ class AreaServiceImplTest {
         Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
 
         //Act
-        Assertions.assertThrows(NotFoundException.class, () -> this.sut.deleteArea(1));
+        Assertions.assertThrows(NotFoundException.class, () -> this.sut.deleteArea(0));
     }
     
     @Test
     void createAreaCallsDAO() {
-        final String areaName = "Test";
+
         //Arrange
-        Mockito.doAnswer(x -> null).when(mockDAO).createArea(areaName, 10, 10, 10);
+        final String areaName = "Test";
+        Mockito.doAnswer(x -> null).when(mockDAO).createArea(Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
 
         //Act
         this.sut.createArea(new CreateAreaRequestDTO(areaName, 10, 10, 10));
 
         //Assert
-        Mockito.verify(this.mockDAO).createArea(areaName, 10, 10, 10);
+        Mockito.verify(this.mockDAO).createArea(Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
     }
 
     @Test
     void getExistingAreas() {
 
         //Arrange
+        List<Area> mockResults = new ArrayList<>();
         var expected = 3;
-        Mockito.when(this.mockDAO.getAreas()).thenReturn(List.of(
-                new Area(),
-                new Area(),
-                new Area()
-        ));
+        for (int i = 0; i < expected; i++) {
+
+            mockResults.add(new Area(i, "", 0.0, 0.0, 0));
+        }
+        Mockito.when(this.mockDAO.getAreas()).thenReturn(mockResults);
 
         //Act
         var actual = this.sut.getAreas().size();
@@ -153,11 +155,12 @@ class AreaServiceImplTest {
     void updateAreaCallsDAO() {
 
         //Arrange
-        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
+        var areaId = 0;
+        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area(areaId, "", 0.0, 0.0, 0));
         Mockito.doNothing().when(this.mockDAO).updateArea(Mockito.anyInt(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
 
         //Act
-        this.sut.updateArea(new UpdateAreaRequestDTO(1, "test", 10D, 10D, 10));
+        this.sut.updateArea(new UpdateAreaRequestDTO(areaId, "test", 10D, 10D, 10));
 
         //Assert
         Mockito.verify(this.mockDAO).updateArea(Mockito.anyInt(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
