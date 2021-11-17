@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -48,7 +47,7 @@ public class LocationServiceImplTest {
         locationDAOFixture = Mockito.mock(LocationDAO.class);
         areaDAOFixture = Mockito.mock(AreaDAO.class);
 
-        mockLocation = new Location();
+        mockLocation = new Location(id, name, delay, longitude, latitude, radius, areaId);
         mockArea = new Area(1, "Test", 10D, 10D, 10);
 
         // instantiate SUT
@@ -152,7 +151,7 @@ public class LocationServiceImplTest {
     @Test
     public void testDeleteLocation() {
         // Arrange
-        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location());
+        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location(id, name, delay, longitude, latitude, radius, areaId));
         Mockito.doNothing().when(this.locationDAOFixture).deleteLocation(Mockito.anyInt());
 
         // Act
@@ -199,10 +198,10 @@ public class LocationServiceImplTest {
         //Arrange
         int expected = 3;
 
-        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>(){{
-                add(new Location());
-                add(new Location());
-                add(new Location());
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>() {{
+            add(new Location(id, name, delay, longitude, latitude, radius, areaId));
+            add(new Location(id, name, delay, longitude, latitude, radius, areaId));
+            add(new Location(id, name, delay, longitude, latitude, radius, areaId));
         }});
 
         //Act
