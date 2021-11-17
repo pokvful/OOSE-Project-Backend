@@ -60,7 +60,6 @@ public class LocationDAOImpl implements LocationDAO {
         try (Connection connection = DriverManager.getConnection(connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL getLocations()");
              ResultSet resultSet = statement.executeQuery()) {
-
             List<Location> foundLocations = new ArrayList<>();
             while (resultSet.next()) {
                 final Location foundLocation = new Location(
