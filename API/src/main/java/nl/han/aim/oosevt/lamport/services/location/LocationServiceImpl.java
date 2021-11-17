@@ -73,7 +73,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationResponseDTO getLocation(int id) {
-        final Location location = dataAccess.getLocationById(id);
+        final Location location = locationDAO.getLocationById(id);
 
         if (location == null) {
             throw new NotFoundException();

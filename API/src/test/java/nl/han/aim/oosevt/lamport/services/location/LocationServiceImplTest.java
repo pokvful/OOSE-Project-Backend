@@ -49,7 +49,7 @@ public class LocationServiceImplTest {
         areaDAOFixture = Mockito.mock(AreaDAO.class);
 
         mockLocation = new Location();
-        mockArea = new Area();
+        mockArea = new Area(1, "Test", 10D, 10D, 10);
 
         // instantiate SUT
         sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
@@ -199,11 +199,11 @@ public class LocationServiceImplTest {
         //Arrange
         int expected = 3;
 
-        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn((ArrayList<Location>) List.of(
-                new Location(),
-                new Location(),
-                new Location()
-        ));
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>(){{
+                add(new Location());
+                add(new Location());
+                add(new Location());
+        }});
 
         //Act
         int actual = sut.getLocations().size();
