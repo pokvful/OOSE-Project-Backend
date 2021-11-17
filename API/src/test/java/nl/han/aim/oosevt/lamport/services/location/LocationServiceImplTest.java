@@ -2,10 +2,17 @@ package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
+import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.entity.Location;
+import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LocationServiceImplTest {
     private final int id = 2;
@@ -18,8 +25,11 @@ public class LocationServiceImplTest {
 
     private LocationServiceImpl sut;
     private LocationDAO locationDAOFixture;
+    private AreaDAO areaDAOFixture;
     private CreateLocationRequestDTO createLocationRequestDTO;
     private UpdateLocationRequestDTO updateLocationRequestDTO;
+    private Location mockLocation;
+    private Area mockArea;
 
     @BeforeEach
     public void setup() {
@@ -33,13 +43,31 @@ public class LocationServiceImplTest {
         );
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
+        areaDAOFixture = Mockito.mock(AreaDAO.class);
+
+        mockLocation = new Location();
+        mockArea = new Area();
 
         // instantiate SUT
-        sut = new LocationServiceImpl(locationDAOFixture);
+        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
+    }
+
+    @Test
+    public void testCreateChecksAreaExists() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.createLocation(createLocationRequestDTO));
     }
 
     @Test
     public void testCreateLocationVerifies() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
         // Act
         sut.createLocation(createLocationRequestDTO);
 
@@ -49,6 +77,10 @@ public class LocationServiceImplTest {
 
     @Test
     public void testCreateLocationCallsDB() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
         // Act
         sut.createLocation(createLocationRequestDTO);
 
@@ -64,7 +96,28 @@ public class LocationServiceImplTest {
     }
 
     @Test
+    public void testUpdateChecksAreaExists() {
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> sut.updateLocation(updateLocationRequestDTO));
+    }
+
+    @Test
+    public void testUpdateChecksLocationExists() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.updateLocation(updateLocationRequestDTO));
+    }
+
+    @Test
     public void testUpdateLocationVerifies() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
         // Act
         sut.updateLocation(updateLocationRequestDTO);
 
@@ -74,6 +127,10 @@ public class LocationServiceImplTest {
 
     @Test
     public void testUpdateLocationCallsDB() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
         // Act
         sut.updateLocation(updateLocationRequestDTO);
 
@@ -87,6 +144,5 @@ public class LocationServiceImplTest {
             radius,
             areaId
         );
-
     }
 }
