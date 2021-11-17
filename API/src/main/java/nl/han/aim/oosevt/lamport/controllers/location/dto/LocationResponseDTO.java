@@ -33,8 +33,12 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
     }
 
     public LocationResponseDTO fromData(Location location) {
-        //todo implement
-        //Bart - 15/11/2021
+        this.longitude = location.getLongitude();
+        this.latitude = location.getLatitude();
+        this.radius = location.getRadius();
+        this.locationId = location.getId();
+        this.name = location.getName();
+
         return this;
     }
 }

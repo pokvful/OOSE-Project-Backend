@@ -47,7 +47,7 @@ END //
 
 CREATE PROCEDURE createLocation(
     IN name VARCHAR(255),
-    IN sensitivity INT,
+    IN delay INT,
     IN longitude DECIMAL(9,6),
     IN latitude DECIMAL(9, 6),
     IN radius INT,
@@ -56,8 +56,8 @@ CREATE PROCEDURE createLocation(
     INSERT INTO geofence (longitude, latitude, radius)
     VALUES (longitude, latitude, radius);
 
-    INSERT INTO location (area_id, geofence_id, location_name, sensitivity)
-    VALUES (areaId, LAST_INSERT_ID(), name, sensitivity);
+    INSERT INTO location (area_id, geofence_id, location_name, delay)
+    VALUES (areaId, LAST_INSERT_ID(), name, delay);
 END //
 
 CREATE PROCEDURE getLocationById(
@@ -70,9 +70,8 @@ CREATE PROCEDURE getLocationById(
 END //
 
 
-CREATE PROCEDURE getLocations(
-    IN id INT
-) BEGIN
+CREATE PROCEDURE getLocations()
+BEGIN
     SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
     FROM location
     LEFT OUTER JOIN geofence ON geofence.geofence_id = location.location_id;
@@ -81,7 +80,7 @@ END //
 CREATE PROCEDURE updateLocation(
     in id INT,
     IN name VARCHAR(255),
-    IN sensitivity INT,
+    IN delay INT,
     IN longitude DECIMAL(9,6),
     IN latitude DECIMAL(9, 6),
     IN radius INT,
@@ -93,12 +92,12 @@ CREATE PROCEDURE updateLocation(
     WHERE geofence_id = (
         SELECT geofence_id
         FROM location
-        WHERE location_id = 2
+        WHERE location_id = id
     );
 
     UPDATE location
-    SET area_id=areaId, location_name=name, sensitivity = sensitivity;
-
+    SET area_id=areaId, location_name=name, delay = delay 
+    WHERE location_id = id;
 END //
 
 CREATE PROCEDURE deleteLocation(
