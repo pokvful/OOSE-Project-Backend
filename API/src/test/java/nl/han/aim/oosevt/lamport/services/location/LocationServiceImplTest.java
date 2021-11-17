@@ -7,10 +7,13 @@ import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -86,12 +89,12 @@ public class LocationServiceImplTest {
 
         // Assert
         Mockito.verify(locationDAOFixture).createLocation(
-            name,
-            delay,
-            longitude,
-            latitude,
-            radius,
-            areaId
+                name,
+                delay,
+                longitude,
+                latitude,
+                radius,
+                areaId
         );
     }
 
@@ -136,13 +139,76 @@ public class LocationServiceImplTest {
 
         // Assert
         Mockito.verify(locationDAOFixture).updateLocation(
-            id,
-            name,
-            delay,
-            longitude,
-            latitude,
-            radius,
-            areaId
+                id,
+                name,
+                delay,
+                longitude,
+                latitude,
+                radius,
+                areaId
         );
+    }
+
+    @Test
+    public void testDeleteLocation() {
+        // Arrange
+        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location());
+        Mockito.doNothing().when(this.locationDAOFixture).deleteLocation(Mockito.anyInt());
+
+        // Act
+        sut.deleteLocation(1);
+
+        // Assert
+        Mockito.verify(locationDAOFixture).deleteLocation(1);
+    }
+
+    @Test
+    public void testDeleteLocationThrowsException() {
+        assertThrows(NotFoundException.class, () -> sut.deleteLocation(0));
+    }
+
+    @Test
+    public void testGetLocations() {
+        //Arrange
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>());
+
+        //Act
+        sut.getLocations();
+
+        //Assert
+        Mockito.verify(this.locationDAOFixture).getLocations();
+    }
+
+    @Test
+    void getNoLocation() {
+
+        //Arrange
+        var expected = 0;
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>());
+
+        //Act
+        int actual = sut.getLocations().size();
+
+        //Assert
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getExistingLocations() {
+
+        //Arrange
+        int expected = 3;
+
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn((ArrayList<Location>) List.of(
+                new Location(),
+                new Location(),
+                new Location()
+        ));
+
+        //Act
+        int actual = sut.getLocations().size();
+
+        //Assert
+        Assertions.assertEquals(expected, actual);
     }
 }
