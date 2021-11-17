@@ -160,7 +160,7 @@ class AreaServiceImplTest {
         this.sut.updateArea(new UpdateAreaRequestDTO(1, "test", 10D, 10D, 10));
 
         //Assert
-        Mockito.verify(this.mockDAO).updateArea(1, "test", 10D, 10D, 10);
+        Mockito.verify(this.mockDAO).updateArea(Mockito.anyInt(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
     }
 
     @Test
