@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestD
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
+import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,17 +12,17 @@ import java.util.List;
 
 @Component
 public class LocationServiceImpl implements LocationService {
-    private LocationDAO locationDAO;
+    private LocationDAO dataAccess;
 
     @Autowired
-    public LocationServiceImpl(LocationDAO locationDAO) {
-        this.locationDAO = locationDAO;
+    public LocationServiceImpl(LocationDAO dataAccess) {
+        this.dataAccess = dataAccess;
     }
 
     public void createLocation(CreateLocationRequestDTO location) {
         location.validate();
 
-        locationDAO.createLocation(
+        dataAccess.createLocation(
                 location.getName(),
                 location.getDelay(),
                 location.getLongitude(),
@@ -38,7 +39,10 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void deleteLocation(int id) {
-
+        if (dataAccess.getLocationById(id) == null) {
+            throw new NotFoundException();
+        }
+        dataAccess.deleteLocation(id);
     }
 
     @Override
