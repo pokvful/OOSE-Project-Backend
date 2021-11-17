@@ -1,6 +1,7 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TestLocationServiceImpl {
     private final String name = "mcDonalds";
@@ -99,7 +99,7 @@ public class TestLocationServiceImpl {
     }
 
     @Test
-    void getNoLocation() {
+    void getNoLocations() {
 
         //Arrange
         var expected = 0;
@@ -128,5 +128,42 @@ public class TestLocationServiceImpl {
 
         //Assert
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getLocationCallsDAO() {
+
+        //Arrange
+        Mockito.when(this.locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location());
+
+        //Act
+        this.sut.getLocation(0);
+
+        //Assert
+        Mockito.verify(this.locationDAOFixture).getLocationById(Mockito.anyInt());
+    }
+
+    @Test
+    void getExistingLocation() {
+
+        //Arrange
+        Mockito.when(this.locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location());
+        var expected = new LocationResponseDTO();
+
+        //Act
+        var actual = this.sut.getLocation(0);
+
+        //Assert
+        Assertions.assertEquals(expected.getClass(), actual.getClass());
+    }
+
+    @Test
+    void getNoLocation() {
+
+        //Arrange
+        Mockito.when(this.locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(null);
+
+        //Assert
+        Assertions.assertThrows(NotFoundException.class, (() -> this.sut.getLocation(0)));
     }
 }
