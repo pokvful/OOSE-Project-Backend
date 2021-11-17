@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class LocationDAOImpl implements LocationDAO {
     @Override
     public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId) {
-
     }
 
     @Override
@@ -24,11 +23,9 @@ public class LocationDAOImpl implements LocationDAO {
 
     @Override
     public void updateLocation(int id, String name, int delay, double longitude, double latitude, int radius, int areaId) {
-
     }
 
     @Override
     public void deleteLocation(int id) {
-
     }
 }

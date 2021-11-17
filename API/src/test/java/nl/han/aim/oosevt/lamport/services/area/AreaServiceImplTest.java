@@ -1,5 +1,9 @@
 package nl.han.aim.oosevt.lamport.services.area;
 
+<<<<<<< HEAD
+=======
+import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
+>>>>>>> ff2acf28c6c7e33e9b3955269200d871f389fc7e
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
@@ -24,7 +28,6 @@ class AreaServiceImplTest {
         this.mockDAO = Mockito.mock(AreaDAOImpl.class);
         this.sut = new AreaServiceImpl(this.mockDAO);
     }
-
 
     @Test
     void getAreaCallsDAO() {
