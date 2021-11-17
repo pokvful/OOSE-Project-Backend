@@ -5,9 +5,10 @@ import nl.han.aim.oosevt.lamport.data.entity.Area;
 import java.util.List;
 
 public interface AreaDAO {
-    List<Area> getAreas();
+
     void createArea(String name, double longitude, double latitude, int radius);
     Area getArea(int areaId);
-    void deleteArea(int id);
-    void updateArea(int id, String name, double longitude, double latitude, int radius);
+    List<Area> getAreas();
+    void updateArea(int areaId, String name, double longitude, double latitude, int radius);
+    void deleteArea(int areaId);
 }

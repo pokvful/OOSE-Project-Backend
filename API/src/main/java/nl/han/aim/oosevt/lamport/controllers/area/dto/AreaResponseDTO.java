@@ -33,11 +33,13 @@ public class AreaResponseDTO extends GeoFenceResponseDTO {
     }
 
     public AreaResponseDTO fromData(Area area) {
-        //todo implement
-        //Bart - 15/11/2021
 
-        //todo generics
-        //Wesley - 16/11/2021
+        this.id = area.getId();
+        this.name = area.getName();
+        this.latitude = area.getLatitude();
+        this.longitude = area.getLongitude();
+        this.radius = area.getRadius();
+
         return this;
     }
 }
