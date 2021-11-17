@@ -54,7 +54,7 @@ public class AreaDAOImpl implements AreaDAO {
     }
 
     @Override
-    public Area getArea(int areaId) {
+    public Area getAreaById(int areaId) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL getArea(?)")) {
             statement.setInt(1, areaId);
