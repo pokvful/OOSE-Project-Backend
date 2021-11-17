@@ -34,11 +34,11 @@ public class AreaResponseDTO extends GeoFenceResponseDTO {
 
     public AreaResponseDTO fromData(Area area) {
 
-        this.id = area.id;
-        this.name = area.name;
-        this.latitude = area.latitude;
-        this.longitude = area.longitude;
-        this.radius = area.radius;
+        this.id = area.getId();
+        this.name = area.getName();
+        this.latitude = area.getLatitude();
+        this.longitude = area.getLongitude();
+        this.radius = area.getRadius();
 
         return this;
     }
