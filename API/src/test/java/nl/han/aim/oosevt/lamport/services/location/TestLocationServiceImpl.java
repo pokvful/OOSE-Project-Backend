@@ -2,7 +2,6 @@ package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
-import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -91,9 +90,42 @@ public class TestLocationServiceImpl {
         Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>());
 
         //Act
-        this.sut.getLocations();
+        sut.getLocations();
 
         //Assert
         Mockito.verify(this.locationDAOFixture).getLocations();
+    }
+
+    @Test
+    void getNoLocation() {
+
+        //Arrange
+        var expected = 0;
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>());
+
+        //Act
+        int actual = sut.getLocations().size();
+
+        //Assert
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getExistingLocations() {
+
+        //Arrange
+        int expected = 3;
+
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn((ArrayList<Location>) List.of(
+                new Location(),
+                new Location(),
+                new Location()
+        ));
+
+        //Act
+        int actual = sut.getLocations().size();
+
+        //Assert
+        Assertions.assertEquals(expected, actual);
     }
 }
