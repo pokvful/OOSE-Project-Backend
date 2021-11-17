@@ -33,8 +33,16 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public void updateArea(UpdateAreaRequestDTO updateAreaRequestDTO) {
-
+    public void updateArea(UpdateAreaRequestDTO requestDTO) {
+        if(dataAccess.getArea(requestDTO.getId()) == null) {
+            throw new NotFoundException();
+        }
+        dataAccess.updateArea(
+                requestDTO.getId(),
+                requestDTO.getName(),
+                requestDTO.getLongitude(),
+                requestDTO.getLatitude(),
+                requestDTO.getRadius());
     }
 
     @Override
