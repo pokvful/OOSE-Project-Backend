@@ -9,4 +9,5 @@ public interface AreaDAO {
     void createArea(String name, double longitude, double latitude, int radius);
     Area getArea(int areaId);
     void deleteArea(int id);
+    void updateArea(int id, String name, double longitude, double latitude, int radius);
 }

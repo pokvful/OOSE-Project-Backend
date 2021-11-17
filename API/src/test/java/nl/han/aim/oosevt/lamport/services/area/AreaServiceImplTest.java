@@ -1,7 +1,9 @@
 package nl.han.aim.oosevt.lamport.services.area;
 
+import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAOImpl;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -145,5 +147,29 @@ class AreaServiceImplTest {
 
         //Assert
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateAreaCallsDAO() {
+
+        //Arrange
+        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(new Area());
+        Mockito.doNothing().when(this.mockDAO).updateArea(Mockito.anyInt(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
+
+        //Act
+        this.sut.updateArea(new UpdateAreaRequestDTO(1, "test", 10D, 10D, 10));
+
+        //Assert
+        Mockito.verify(this.mockDAO).updateArea(Mockito.anyInt(), Mockito.anyString(), Mockito.anyDouble(), Mockito.anyDouble(), Mockito.anyInt());
+    }
+
+    @Test
+    void updateAreaThrowsExceptionOnNotExistingArea() {
+
+        //Arrange
+        Mockito.when(mockDAO.getArea(Mockito.anyInt())).thenReturn(null);
+
+        //Act
+        Assertions.assertThrows(NotFoundException.class, () -> this.sut.updateArea(new UpdateAreaRequestDTO(1, "test", 10D, 10D, 10)));
     }
 }
