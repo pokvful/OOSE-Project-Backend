@@ -1,9 +1,10 @@
 package nl.han.aim.oosevt.lamport.controllers.shared.dto;
 
 public abstract class GeoFenceResponseDTO {
-    private double longitude;
-    private double latitude;
-    private int radius;
+
+    protected double longitude;
+    protected double latitude;
+    protected int radius;
 
     public GeoFenceResponseDTO(double longitude, double latitude, int radius) {
         this.longitude = longitude;

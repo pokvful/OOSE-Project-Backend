@@ -1,10 +1,13 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
+import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,7 +73,13 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationResponseDTO getLocation(int id) {
-        return null;
+        final Location location = dataAccess.getLocationById(id);
+
+        if (location == null) {
+            throw new NotFoundException();
+        }
+
+        return new LocationResponseDTO().fromData(location);
     }
 
     @Override
