@@ -19,35 +19,27 @@ public class AreaServiceImpl implements AreaService {
 
     @Autowired
     public AreaServiceImpl(AreaDAO dataAccess) {
-
         this.dataAccess = dataAccess;
     }
 
     @Override
     public void createArea(CreateAreaRequestDTO requestDTO) {
-        dataAccess.createArea(
-                requestDTO.getName(),
-                requestDTO.getLongitude(),
-                requestDTO.getLatitude(),
+        dataAccess.createArea(requestDTO.getName(), requestDTO.getLongitude(), requestDTO.getLatitude(),
                 requestDTO.getRadius());
     }
 
     @Override
     public void updateArea(UpdateAreaRequestDTO requestDTO) {
-        if(dataAccess.getArea(requestDTO.getId()) == null) {
+        if (dataAccess.getArea(requestDTO.getId()) == null) {
             throw new NotFoundException();
         }
-        dataAccess.updateArea(
-                requestDTO.getId(),
-                requestDTO.getName(),
-                requestDTO.getLongitude(),
-                requestDTO.getLatitude(),
-                requestDTO.getRadius());
+        dataAccess.updateArea(requestDTO.getId(), requestDTO.getName(), requestDTO.getLongitude(),
+                requestDTO.getLatitude(), requestDTO.getRadius());
     }
 
     @Override
     public void deleteArea(int id) {
-        if(dataAccess.getArea(id) == null) {
+        if (dataAccess.getArea(id) == null) {
             throw new NotFoundException();
         }
         dataAccess.deleteArea(id);
@@ -58,7 +50,7 @@ public class AreaServiceImpl implements AreaService {
 
         final Area area = this.dataAccess.getArea(id);
 
-        if(area == null) {
+        if (area == null) {
             throw new NotFoundException();
         }
 
@@ -68,8 +60,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<AreaResponseDTO> getAreas() {
 
-        return this.dataAccess.getAreas().stream()
-                .map((areaEntity) -> new AreaResponseDTO().fromData(areaEntity))
+        return this.dataAccess.getAreas().stream().map((areaEntity) -> new AreaResponseDTO().fromData(areaEntity))
                 .collect(Collectors.toList());
     }
 }
