@@ -8,14 +8,13 @@ public class Area {
     private final double longitude;
     private final int radius;
 
-    public Area(int id, String name, double latitude, double longitude, int radius) {
+    public Area(int id, String name, double longitude, double latitude, int radius) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = radius;
     }
-
 
     public int getId() {
         return id;
