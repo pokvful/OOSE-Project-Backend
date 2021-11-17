@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
+import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LocationServiceImpl implements LocationService {
@@ -52,6 +54,8 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<LocationResponseDTO> getLocations() {
-        return null;
+        return  dataAccess.getLocations().stream()
+                .map((locationEntity) -> new LocationResponseDTO().fromData(locationEntity))
+                .collect(Collectors.toList());
     }
 }

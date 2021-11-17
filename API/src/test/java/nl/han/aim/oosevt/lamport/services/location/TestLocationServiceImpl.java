@@ -1,8 +1,8 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -83,5 +83,17 @@ public class TestLocationServiceImpl {
     @Test
     public void testDeleteLocationThrowsException() {
         Assertions.assertThrows(NotFoundException.class, () -> sut.deleteLocation(0));
+    }
+
+    @Test
+    public void testGetLocations() {
+        //Arrange
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>());
+
+        //Act
+        this.sut.getLocations();
+
+        //Assert
+        Mockito.verify(this.locationDAOFixture).getLocations();
     }
 }
