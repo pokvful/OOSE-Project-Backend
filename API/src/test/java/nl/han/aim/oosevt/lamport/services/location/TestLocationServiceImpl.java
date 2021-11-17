@@ -81,6 +81,8 @@ public class TestLocationServiceImpl {
 
     @Test
     public void testDeleteLocationThrowsException() {
+        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(null);
+
         Assertions.assertThrows(NotFoundException.class, () -> sut.deleteLocation(0));
     }
 
@@ -114,16 +116,15 @@ public class TestLocationServiceImpl {
     void getExistingLocations() {
 
         //Arrange
-        int expected = 3;
-
-        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn((ArrayList<Location>) List.of(
-                new Location(),
-                new Location(),
-                new Location()
-        ));
+        var expected = 3;
+        Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>() {{
+            add(new Location());
+            add(new Location());
+            add(new Location());
+        }});
 
         //Act
-        int actual = sut.getLocations().size();
+        var actual = this.sut.getLocations().size();
 
         //Assert
         Assertions.assertEquals(expected, actual);

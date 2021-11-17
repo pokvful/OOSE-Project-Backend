@@ -1,6 +1,5 @@
 package nl.han.aim.oosevt.lamport.controllers.dto.area;
 
-import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +25,6 @@ public class UpdateAreaRequestDTOTests {
         final UpdateAreaRequestDTO createAreaRequestDTO = new UpdateAreaRequestDTO(1, "Test", 1, 1, 1);
 
         Assertions.assertDoesNotThrow(createAreaRequestDTO::validate);
-
     }
 
     private static Stream<Arguments> invalidDTOsThrowException() {
