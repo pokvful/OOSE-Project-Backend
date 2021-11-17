@@ -30,7 +30,7 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public void updateArea(UpdateAreaRequestDTO requestDTO) {
-        if (dataAccess.getArea(requestDTO.getId()) == null) {
+        if (dataAccess.getAreaById(requestDTO.getId()) == null) {
             throw new NotFoundException();
         }
         dataAccess.updateArea(requestDTO.getId(), requestDTO.getName(), requestDTO.getLongitude(),
@@ -39,7 +39,7 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public void deleteArea(int id) {
-        if (dataAccess.getArea(id) == null) {
+        if (dataAccess.getAreaById(id) == null) {
             throw new NotFoundException();
         }
         dataAccess.deleteArea(id);
@@ -48,7 +48,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public AreaResponseDTO getArea(int id) {
 
-        final Area area = this.dataAccess.getArea(id);
+        final Area area = this.dataAccess.getAreaById(id);
 
         if (area == null) {
             throw new NotFoundException();

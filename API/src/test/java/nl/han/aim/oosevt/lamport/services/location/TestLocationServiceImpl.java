@@ -1,7 +1,10 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
+import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +15,10 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class TestLocationServiceImpl {
+    private final int id = 2;
     private final String name = "mcDonalds";
     private final int delay = 10;
     private final double longitude = 4.32132;
@@ -22,27 +28,49 @@ public class TestLocationServiceImpl {
 
     private LocationServiceImpl sut;
     private LocationDAO locationDAOFixture;
+    private AreaDAO areaDAOFixture;
     private CreateLocationRequestDTO createLocationRequestDTO;
+    private UpdateLocationRequestDTO updateLocationRequestDTO;
+    private Location mockLocation;
+    private Area mockArea;
 
     @BeforeEach
     public void setup() {
-        CreateLocationRequestDTO realCreateLocationRequestDTO = new CreateLocationRequestDTO();
-        createLocationRequestDTO = Mockito.spy(realCreateLocationRequestDTO);
+        // arrange create DTO
+        createLocationRequestDTO = Mockito.spy(
+                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId)
+        );
 
-        createLocationRequestDTO.setName(name);
-        createLocationRequestDTO.setDelay(delay);
-        createLocationRequestDTO.setLongitude(longitude);
-        createLocationRequestDTO.setLatitude(latitude);
-        createLocationRequestDTO.setRadius(radius);
-        createLocationRequestDTO.setAreaId(areaId);
+        updateLocationRequestDTO = Mockito.spy(
+                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId)
+        );
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
+        areaDAOFixture = Mockito.mock(AreaDAO.class);
 
-        sut = new LocationServiceImpl(locationDAOFixture);
+        mockLocation = new Location();
+        mockArea = new Area();
+
+        // instantiate SUT
+        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
+    }
+
+    @Test
+    public void testCreateChecksAreaExists() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.createLocation(createLocationRequestDTO));
     }
 
     @Test
     public void testCreateLocationVerifies() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
         // Act
         sut.createLocation(createLocationRequestDTO);
 
@@ -52,17 +80,72 @@ public class TestLocationServiceImpl {
 
     @Test
     public void testCreateLocationCallsDB() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
         // Act
         sut.createLocation(createLocationRequestDTO);
 
         // Assert
         Mockito.verify(locationDAOFixture).createLocation(
-            name,
-            delay,
-            longitude,
-            latitude,
-            radius,
-            areaId
+                name,
+                delay,
+                longitude,
+                latitude,
+                radius,
+                areaId
+        );
+    }
+
+    @Test
+    public void testUpdateChecksAreaExists() {
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> sut.updateLocation(updateLocationRequestDTO));
+    }
+
+    @Test
+    public void testUpdateChecksLocationExists() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.updateLocation(updateLocationRequestDTO));
+    }
+
+    @Test
+    public void testUpdateLocationVerifies() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act
+        sut.updateLocation(updateLocationRequestDTO);
+
+        // Assert
+        Mockito.verify(updateLocationRequestDTO).validate();
+    }
+
+    @Test
+    public void testUpdateLocationCallsDB() {
+        // Arrange
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act
+        sut.updateLocation(updateLocationRequestDTO);
+
+        // Assert
+        Mockito.verify(locationDAOFixture).updateLocation(
+                id,
+                name,
+                delay,
+                longitude,
+                latitude,
+                radius,
+                areaId
         );
     }
 
@@ -81,7 +164,7 @@ public class TestLocationServiceImpl {
 
     @Test
     public void testDeleteLocationThrowsException() {
-        Assertions.assertThrows(NotFoundException.class, () -> sut.deleteLocation(0));
+        assertThrows(NotFoundException.class, () -> sut.deleteLocation(0));
     }
 
     @Test
