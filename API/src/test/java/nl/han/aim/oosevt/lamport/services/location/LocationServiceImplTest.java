@@ -1,12 +1,14 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class TestLocationServiceImpl {
+public class LocationServiceImplTest {
+    private final int id = 2;
     private final String name = "mcDonalds";
     private final int delay = 10;
     private final double longitude = 4.32132;
@@ -17,21 +19,22 @@ public class TestLocationServiceImpl {
     private LocationServiceImpl sut;
     private LocationDAO locationDAOFixture;
     private CreateLocationRequestDTO createLocationRequestDTO;
+    private UpdateLocationRequestDTO updateLocationRequestDTO;
 
     @BeforeEach
     public void setup() {
-        CreateLocationRequestDTO realCreateLocationRequestDTO = new CreateLocationRequestDTO();
-        createLocationRequestDTO = Mockito.spy(realCreateLocationRequestDTO);
+        // arrange create DTO
+        createLocationRequestDTO = Mockito.spy(
+                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId)
+        );
 
-        createLocationRequestDTO.setName(name);
-        createLocationRequestDTO.setDelay(delay);
-        createLocationRequestDTO.setLongitude(longitude);
-        createLocationRequestDTO.setLatitude(latitude);
-        createLocationRequestDTO.setRadius(radius);
-        createLocationRequestDTO.setAreaId(areaId);
+        updateLocationRequestDTO = Mockito.spy(
+                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId)
+        );
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
 
+        // instantiate SUT
         sut = new LocationServiceImpl(locationDAOFixture);
     }
 
@@ -58,5 +61,32 @@ public class TestLocationServiceImpl {
             radius,
             areaId
         );
+    }
+
+    @Test
+    public void testUpdateLocationVerifies() {
+        // Act
+        sut.updateLocation(updateLocationRequestDTO);
+
+        // Assert
+        Mockito.verify(updateLocationRequestDTO).validate();
+    }
+
+    @Test
+    public void testUpdateLocationCallsDB() {
+        // Act
+        sut.updateLocation(updateLocationRequestDTO);
+
+        // Assert
+        Mockito.verify(locationDAOFixture).updateLocation(
+            id,
+            name,
+            delay,
+            longitude,
+            latitude,
+            radius,
+            areaId
+        );
+
     }
 }

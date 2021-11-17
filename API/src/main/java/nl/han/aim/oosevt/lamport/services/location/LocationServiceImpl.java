@@ -33,7 +33,17 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void updateLocation(UpdateLocationRequestDTO newData) {
+        newData.validate();
 
+        locationDAO.updateLocation(
+                newData.getId(),
+                newData.getName(),
+                newData.getDelay(),
+                newData.getLongitude(),
+                newData.getLatitude(),
+                newData.getRadius(),
+                newData.getAreaId()
+        );
     }
 
     @Override
