@@ -11,11 +11,11 @@ public class UpdateLocationRequestDTO extends LocationRequestDTO {
         this.locationId = locationId;
     }
 
-    public int getId() {
+    public int getLocationId() {
         return locationId;
     }
 
-    public void setId(int id) {
+    public void setLocationId(int locationId) {
         this.locationId = locationId;
     }
 

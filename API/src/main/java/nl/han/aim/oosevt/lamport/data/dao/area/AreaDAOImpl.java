@@ -13,7 +13,21 @@ public class AreaDAOImpl implements AreaDAO {
     }
 
     @Override
-    public Area getAreaById(int id) {
+    public void createArea(String name, double longitude, double latitude, int radius) {
+    }
+
+    @Override
+    public Area getAreaById(int areaId) {
         return null;
+    }
+
+    @Override
+    public void deleteArea(int id) {
+
+    }
+
+    @Override
+    public void updateArea(int id, String name, double longitude, double latitude, int radius) {
+
     }
 }

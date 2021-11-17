@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
+import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LocationServiceImpl implements LocationService {
@@ -41,38 +43,30 @@ public class LocationServiceImpl implements LocationService {
 
         assertGeldigeArea(areaId);
 
-        locationDAO.createLocation(location.getName(),
-                location.getDelay(),
-                location.getLongitude(),
-                location.getLatitude(),
-                location.getRadius(),
-                areaId
-        );
+        locationDAO.createLocation(location.getName(), location.getDelay(), location.getLongitude(),
+                location.getLatitude(), location.getRadius(), areaId);
     }
 
     @Override
     public void updateLocation(UpdateLocationRequestDTO newData) {
         newData.validate();
 
-        int id = newData.getId();
+        int id = newData.getLocationId();
         int areaId = newData.getAreaId();
 
         assertGeldigeLocation(id);
         assertGeldigeArea(areaId);
 
-        locationDAO.updateLocation(newData.getId(),
-                newData.getName(),
-                newData.getDelay(),
-                newData.getLongitude(),
-                newData.getLatitude(),
-                newData.getRadius(),
-                areaId
-        );
+        locationDAO.updateLocation(newData.getLocationId(), newData.getName(), newData.getDelay(),
+                newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId);
     }
 
     @Override
     public void deleteLocation(int id) {
-
+        if (locationDAO.getLocationById(id) == null) {
+            throw new NotFoundException();
+        }
+        locationDAO.deleteLocation(id);
     }
 
     @Override
@@ -82,6 +76,8 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<LocationResponseDTO> getLocations() {
-        return null;
+        return locationDAO.getLocations().stream()
+                .map((locationEntity) -> new LocationResponseDTO().fromData(locationEntity))
+                .collect(Collectors.toList());
     }
 }
