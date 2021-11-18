@@ -37,8 +37,8 @@ public class AreaDAOImpl implements AreaDAO {
             List<Area> foundAreas = new ArrayList<>();
             while (resultSet.next()) {
                 final Area foundArea = new Area(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                        resultSet.getInt("area_id"),
+                        resultSet.getString("area_name"),
                         resultSet.getDouble("longitude"),
                         resultSet.getDouble("latitude"),
                         resultSet.getInt("radius"));
@@ -63,8 +63,8 @@ public class AreaDAOImpl implements AreaDAO {
 
             if (resultSet.next()) {
                 return new Area(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                        resultSet.getInt("area_id"),
+                        resultSet.getString("area_name"),
                         resultSet.getDouble("longitude"),
                         resultSet.getDouble("latitude"),
                         resultSet.getInt("radius"));

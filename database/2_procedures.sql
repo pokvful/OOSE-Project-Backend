@@ -46,18 +46,22 @@ BEGIN
 END //
 
 CREATE PROCEDURE createLocation(
-    IN name VARCHAR(255),
-    IN delay INT,
-    IN longitude DECIMAL(9,6),
-    IN latitude DECIMAL(9, 6),
-    IN radius INT,
-    IN areaId INT
+    IN var_name VARCHAR(255),
+    IN var_delay INT,
+    IN var_longitude DECIMAL(9,6),
+    IN var_latitude DECIMAL(9, 6),
+    IN var_radius INT,
+    IN var_areaId INT
 ) BEGIN
+    DECLARE var_geofence_id INT DEFAULT 0;
+
     INSERT INTO geofence (longitude, latitude, radius)
-    VALUES (longitude, latitude, radius);
+    VALUES (var_longitude, var_latitude, var_radius);
+
+    SET var_geofence_id = LAST_INSERT_ID();
 
     INSERT INTO location (area_id, geofence_id, location_name, delay)
-    VALUES (areaId, LAST_INSERT_ID(), name, delay);
+    VALUES (var_areaId, var_geofence_id, var_name, var_delay);
 END //
 
 CREATE PROCEDURE getLocationById(
@@ -65,7 +69,7 @@ CREATE PROCEDURE getLocationById(
 ) BEGIN
     SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
     FROM location
-    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.location_id
+    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id
     WHERE location_id = id;
 END //
 
@@ -74,7 +78,7 @@ CREATE PROCEDURE getLocations()
 BEGIN
     SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
     FROM location
-    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.location_id;
+    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id;
 END //
 
 CREATE PROCEDURE updateLocation(

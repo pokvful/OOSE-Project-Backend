@@ -34,7 +34,7 @@ public class LocationDAOImpl implements LocationDAO {
     @Override
     public Location getLocationById(int locationId) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getLocation(?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL getLocationById(?)")) {
             statement.setInt(1, locationId);
 
             ResultSet resultSet = statement.executeQuery();
