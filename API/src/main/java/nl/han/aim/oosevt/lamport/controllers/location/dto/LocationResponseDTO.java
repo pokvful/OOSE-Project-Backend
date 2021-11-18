@@ -38,7 +38,7 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.radius = location.getRadius();
         this.locationId = location.getId();
         this.name = location.getName();
-
+    
         return this;
     }
 }
