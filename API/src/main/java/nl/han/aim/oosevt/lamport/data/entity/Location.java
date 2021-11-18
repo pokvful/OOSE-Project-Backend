@@ -2,13 +2,13 @@ package nl.han.aim.oosevt.lamport.data.entity;
 
 public class Location {
 
-    final private int id;
-    final private String name;
-    final private int delay;
-    final private double longitude;
-    final private double latitude;
-    final private int radius;
-    final private int areaId;
+    private final int id;
+    private final String name;
+    private final int delay;
+    private final double longitude;
+    private final double latitude;
+    private final int radius;
+    private final int areaId;
 
     public Location(int id, String name, int delay, double longitude, double latitude, int radius, int areaId) {
         this.id = id;
