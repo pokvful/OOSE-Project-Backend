@@ -7,13 +7,14 @@ import java.util.logging.Logger;
 
 public class DatabaseProperties {
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private static Properties properties;
+    private static String connectionString;
 
     public DatabaseProperties() {
-        properties = new Properties();
+        final Properties properties = new Properties();
         try {
             properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
             Class.forName(properties.getProperty("driver"));
+            connectionString = properties.getProperty("connectionString");
         } catch (IOException | ClassNotFoundException e) {
             logger.log(Level.SEVERE, "Can't access property file database.properties", e);
         }
@@ -21,6 +22,6 @@ public class DatabaseProperties {
 
 
     public static String connectionString() {
-        return properties.getProperty("connectionString");
+        return connectionString;
     }
 }

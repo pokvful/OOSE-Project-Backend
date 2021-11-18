@@ -34,20 +34,20 @@ public class LocationDAOImpl implements LocationDAO {
     @Override
     public Location getLocationById(int locationId) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getLocation(?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL getLocationById(?)")) {
             statement.setInt(1, locationId);
 
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 return new Location(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                        resultSet.getInt("location_id"),
+                        resultSet.getString("location_name"),
                         resultSet.getInt("delay"),
                         resultSet.getDouble("longitude"),
                         resultSet.getDouble("latitude"),
                         resultSet.getInt("radius"),
-                        resultSet.getInt("areaId"));
+                        resultSet.getInt("area_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,13 +63,13 @@ public class LocationDAOImpl implements LocationDAO {
             List<Location> foundLocations = new ArrayList<>();
             while (resultSet.next()) {
                 final Location foundLocation = new Location(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                        resultSet.getInt("location_id"),
+                        resultSet.getString("location_name"),
                         resultSet.getInt("delay"),
                         resultSet.getDouble("longitude"),
                         resultSet.getDouble("latitude"),
                         resultSet.getInt("radius"),
-                        resultSet.getInt("areaId"));
+                        resultSet.getInt("area_id"));
                 foundLocations.add(foundLocation);
             }
             return foundLocations;

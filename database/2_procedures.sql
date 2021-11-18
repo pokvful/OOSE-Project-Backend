@@ -45,4 +45,69 @@ BEGIN
 	DELETE FROM geofence WHERE geofence_id = (SELECT geofence_id FROM area WHERE area_id = param_id);
 END //
 
+CREATE PROCEDURE createLocation(
+    IN var_name VARCHAR(255),
+    IN var_delay INT,
+    IN var_longitude DECIMAL(9,6),
+    IN var_latitude DECIMAL(9, 6),
+    IN var_radius INT,
+    IN var_areaId INT
+) BEGIN
+    DECLARE var_geofence_id INT DEFAULT 0;
+
+    INSERT INTO geofence (longitude, latitude, radius)
+    VALUES (var_longitude, var_latitude, var_radius);
+
+    SET var_geofence_id = LAST_INSERT_ID();
+
+    INSERT INTO location (area_id, geofence_id, location_name, delay)
+    VALUES (var_areaId, var_geofence_id, var_name, var_delay);
+END //
+
+CREATE PROCEDURE getLocationById(
+    IN id INT
+) BEGIN
+    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
+    FROM location
+    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id
+    WHERE location_id = id;
+END //
+
+
+CREATE PROCEDURE getLocations()
+BEGIN
+    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
+    FROM location
+    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id;
+END //
+
+CREATE PROCEDURE updateLocation(
+    in id INT,
+    IN name VARCHAR(255),
+    IN delay INT,
+    IN longitude DECIMAL(9,6),
+    IN latitude DECIMAL(9, 6),
+    IN radius INT,
+    IN areaId INT
+) BEGIN
+
+    UPDATE geofence
+    SET longitude=longitude, latitude=latitude, radius=radius
+    WHERE geofence_id = (
+        SELECT geofence_id
+        FROM location
+        WHERE location_id = id
+    );
+
+    UPDATE location
+    SET area_id=areaId, location_name=name, delay = delay 
+    WHERE location_id = id;
+END //
+
+CREATE PROCEDURE deleteLocation(
+    IN param_id INT
+) BEGIN
+    DELETE FROM location WHERE location_id = param_id;
+	DELETE FROM geofence WHERE geofence_id = (SELECT geofence_id FROM location WHERE location_id = param_id);
+END //
 DELIMITER ;

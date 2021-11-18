@@ -1,12 +1,10 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
-import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
-import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
-import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class LocationServiceImpl implements LocationService {
-    private LocationDAO locationDAO;
-    private AreaDAO areaDAO;
+    private final LocationDAO locationDAO;
+    private final AreaDAO areaDAO;
 
     @Autowired
     public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO) {
