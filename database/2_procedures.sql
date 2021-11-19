@@ -90,7 +90,8 @@ END //
 
 CREATE PROCEDURE getLocations()
 BEGIN
-    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = l.location_id) AS linked_interventions
+    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius, 
+        (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = l.location_id) AS linked_interventions
     FROM location l
     LEFT OUTER JOIN geofence ON geofence.geofence_id = l.geofence_id
     GROUP BY location_id;
