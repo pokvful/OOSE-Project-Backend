@@ -118,10 +118,7 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     private ArrayList<Integer> getListOfIdsFromString(final String input) {
-        if(input == null) {
-            return new ArrayList<>();
-        }
-        if(input.isEmpty()) {
+        if(input == null || input.isEmpty()) {
             return new ArrayList<>();
         }
         return Arrays
