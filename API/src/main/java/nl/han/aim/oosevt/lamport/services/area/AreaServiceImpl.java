@@ -18,37 +18,37 @@ public class AreaServiceImpl implements AreaService {
     private final AreaDAO areaDAO;
 
     @Autowired
-    public AreaServiceImpl(AreaDAO dataAccess) {
-        this.dataAccess = dataAccess;
+    public AreaServiceImpl(AreaDAO areaDAO) {
+        this.areaDAO = areaDAO;
     }
 
     @Override
     public void createArea(CreateAreaRequestDTO requestDTO) {
-        dataAccess.createArea(requestDTO.getName(), requestDTO.getLongitude(), requestDTO.getLatitude(),
+        areaDAO.createArea(requestDTO.getName(), requestDTO.getLongitude(), requestDTO.getLatitude(),
                 requestDTO.getRadius());
     }
 
     @Override
     public void updateArea(UpdateAreaRequestDTO requestDTO) {
-        if (dataAccess.getAreaById(requestDTO.getId()) == null) {
+        if (areaDAO.getAreaById(requestDTO.getId()) == null) {
             throw new NotFoundException();
         }
-        dataAccess.updateArea(requestDTO.getId(), requestDTO.getName(), requestDTO.getLongitude(),
+        areaDAO.updateArea(requestDTO.getId(), requestDTO.getName(), requestDTO.getLongitude(),
                 requestDTO.getLatitude(), requestDTO.getRadius());
     }
 
     @Override
     public void deleteArea(int id) {
-        if (dataAccess.getAreaById(id) == null) {
+        if (areaDAO.getAreaById(id) == null) {
             throw new NotFoundException();
         }
-        dataAccess.deleteArea(id);
+        areaDAO.deleteArea(id);
     }
 
     @Override
     public AreaResponseDTO getArea(int id) {
 
-        final Area area = this.dataAccess.getAreaById(id);
+        final Area area = this.areaDAO.getAreaById(id);
 
         if (area == null) {
             throw new NotFoundException();
@@ -60,7 +60,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<AreaResponseDTO> getAreas() {
 
-        return this.dataAccess.getAreas().stream().map((areaEntity) -> new AreaResponseDTO().fromData(areaEntity))
+        return this.areaDAO.getAreas().stream().map((areaEntity) -> new AreaResponseDTO().fromData(areaEntity))
                 .collect(Collectors.toList());
     }
 }
