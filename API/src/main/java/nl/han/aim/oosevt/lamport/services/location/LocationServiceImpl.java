@@ -18,13 +18,11 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
     private final LocationDAO locationDAO;
     private final AreaDAO areaDAO;
-    private final InterventionDAO interventionDAO;
 
     @Autowired
-    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO, InterventionDAO interventionDAO) {
+    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO) {
         this.locationDAO = locationDAO;
         this.areaDAO = areaDAO;
-        this.interventionDAO = interventionDAO;
     }
 
     private void assertValidArea(int areaId) {
