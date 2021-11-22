@@ -60,18 +60,21 @@ command_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 command VARCHAR(100) 
 );
 
-
 create table if not exists franchise (
 franchise_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 franchise_name VARCHAR(100)
 );
 
-create table if not exists intervention (
-intervention_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-franchise_id INT(6) UNSIGNED,
-FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id)
+create table if not exists intervention(
+intervention_id INT(6) UNSIGNED PRIMARY KEY
 );
 
+create table if not exists franchise_intervention (
+intervention_id INT(6) UNSIGNED,
+franchise_id INT(6) UNSIGNED,
+FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id),
+FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
+);
 
 create table if not exists command_in_intervention (
 command_id INT(6) UNSIGNED,
@@ -90,6 +93,13 @@ delay INT(6) UNSIGNED,
 FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id),
 FOREIGN KEY (area_id) REFERENCES area(area_id),
 FOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id)
+);
+
+create table if not exists location_intervention (
+intervention_id INT(6) UNSIGNED,
+location_id INT(6) UNSIGNED,
+FOREIGN KEY (location_id) REFERENCES location(location_id),
+FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
 );
 
 create table if not exists question (
@@ -175,5 +185,3 @@ question_id INT(6) UNSIGNED,
 FOREIGN KEY (action_id) REFERENCES action(action_id),
 FOREIGN KEY (question_id) REFERENCES question(question_id)
 );
-
-

@@ -73,5 +73,5 @@ public abstract class AreaRequestDTO extends RequestDTO {
         validateSpecificDto();
     }
 
-    protected abstract void validateSpecificDto();
+    protected void validateSpecificDto() {}
 }

@@ -4,22 +4,26 @@ import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 
+import java.util.List;
+
 public class LocationResponseDTO extends GeoFenceResponseDTO {
     private int locationId;
     private String name;
     private int delay;
 
     private AreaResponseDTO area;
+    private List<Integer> linkedInterventions;
 
     public LocationResponseDTO() {
     }
 
-    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, int delay) {
+    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, int delay, List<Integer> linkedInterventions) {
         super(longitude, latitude, radius);
         this.locationId = locationId;
         this.name = name;
         this.area = area;
         this.delay = delay;
+        this.linkedInterventions = linkedInterventions;
     }
 
     public int getLocationId() {
@@ -63,8 +67,16 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.delay = location.getDelay();
 
         this.area = new AreaResponseDTO().fromData(location.getArea());
-    
+        this.linkedInterventions = location.getLinkedInterventions();
         return this;
+    }
+
+    public List<Integer> getLinkedInterventions() {
+        return linkedInterventions;
+    }
+
+    public void setLinkedInterventions(List<Integer> linkedInterventions) {
+        this.linkedInterventions = linkedInterventions;
     }
 }
 
