@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class AreaServiceImpl implements AreaService {
 
-    private final AreaDAO dataAccess;
+    private final AreaDAO areaDAO;
 
     @Autowired
     public AreaServiceImpl(AreaDAO dataAccess) {
