@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.location;
 
+import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,29 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 
 @Component
 public class LocationDAOImpl implements LocationDAO {
+
+    private Location locationFromResultSet(ResultSet resultSet) {
+        try {
+            return new Location(
+                    resultSet.getInt("location_id"),
+                    resultSet.getString("location_name"),
+                    resultSet.getInt("delay"),
+                    resultSet.getDouble("longitude"),
+                    resultSet.getDouble("latitude"),
+                    resultSet.getInt("radius"),
+                    new Area(
+                            resultSet.getInt("area_id"),
+                            resultSet.getString("area_name"),
+                            resultSet.getDouble("area_longitude"),
+                            resultSet.getDouble("area_latitude"),
+                            resultSet.getInt("area_radius")
+                    ));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     @Override
     public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId) {
@@ -40,14 +64,7 @@ public class LocationDAOImpl implements LocationDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return new Location(
-                        resultSet.getInt("location_id"),
-                        resultSet.getString("location_name"),
-                        resultSet.getInt("delay"),
-                        resultSet.getDouble("longitude"),
-                        resultSet.getDouble("latitude"),
-                        resultSet.getInt("radius"),
-                        resultSet.getInt("area_id"));
+                return locationFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,14 +79,7 @@ public class LocationDAOImpl implements LocationDAO {
              ResultSet resultSet = statement.executeQuery()) {
             List<Location> foundLocations = new ArrayList<>();
             while (resultSet.next()) {
-                final Location foundLocation = new Location(
-                        resultSet.getInt("location_id"),
-                        resultSet.getString("location_name"),
-                        resultSet.getInt("delay"),
-                        resultSet.getDouble("longitude"),
-                        resultSet.getDouble("latitude"),
-                        resultSet.getInt("radius"),
-                        resultSet.getInt("area_id"));
+                final Location foundLocation = locationFromResultSet(resultSet);
                 foundLocations.add(foundLocation);
             }
             return foundLocations;

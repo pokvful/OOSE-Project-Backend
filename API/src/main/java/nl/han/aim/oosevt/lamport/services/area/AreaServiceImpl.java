@@ -24,12 +24,14 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public void createArea(CreateAreaRequestDTO requestDTO) {
+        requestDTO.validate();
         dataAccess.createArea(requestDTO.getName(), requestDTO.getLongitude(), requestDTO.getLatitude(),
                 requestDTO.getRadius());
     }
 
     @Override
     public void updateArea(UpdateAreaRequestDTO requestDTO) {
+        requestDTO.validate();
         if (dataAccess.getAreaById(requestDTO.getId()) == null) {
             throw new NotFoundException();
         }
