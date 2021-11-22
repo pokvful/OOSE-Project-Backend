@@ -81,7 +81,7 @@ END //
 CREATE PROCEDURE getLocationById(
     IN id INT
 ) BEGIN
-    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id area_id, area.area_name area_name, area_geofence.latitude area_latitude, area_geofence.longitude area_longitude, area_geofence.radius area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = id) AS linked_interventions
+    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id AS area_id, area.area_name AS area_name, area_geofence.latitude AS area_latitude, area_geofence.longitude AS area_longitude, area_geofence.radius AS area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
     FROM location
     LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
     LEFT OUTER JOIN area ON location.area_id = area.area_id
@@ -92,7 +92,7 @@ END //
 
 CREATE PROCEDURE getLocations()
 BEGIN
-    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id area_id, area.area_name area_name, area_geofence.latitude area_latitude, area_geofence.longitude area_longitude, area_geofence.radius area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
+    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id AS area_id, area.area_name AS area_name, area_geofence.latitude AS area_latitude, area_geofence.longitude AS area_longitude, area_geofence.radius AS area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
     FROM location
     LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
     LEFT OUTER JOIN area ON location.area_id = area.area_id
