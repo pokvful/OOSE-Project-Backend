@@ -24,25 +24,27 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public void createArea(CreateAreaRequestDTO requestDTO) {
-        areaDAO.createArea(requestDTO.getName(), requestDTO.getLongitude(), requestDTO.getLatitude(),
+        requestDTO.validate();
+        this.areaDAO.createArea(requestDTO.getName(), requestDTO.getLongitude(), requestDTO.getLatitude(),
                 requestDTO.getRadius());
     }
 
     @Override
     public void updateArea(UpdateAreaRequestDTO requestDTO) {
-        if (areaDAO.getAreaById(requestDTO.getId()) == null) {
+        requestDTO.validate();
+        if (this.areaDAO.getAreaById(requestDTO.getId()) == null) {
             throw new NotFoundException();
         }
-        areaDAO.updateArea(requestDTO.getId(), requestDTO.getName(), requestDTO.getLongitude(),
+        this.areaDAO.updateArea(requestDTO.getId(), requestDTO.getName(), requestDTO.getLongitude(),
                 requestDTO.getLatitude(), requestDTO.getRadius());
     }
 
     @Override
     public void deleteArea(int id) {
-        if (areaDAO.getAreaById(id) == null) {
+        if (this.areaDAO.getAreaById(id) == null) {
             throw new NotFoundException();
         }
-        areaDAO.deleteArea(id);
+        this.areaDAO.deleteArea(id);
     }
 
     @Override

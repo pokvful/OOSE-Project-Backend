@@ -81,20 +81,22 @@ END //
 CREATE PROCEDURE getLocationById(
     IN id INT
 ) BEGIN
-    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = id) AS linked_interventions
+    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id AS area_id, area.area_name AS area_name, area_geofence.latitude AS area_latitude, area_geofence.longitude AS area_longitude, area_geofence.radius AS area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
     FROM location
-    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id
+    LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
+    LEFT OUTER JOIN area ON location.area_id = area.area_id
+    LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
     WHERE location_id = id;
 END //
 
 
 CREATE PROCEDURE getLocations()
 BEGIN
-    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius, 
-        (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = l.location_id) AS linked_interventions
-    FROM location l
-    LEFT OUTER JOIN geofence ON geofence.geofence_id = l.geofence_id
-    GROUP BY location_id;
+    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id AS area_id, area.area_name AS area_name, area_geofence.latitude AS area_latitude, area_geofence.longitude AS area_longitude, area_geofence.radius AS area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
+    FROM location
+    LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
+    LEFT OUTER JOIN area ON location.area_id = area.area_id
+    LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id;
 END //
 
 CREATE PROCEDURE updateLocation(

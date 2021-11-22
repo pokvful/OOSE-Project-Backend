@@ -1,12 +1,12 @@
 package nl.han.aim.oosevt.lamport.data.dao.location;
 
+import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,10 +15,35 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class LocationDAOImpl implements LocationDAO {
 
+    private Location locationFromResultSet(ResultSet resultSet) {
+        try {
+            return new Location(
+                    resultSet.getInt("location_id"),
+                    resultSet.getString("location_name"),
+                    resultSet.getInt("delay"),
+                    resultSet.getDouble("longitude"),
+                    resultSet.getDouble("latitude"),
+                    resultSet.getInt("radius"),
+                    new Area(
+                            resultSet.getInt("area_id"),
+                            resultSet.getString("area_name"),
+                            resultSet.getDouble("area_longitude"),
+                            resultSet.getDouble("area_latitude"),
+                            resultSet.getInt("area_radius")
+                    ),
+                    getListOfIdsFromString(resultSet.getString("linked_interventions"))
+                );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     @Override
     public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?)")) {
+            PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?)")) {
             statement.setString(1, name);
             statement.setInt(2, delay);
             statement.setDouble(3, longitude);
@@ -44,15 +69,7 @@ public class LocationDAOImpl implements LocationDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return new Location(
-                        resultSet.getInt("location_id"),
-                        resultSet.getString("location_name"),
-                        resultSet.getInt("delay"),
-                        resultSet.getDouble("longitude"),
-                        resultSet.getDouble("latitude"),
-                        resultSet.getInt("radius"),
-                        resultSet.getInt("area_id"),
-                        getListOfIdsFromString(resultSet.getString("linked_interventions")));
+                return locationFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,15 +84,7 @@ public class LocationDAOImpl implements LocationDAO {
              ResultSet resultSet = statement.executeQuery()) {
             List<Location> foundLocations = new ArrayList<>();
             while (resultSet.next()) {
-                final Location foundLocation = new Location(
-                        resultSet.getInt("location_id"),
-                        resultSet.getString("location_name"),
-                        resultSet.getInt("delay"),
-                        resultSet.getDouble("longitude"),
-                        resultSet.getDouble("latitude"),
-                        resultSet.getInt("radius"),
-                        resultSet.getInt("area_id"),
-                        getListOfIdsFromString(resultSet.getString("linked_interventions")));
+                final Location foundLocation = locationFromResultSet(resultSet);
                 foundLocations.add(foundLocation);
             }
             return foundLocations;
