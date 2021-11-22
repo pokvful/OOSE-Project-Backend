@@ -1,7 +1,9 @@
 package nl.han.aim.oosevt.lamport.data.dao.location;
 
+import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -15,10 +17,14 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class LocationDAOImpl implements LocationDAO {
 
+    @Autowired
+    private InterventionDAO interventionDAO;
+
     private Location locationFromResultSet(ResultSet resultSet) {
         try {
+            int locationId = resultSet.getInt("location_id");
             return new Location(
-                    resultSet.getInt("location_id"),
+                    locationId,
                     resultSet.getString("location_name"),
                     resultSet.getInt("delay"),
                     resultSet.getDouble("longitude"),
@@ -31,7 +37,7 @@ public class LocationDAOImpl implements LocationDAO {
                             resultSet.getDouble("area_latitude"),
                             resultSet.getInt("area_radius")
                     ),
-                    getListOfIdsFromString(resultSet.getString("linked_interventions"))
+                    interventionDAO.getInterventionsByLocationId(locationId)
                 );
         } catch (SQLException e) {
             e.printStackTrace();

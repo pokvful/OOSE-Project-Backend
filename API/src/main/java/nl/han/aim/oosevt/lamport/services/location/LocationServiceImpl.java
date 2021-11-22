@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestD
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -17,14 +18,16 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
     private final LocationDAO locationDAO;
     private final AreaDAO areaDAO;
+    private final InterventionDAO interventionDAO;
 
     @Autowired
-    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO) {
+    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO, InterventionDAO interventionDAO) {
         this.locationDAO = locationDAO;
         this.areaDAO = areaDAO;
+        this.interventionDAO = interventionDAO;
     }
 
-    private void assertGeldigeArea(int areaId) {
+    private void assertValidArea(int areaId) {
         if (areaDAO.getAreaById(areaId) == null) {
             throw new NotFoundException();
         }
@@ -36,12 +39,13 @@ public class LocationServiceImpl implements LocationService {
         }
     }
 
+    @Override
     public void createLocation(CreateLocationRequestDTO location) {
         location.validate();
 
         int areaId = location.getAreaId();
 
-        assertGeldigeArea(areaId);
+        assertValidArea(areaId);
 
         locationDAO.createLocation(location.getName(), location.getDelay(), location.getLongitude(),
                 location.getLatitude(), location.getRadius(), areaId, location.getLinkedInterventions());
@@ -55,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
         int areaId = newData.getAreaId();
 
         assertGeldigeLocation(id);
-        assertGeldigeArea(areaId);
+        assertValidArea(areaId);
 
         locationDAO.updateLocation(newData.getLocationId(), newData.getName(), newData.getDelay(),
                 newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId, newData.getLinkedInterventions());

@@ -3,8 +3,10 @@ package nl.han.aim.oosevt.lamport.services.location;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -25,35 +27,68 @@ public class LocationServiceImplTest {
     private final double latitude = 51.32132431;
     private final int radius = 30;
     private final int areaId = 1;
-    private final List<Integer> linkedInterventions = new ArrayList<>();
+    private final String areaName = "Nijmegen";
+    private final double areaLongitude = 5.312312;
+    private final double areaLatitude = 40.432432;
+    private final int areaRadius = 4000;
 
-    private LocationServiceImpl sut;
+    private final int interventionIdA = 1;
+    private final String interventionNameA = "saladebar";
+    private final int interventionIdB = 2;
+    private final String interventionNameB = "hardlopen";
+    private final int interventionIdC = 3;
+    private final String interventionNameC = "kerken tellen";
+
     private LocationDAO locationDAOFixture;
     private AreaDAO areaDAOFixture;
+    private InterventionDAO interventionDAOFixture;
     private CreateLocationRequestDTO createLocationRequestDTO;
     private UpdateLocationRequestDTO updateLocationRequestDTO;
     private Location mockLocation;
     private Area mockArea;
+    private List<Intervention> linkedInterventions;
+    private Intervention interventionA;
+    private Intervention interventionB;
+    private Intervention interventionC;
+    private List<Integer> linkedInterventionIds;
+
+    private LocationServiceImpl sut;
 
     @BeforeEach
     public void setup() {
+        linkedInterventionIds = new ArrayList<>();
+        linkedInterventionIds.add(interventionIdA);
+        linkedInterventionIds.add(interventionIdB);
+        linkedInterventionIds.add(interventionIdC);
+
         // arrange create DTO
         createLocationRequestDTO = Mockito.spy(
-                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId, linkedInterventions)
+                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId, linkedInterventionIds)
         );
 
         updateLocationRequestDTO = Mockito.spy(
-                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, linkedInterventions)
+                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, linkedInterventionIds)
         );
+
+        interventionA = new Intervention(interventionIdA, interventionNameA);
+        interventionB = new Intervention(interventionIdB, interventionNameB);
+        interventionC = new Intervention(interventionIdC, interventionNameC);
+
+        linkedInterventions = new ArrayList<>();
+
+        linkedInterventions.add(interventionA);
+        linkedInterventions.add(interventionB);
+        linkedInterventions.add(interventionC);
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
         areaDAOFixture = Mockito.mock(AreaDAO.class);
+        interventionDAOFixture = Mockito.mock(InterventionDAO.class);
 
         mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions);
-        mockArea = new Area(1, "Test", 10D, 10D, 10);
+        mockArea = new Area(areaId, areaName, areaLongitude, areaLatitude, areaRadius);
 
         // instantiate SUT
-        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
+        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture, interventionDAOFixture);
     }
 
     @Test
@@ -96,7 +131,7 @@ public class LocationServiceImplTest {
                 latitude,
                 radius,
                 areaId,
-                linkedInterventions
+                linkedInterventionIds
         );
     }
 
@@ -148,7 +183,7 @@ public class LocationServiceImplTest {
                 latitude,
                 radius,
                 areaId,
-                linkedInterventions
+                linkedInterventionIds
         );
     }
 

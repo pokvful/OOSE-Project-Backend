@@ -1,10 +1,12 @@
 package nl.han.aim.oosevt.lamport.controllers.location.dto;
 
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LocationResponseDTO extends GeoFenceResponseDTO {
     private int locationId;
@@ -12,12 +14,12 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
     private int delay;
 
     private AreaResponseDTO area;
-    private List<Integer> linkedInterventions;
+    private List<InterventionResponseDTO> linkedInterventions;
 
     public LocationResponseDTO() {
     }
 
-    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, int delay, List<Integer> linkedInterventions) {
+    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, int delay, List<InterventionResponseDTO> linkedInterventions) {
         super(longitude, latitude, radius);
         this.locationId = locationId;
         this.name = name;
@@ -67,15 +69,20 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.delay = location.getDelay();
 
         this.area = new AreaResponseDTO().fromData(location.getArea());
-        this.linkedInterventions = location.getLinkedInterventions();
+        this.linkedInterventions = location
+                .getLinkedInterventions()
+                .stream()
+                .map(intervention -> new InterventionResponseDTO().fromData(intervention))
+                .collect(Collectors.toList());
+
         return this;
     }
 
-    public List<Integer> getLinkedInterventions() {
+    public List<InterventionResponseDTO> getLinkedInterventions() {
         return linkedInterventions;
     }
 
-    public void setLinkedInterventions(List<Integer> linkedInterventions) {
+    public void setLinkedInterventions(List<InterventionResponseDTO> linkedInterventions) {
         this.linkedInterventions = linkedInterventions;
     }
 }

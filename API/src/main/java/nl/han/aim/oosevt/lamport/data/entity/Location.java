@@ -7,10 +7,10 @@ public class Location extends GeoFence {
     private final int id;
     private final String name;
     private final int delay;
-    private final List<Integer> linkedInterventions;
+    private final List<Intervention> linkedInterventions;
     private final Area area;
 
-    public Location(int id, String name, int delay, double longitude, double latitude, int radius, Area area, List<Integer> linkedInterventions) {
+    public Location(int id, String name, int delay, double longitude, double latitude, int radius, Area area, List<Intervention> linkedInterventions) {
         super(longitude, latitude, radius);
         this.id = id;
         this.name = name;
@@ -39,7 +39,8 @@ public class Location extends GeoFence {
         return area;
     }
 
-    public List<Integer> getLinkedInterventions() {
+    public List<Intervention> getLinkedInterventions() {
         return linkedInterventions;
     }
+
 }

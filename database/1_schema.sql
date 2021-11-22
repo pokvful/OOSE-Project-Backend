@@ -66,7 +66,8 @@ franchise_name VARCHAR(100)
 );
 
 create table if not exists intervention(
-intervention_id INT(6) UNSIGNED PRIMARY KEY
+intervention_id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+intervention_name VARCHAR(100)
 );
 
 create table if not exists franchise_intervention (
