@@ -111,5 +111,5 @@ public abstract class LocationRequestDTO extends RequestDTO {
         validateSpecificDto();
     }
 
-    protected abstract void validateSpecificDto();
+    protected void validateSpecificDto() {}
 }
