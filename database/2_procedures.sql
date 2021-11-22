@@ -89,6 +89,15 @@ CREATE PROCEDURE getLocationById(
     WHERE location_id = id;
 END //
 
+CREATE PROCEDURE getInterventionsByLocationId(
+    IN param_location_id INT
+)
+BEGIN
+    SELECT intervention.intervention_id AS intervention_id, intervention.intervention_name AS intervention_name
+    FROM location_intervention
+    LEFT OUTER JOIN intervention ON location_intervention.intervention_id = intervention.intervention_id
+    WHERE location_intervention.location_id = param_location_id;
+END //
 
 CREATE PROCEDURE getLocations()
 BEGIN

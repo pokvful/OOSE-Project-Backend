@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestD
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
     private final LocationDAO locationDAO;
     private final AreaDAO areaDAO;
+    private final InterventionDAO interventionDAO;
 
     @Autowired
-    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO) {
+    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO, InterventionDAO interventionDAO) {
         this.locationDAO = locationDAO;
         this.areaDAO = areaDAO;
+        this.interventionDAO = interventionDAO;
     }
 
     private void assertGeldigeArea(int areaId) {
@@ -36,6 +39,7 @@ public class LocationServiceImpl implements LocationService {
         }
     }
 
+    @Override
     public void createLocation(CreateLocationRequestDTO location) {
         location.validate();
 
