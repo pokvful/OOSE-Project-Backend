@@ -1,8 +1,8 @@
 package nl.han.aim.oosevt.lamport.data.entity;
 
 public class Intervention {
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public Intervention(int id, String name) {
         this.id = id;

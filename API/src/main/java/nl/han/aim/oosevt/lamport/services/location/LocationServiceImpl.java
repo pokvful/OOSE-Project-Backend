@@ -27,7 +27,7 @@ public class LocationServiceImpl implements LocationService {
         this.interventionDAO = interventionDAO;
     }
 
-    private void assertGeldigeArea(int areaId) {
+    private void assertValidArea(int areaId) {
         if (areaDAO.getAreaById(areaId) == null) {
             throw new NotFoundException();
         }
@@ -45,7 +45,7 @@ public class LocationServiceImpl implements LocationService {
 
         int areaId = location.getAreaId();
 
-        assertGeldigeArea(areaId);
+        assertValidArea(areaId);
 
         locationDAO.createLocation(location.getName(), location.getDelay(), location.getLongitude(),
                 location.getLatitude(), location.getRadius(), areaId, location.getLinkedInterventions());
@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
         int areaId = newData.getAreaId();
 
         assertGeldigeLocation(id);
-        assertGeldigeArea(areaId);
+        assertValidArea(areaId);
 
         locationDAO.updateLocation(newData.getLocationId(), newData.getName(), newData.getDelay(),
                 newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId, newData.getLinkedInterventions());

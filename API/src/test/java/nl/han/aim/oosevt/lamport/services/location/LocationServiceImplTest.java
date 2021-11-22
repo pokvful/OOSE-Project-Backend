@@ -32,14 +32,13 @@ public class LocationServiceImplTest {
     private final double areaLatitude = 40.432432;
     private final int areaRadius = 4000;
 
-    private final int interventionida = 1;
-    private final String interventionnamea = "saladebar";
-    private final int interventionidb = 2;
-    private final String interventionnameb = "hardlopen";
-    private final int interventionidc = 3;
-    private final String interventionnamec = "kerken tellen";
+    private final int interventionIdA = 1;
+    private final String interventionNameA = "saladebar";
+    private final int interventionIdB = 2;
+    private final String interventionNameB = "hardlopen";
+    private final int interventionIdC = 3;
+    private final String interventionNameC = "kerken tellen";
 
-    private LocationServiceImpl sut;
     private LocationDAO locationDAOFixture;
     private AreaDAO areaDAOFixture;
     private InterventionDAO interventionDAOFixture;
@@ -48,18 +47,19 @@ public class LocationServiceImplTest {
     private Location mockLocation;
     private Area mockArea;
     private List<Intervention> linkedInterventions;
-    private Intervention interventiona;
-    private Intervention interventionb;
-    private Intervention interventionc;
+    private Intervention interventionA;
+    private Intervention interventionB;
+    private Intervention interventionC;
     private List<Integer> linkedInterventionIds;
 
+    private LocationServiceImpl sut;
 
     @BeforeEach
     public void setup() {
         linkedInterventionIds = new ArrayList<>();
-        linkedInterventionIds.add(interventionida);
-        linkedInterventionIds.add(interventionidb);
-        linkedInterventionIds.add(interventionidc);
+        linkedInterventionIds.add(interventionIdA);
+        linkedInterventionIds.add(interventionIdB);
+        linkedInterventionIds.add(interventionIdC);
 
         // arrange create DTO
         createLocationRequestDTO = Mockito.spy(
@@ -70,15 +70,15 @@ public class LocationServiceImplTest {
                 new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, linkedInterventionIds)
         );
 
-        interventiona = new Intervention(interventionida, interventionnamea);
-        interventionb = new Intervention(interventionidb, interventionnameb);
-        interventionc = new Intervention(interventionidc, interventionnamec);
+        interventionA = new Intervention(interventionIdA, interventionNameA);
+        interventionB = new Intervention(interventionIdB, interventionNameB);
+        interventionC = new Intervention(interventionIdC, interventionNameC);
 
         linkedInterventions = new ArrayList<>();
 
-        linkedInterventions.add(interventiona);
-        linkedInterventions.add(interventionb);
-        linkedInterventions.add(interventionc);
+        linkedInterventions.add(interventionA);
+        linkedInterventions.add(interventionB);
+        linkedInterventions.add(interventionC);
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
         areaDAOFixture = Mockito.mock(AreaDAO.class);
