@@ -44,7 +44,7 @@ public class LocationServiceImpl implements LocationService {
         assertGeldigeArea(areaId);
 
         locationDAO.createLocation(location.getName(), location.getDelay(), location.getLongitude(),
-                location.getLatitude(), location.getRadius(), areaId);
+                location.getLatitude(), location.getRadius(), areaId, location.getLinkedInterventions());
     }
 
     @Override
@@ -58,7 +58,7 @@ public class LocationServiceImpl implements LocationService {
         assertGeldigeArea(areaId);
 
         locationDAO.updateLocation(newData.getLocationId(), newData.getName(), newData.getDelay(),
-                newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId);
+                newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId, newData.getLinkedInterventions());
     }
 
     @Override

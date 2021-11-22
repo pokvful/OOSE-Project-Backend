@@ -17,13 +17,13 @@ CREATE PROCEDURE createArea(
     IN param_latitude DECIMAL(9,6),
     IN param_radius INT)
 BEGIN
-    DECLARE var_geofence_id INT DEFAULT 0;
+    DECLARE param_geofence_id INT DEFAULT 0;
 
     INSERT INTO geofence(longitude, latitude, radius) VALUES (param_longitude, param_latitude, param_radius);
 
-    SET var_geofence_id = LAST_INSERT_ID();
+    SET param_geofence_id = LAST_INSERT_ID();
 	
-    INSERT INTO area (geofence_id, area_name) VALUES (var_geofence_id, param_name);
+    INSERT INTO area (geofence_id, area_name) VALUES (param_geofence_id, param_name);
 END //
 
 CREATE PROCEDURE updateArea(
@@ -46,28 +46,42 @@ BEGIN
 END //
 
 CREATE PROCEDURE createLocation(
-    IN var_name VARCHAR(255),
-    IN var_delay INT,
-    IN var_longitude DECIMAL(9,6),
-    IN var_latitude DECIMAL(9, 6),
-    IN var_radius INT,
-    IN var_areaId INT
-) BEGIN
-    DECLARE var_geofence_id INT DEFAULT 0;
+    IN param_name VARCHAR(255),
+    IN param_delay INT,
+    IN param_longitude DECIMAL(9,6),
+    IN param_latitude DECIMAL(9, 6),
+    IN param_radius INT,
+    IN param_areaId INT,
+    IN param_intervention_ids VARCHAR(500)) 
+BEGIN
+    DECLARE param_geofence_id INT DEFAULT 0;
+    DECLARE last_insert_id INT DEFAULT 0;
 
     INSERT INTO geofence (longitude, latitude, radius)
-    VALUES (var_longitude, var_latitude, var_radius);
+    VALUES (param_longitude, param_latitude, param_radius);
 
-    SET var_geofence_id = LAST_INSERT_ID();
+    SET param_geofence_id = LAST_INSERT_ID();
 
     INSERT INTO location (area_id, geofence_id, location_name, delay)
-    VALUES (var_areaId, var_geofence_id, var_name, var_delay);
+    VALUES (param_areaId, param_geofence_id, param_name, param_delay);
+
+    SET last_insert_id = LAST_INSERT_ID();
+
+    IF param_intervention_ids != "" THEN
+        CREATE TEMPORARY TABLE converted_values (id int(11));
+        SET @sqlvar = CONCAT("INSERT INTO converted_values (id) VALUES ('", REPLACE(param_intervention_ids, ",", "'),('"),"');");
+        PREPARE insert_statement FROM @sqlvar;
+        EXECUTE insert_statement;
+
+        INSERT INTO location_intervention (location_id, intervention_id) SELECT last_insert_id, id FROM converted_values;
+        DROP TEMPORARY TABLE converted_values;
+    END IF;
 END //
 
 CREATE PROCEDURE getLocationById(
     IN id INT
 ) BEGIN
-    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
+    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = id) AS linked_interventions
     FROM location
     LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id
     WHERE location_id = id;
@@ -76,32 +90,47 @@ END //
 
 CREATE PROCEDURE getLocations()
 BEGIN
-    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius
-    FROM location
-    LEFT OUTER JOIN geofence ON geofence.geofence_id = location.geofence_id;
+    SELECT location_id, area_id, location_name, delay, longitude, latitude, radius, 
+        (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = l.location_id) AS linked_interventions
+    FROM location l
+    LEFT OUTER JOIN geofence ON geofence.geofence_id = l.geofence_id
+    GROUP BY location_id;
 END //
 
 CREATE PROCEDURE updateLocation(
-    in id INT,
-    IN name VARCHAR(255),
-    IN delay INT,
-    IN longitude DECIMAL(9,6),
-    IN latitude DECIMAL(9, 6),
-    IN radius INT,
-    IN areaId INT
+    in param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_delay INT,
+    IN param_longitude DECIMAL(9,6),
+    IN param_latitude DECIMAL(9, 6),
+    IN param_radius INT,
+    IN param_areaId INT,
+    IN param_intervention_ids VARCHAR(500)
 ) BEGIN
 
     UPDATE geofence
-    SET longitude=longitude, latitude=latitude, radius=radius
+    SET longitude=param_longitude, latitude=param_latitude, radius=param_radius
     WHERE geofence_id = (
         SELECT geofence_id
         FROM location
-        WHERE location_id = id
+        WHERE location_id = param_id
     );
 
     UPDATE location
-    SET area_id=areaId, location_name=name, delay = delay 
-    WHERE location_id = id;
+    SET area_id=param_areaId, location_name=param_name, delay = param_delay 
+    WHERE location_id = param_id;
+
+    DELETE FROM location_intervention WHERE location_id = param_id;
+
+    IF param_intervention_ids != "" THEN
+        CREATE TEMPORARY TABLE converted_values (id int(11));
+        SET @sqlvar = CONCAT("INSERT INTO converted_values (id) VALUES ('", REPLACE(param_intervention_ids, ",", "'),('"),"');");
+        PREPARE insert_statement FROM @sqlvar;
+        EXECUTE insert_statement;
+
+        INSERT INTO location_intervention (location_id, intervention_id) SELECT param_id, id FROM converted_values;
+        DROP TEMPORARY TABLE converted_values;
+    END IF;
 END //
 
 CREATE PROCEDURE deleteLocation(

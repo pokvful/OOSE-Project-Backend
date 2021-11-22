@@ -2,6 +2,8 @@ package nl.han.aim.oosevt.lamport.controllers.location.dto;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
+import java.util.List;
+
 public abstract class LocationRequestDTO extends RequestDTO {
     private String name;
     private int delay;
@@ -9,17 +11,19 @@ public abstract class LocationRequestDTO extends RequestDTO {
     private double latitude;
     private int radius;
     private int areaId;
+    private List<Integer> linkedInterventions;
 
     public LocationRequestDTO() {
     }
 
-    public LocationRequestDTO(String name, int delay, double longitude, double latitude, int radius, int areaId) {
+    public LocationRequestDTO(String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
         this.name = name;
         this.delay = delay;
         this.longitude = longitude;
         this.latitude = latitude;
         this.radius = radius;
         this.areaId = areaId;
+        this.linkedInterventions = linkedInterventions;
     }
 
     public String getName() {
@@ -70,6 +74,14 @@ public abstract class LocationRequestDTO extends RequestDTO {
         this.areaId = areaId;
     }
 
+    public List<Integer> getLinkedInterventions() {
+        return linkedInterventions;
+    }
+
+    public void setLinkedInterventions(List<Integer> linkedInterventions) {
+        this.linkedInterventions = linkedInterventions;
+    }
+
     @Override
     protected void validateDTO() {
         if (name.isEmpty()) {
@@ -99,5 +111,5 @@ public abstract class LocationRequestDTO extends RequestDTO {
         validateSpecificDto();
     }
 
-    protected abstract void validateSpecificDto();
+    protected void validateSpecificDto() {}
 }

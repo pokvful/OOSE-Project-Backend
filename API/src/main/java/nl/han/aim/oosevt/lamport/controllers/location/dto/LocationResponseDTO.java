@@ -3,17 +3,21 @@ package nl.han.aim.oosevt.lamport.controllers.location.dto;
 import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 
+import java.util.List;
+
 public class LocationResponseDTO extends GeoFenceResponseDTO {
     private int locationId;
     private String name;
+    private List<Integer> linkedInterventions;
 
     public LocationResponseDTO() {
     }
 
-    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius) {
+    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, List<Integer> linkedInterventions) {
         super(longitude, latitude, radius);
         this.locationId = locationId;
         this.name = name;
+        this.linkedInterventions = linkedInterventions;
     }
 
     public int getLocationId() {
@@ -38,8 +42,17 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.radius = location.getRadius();
         this.locationId = location.getId();
         this.name = location.getName();
+        this.linkedInterventions = location.getLinkedInterventions();
     
         return this;
+    }
+
+    public List<Integer> getLinkedInterventions() {
+        return linkedInterventions;
+    }
+
+    public void setLinkedInterventions(List<Integer> linkedInterventions) {
+        this.linkedInterventions = linkedInterventions;
     }
 }
 

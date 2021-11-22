@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -24,6 +25,7 @@ public class LocationServiceImplTest {
     private final double latitude = 51.32132431;
     private final int radius = 30;
     private final int areaId = 1;
+    private final List<Integer> linkedInterventions = new ArrayList<>();
 
     private LocationServiceImpl sut;
     private LocationDAO locationDAOFixture;
@@ -37,17 +39,17 @@ public class LocationServiceImplTest {
     public void setup() {
         // arrange create DTO
         createLocationRequestDTO = Mockito.spy(
-                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId)
+                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId, linkedInterventions)
         );
 
         updateLocationRequestDTO = Mockito.spy(
-                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId)
+                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, linkedInterventions)
         );
 
         locationDAOFixture = Mockito.mock(LocationDAO.class);
         areaDAOFixture = Mockito.mock(AreaDAO.class);
 
-        mockLocation = new Location(id, name, delay, longitude, latitude, radius, areaId);
+        mockLocation = new Location(id, name, delay, longitude, latitude, radius, areaId, new ArrayList<>());
         mockArea = new Area(1, "Test", 10D, 10D, 10);
 
         // instantiate SUT
@@ -93,7 +95,8 @@ public class LocationServiceImplTest {
                 longitude,
                 latitude,
                 radius,
-                areaId
+                areaId,
+                linkedInterventions
         );
     }
 
@@ -144,14 +147,15 @@ public class LocationServiceImplTest {
                 longitude,
                 latitude,
                 radius,
-                areaId
+                areaId,
+                linkedInterventions
         );
     }
 
     @Test
     public void testDeleteLocation() {
         // Arrange
-        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location(id, name, delay, longitude, latitude, radius, areaId));
+        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location(id, name, delay, longitude, latitude, radius, areaId, linkedInterventions));
         Mockito.doNothing().when(this.locationDAOFixture).deleteLocation(Mockito.anyInt());
 
         // Act
@@ -199,9 +203,9 @@ public class LocationServiceImplTest {
         int expected = 3;
 
         Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>() {{
-            add(new Location(id, name, delay, longitude, latitude, radius, areaId));
-            add(new Location(id, name, delay, longitude, latitude, radius, areaId));
-            add(new Location(id, name, delay, longitude, latitude, radius, areaId));
+            add(new Location(id, name, delay, longitude, latitude, radius, areaId, linkedInterventions));
+            add(new Location(id, name, delay, longitude, latitude, radius, areaId, linkedInterventions));
+            add(new Location(id, name, delay, longitude, latitude, radius, areaId, linkedInterventions));
         }});
 
         //Act

@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class CreateDTOValidationTest {
@@ -15,14 +16,14 @@ public class CreateDTOValidationTest {
     @ParameterizedTest()
     @MethodSource
     public void invalidDTOsThrowException(String name, int delay, double longitude, double latitude, int radius, int areaId) {
-        final CreateLocationRequestDTO createLocationRequestDTO = new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId);
+        final CreateLocationRequestDTO createLocationRequestDTO = new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId, new ArrayList<>());
 
         Assertions.assertThrows(InvalidDTOException.class, createLocationRequestDTO::validate);
     }
 
     @Test
     public void validDTOPasses() {
-        final CreateLocationRequestDTO createLocationRequestDTO = new CreateLocationRequestDTO("Subway", 1, 1,1, 1, 1);
+        final CreateLocationRequestDTO createLocationRequestDTO = new CreateLocationRequestDTO("Subway", 1, 1,1, 1, 1, new ArrayList<>());
 
         Assertions.assertDoesNotThrow(createLocationRequestDTO::validate);
     }

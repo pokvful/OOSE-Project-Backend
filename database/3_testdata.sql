@@ -5,10 +5,15 @@ INSERT INTO token (token, user_id) VALUES ("123", 1);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.8425, 5.85278, 600);
 INSERT INTO area(area_name, geofence_id) VALUES ("Nijmegen", 1);
 INSERT INTO franchise(franchise_name) VALUES ("McDonalds");
-INSERT INTO intervention(intervention_id, franchise_id) VALUES (1, 1);
+INSERT INTO intervention(intervention_id) VALUES (1);
+INSERT INTO intervention(intervention_id) VALUES (2);
+INSERT INTO intervention(intervention_id) VALUES (3);
+INSERT INTO intervention(intervention_id) VALUES (4);
+INSERT INTO franchise_intervention(intervention_id, franchise_id) VALUES (1, 1);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (1, "Mcdonalds Molenstraat", 1, 1);
 INSERT INTO command(command) VALUES ("Koop Big Mac");
 INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (1,1);
+INSERT INTO location_intervention(location_id, intervention_id) VALUES (1,1);
 INSERT INTO question (type, question_text, question) VALUES ("question", "Is de kerk groot?", "Is de kerk groot?");
 INSERT INTO answer (answer, question_id) VALUES ("Ja", 1);
 INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (1, 1);
@@ -20,8 +25,8 @@ INSERT INTO geofence (latitude, longitude, radius) VALUES(51.9691868, 5.6653948,
 INSERT INTO area(area_name, geofence_id) VALUES ("Wageningen", 2);
 INSERT INTO franchise(franchise_name) VALUES ("Gaia_building (office)");
 INSERT INTO franchise(franchise_name) VALUES ("Subway");
-INSERT INTO intervention(franchise_id) VALUES (2);
-INSERT INTO intervention(franchise_id) VALUES (3);
+INSERT INTO franchise_intervention(franchise_id) VALUES (2);
+INSERT INTO franchise_intervention(franchise_id) VALUES (3);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.987491838000039, 5.666409706000024, 100);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.983383490000051, 5.664095127000053, 100);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (2, "Gaia_building", 2, 3);
@@ -36,7 +41,7 @@ INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (3,3);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.092876, 5.104480, 3500);
 INSERT INTO area(area_name, geofence_id) VALUES ("Utrecht", 5);
 INSERT INTO franchise(franchise_name) VALUES ("HP2 Kantoor");
-INSERT INTO intervention(franchise_id) VALUES (4);
+INSERT INTO franchise_intervention(franchise_id) VALUES (4);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0672984, 5.1088383, 100);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway Utrecht", 3, 6);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0709499, 5.1100019, 100);
@@ -48,7 +53,7 @@ INSERT INTO users (username, password) VALUES ("wur", "password");
 
 INSERT INTO answers (answer_id, answer) values (1, "Is de kerk groot?");
 
-CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3);
+CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, "");
 
 
 -- SELECT * FROM answer;

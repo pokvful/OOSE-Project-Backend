@@ -8,9 +8,4 @@ public class CreateAreaRequestDTO extends AreaRequestDTO {
     public CreateAreaRequestDTO(String name, double longitude, double latitude, int radius) {
         super(name, longitude, latitude, radius);
     }
-
-    @Override
-    protected void validateSpecificDto() {
-
-    }
 }
