@@ -90,17 +90,14 @@ public abstract class LocationRequestDTO extends RequestDTO {
         if (delay == 0) {
             addError("delay", "Delay mag niet leeg zijn!");
         }
-        if (latitude < -90 || latitude > 90) {
+        if(longitude < -180 || longitude > 180) {
             addError("longitude", "Dit is geen geldige lengtegraad");
         }
-        if (longitude == 0) {
-            addError("longitude", "Lengtegraad mag niet leeg zijn!");
-        }
-        if (longitude < -180 || longitude > 180) {
-            addError("longitude", "Dit is geen geldige breedtegraad");
-        }
-        if (latitude == 0) {
+        if(latitude == 0) {
             addError("latitude", "Breedtegraad mag niet leeg zijn!");
+        }
+        if(latitude < -90 || latitude > 90) {
+            addError("latitude", "Dit is geen geldige breedtegraad");
         }
         if (radius <= 0) {
             addError("radius", "Straal mag niet kleiner zijn dan 0");
