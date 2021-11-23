@@ -49,7 +49,7 @@ public class LocationDAOImpl implements LocationDAO {
     @Override
     public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-            PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?)")) {
+            PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?, ?)")) {
             statement.setString(1, name);
             statement.setInt(2, delay);
             statement.setDouble(3, longitude);
