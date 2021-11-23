@@ -97,7 +97,7 @@ public abstract class LocationRequestDTO extends RequestDTO {
             addError("latitude", "Breedtegraad mag niet leeg zijn!");
         }
         if(latitude < -90 || latitude > 90) {
-            addError("latitude", "Dit is geen geldige Breedtegraad");
+            addError("latitude", "Dit is geen geldige breedtegraad");
         }
         if (radius <= 0) {
             addError("radius", "Straal mag niet kleiner zijn dan 0");
