@@ -26,13 +26,10 @@ public class InterventionController {
     private List<InterventionResponseDTO> getMockInterventions() {
         final ArrayList<InterventionResponseDTO> interventionResponseDTOS = new ArrayList<>();
 
-        interventionResponseDTOS.add(new InterventionResponseDTO(1, "Test1"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(2, "Test2"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(3, "Test3"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(4, "Test4"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(5, "Test5"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(6, "Test6"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(7, "Test7"));
+        interventionResponseDTOS.add(new InterventionResponseDTO(1, "Saladebar"));
+        interventionResponseDTOS.add(new InterventionResponseDTO(2, "Hardlopen"));
+        interventionResponseDTOS.add(new InterventionResponseDTO(3, "Opdrukken"));
+        interventionResponseDTOS.add(new InterventionResponseDTO(4, "Kerk bekijken"));
 
         return interventionResponseDTOS;
     }
