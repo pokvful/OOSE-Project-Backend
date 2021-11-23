@@ -40,6 +40,7 @@ END //
 CREATE PROCEDURE deleteArea(
     IN param_id INT)
 BEGIN
+    DELETE FROM location_intervention WHERE location_id IN (SELECT location_id FROM location WHERE area_id = param_id);
     DELETE FROM location WHERE area_id = param_id;
     DELETE FROM area WHERE area_id = param_id;
 	DELETE FROM geofence WHERE geofence_id = (SELECT geofence_id FROM area WHERE area_id = param_id);
