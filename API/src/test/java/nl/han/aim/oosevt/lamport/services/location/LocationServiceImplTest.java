@@ -88,7 +88,7 @@ public class LocationServiceImplTest {
         mockArea = new Area(areaId, areaName, areaLongitude, areaLatitude, areaRadius);
 
         // instantiate SUT
-        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture, interventionDAOFixture);
+        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
     }
 
     @Test
