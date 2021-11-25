@@ -90,6 +90,9 @@ public abstract class LocationRequestDTO extends RequestDTO {
         if (delay == 0) {
             addError("delay", "Delay mag niet leeg zijn!");
         }
+        if(longitude == 0) {
+            addError("longitude", "Lengtegraad mag niet leeg zijn!");
+        }
         if(longitude < -180 || longitude > 180) {
             addError("longitude", "Dit is geen geldige lengtegraad");
         }

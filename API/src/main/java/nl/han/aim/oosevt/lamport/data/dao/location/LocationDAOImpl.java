@@ -72,10 +72,10 @@ public class LocationDAOImpl implements LocationDAO {
              PreparedStatement statement = connection.prepareStatement("CALL getLocationById(?)")) {
             statement.setInt(1, locationId);
 
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return locationFromResultSet(resultSet);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return locationFromResultSet(resultSet);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

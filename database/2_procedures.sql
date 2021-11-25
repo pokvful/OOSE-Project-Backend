@@ -151,4 +151,18 @@ CREATE PROCEDURE deleteLocation(
     DELETE FROM location WHERE location_id = param_id;
 	DELETE FROM geofence WHERE geofence_id = (SELECT geofence_id FROM location WHERE location_id = param_id);
 END //
+
+CREATE PROCEDURE getFranchiseById(
+    IN id INT
+) BEGIN
+    SELECT franchise_id, franchise_name
+    FROM franchise
+    WHERE franchise_id = id;
+END //
+
+CREATE PROCEDURE getFranchises()
+BEGIN
+    SELECT franchise_id, franchise_name
+    FROM franchise;
+END //
 DELIMITER ;
