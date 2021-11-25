@@ -20,6 +20,7 @@ public class FranchiseServiceImpl implements FranchiseService {
     public FranchiseServiceImpl(FranchiseDAO franchiseDAO) {
         this.franchiseDAO = franchiseDAO;
     }
+
     @Override
     public void createFranchise(CreateFranchiseRequestDTO franchise) {
 

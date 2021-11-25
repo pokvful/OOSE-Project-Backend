@@ -30,7 +30,7 @@ public class LocationServiceImpl implements LocationService {
         }
     }
 
-    private void assertGeldigeLocation(int locationId) {
+    private void assertValidLocation(int locationId) {
         if (locationDAO.getLocationById(locationId) == null) {
             throw new NotFoundException();
         }
@@ -55,7 +55,7 @@ public class LocationServiceImpl implements LocationService {
         int id = newData.getId();
         int areaId = newData.getAreaId();
 
-        assertGeldigeLocation(id);
+        assertValidLocation(id);
         assertValidArea(areaId);
 
         locationDAO.updateLocation(newData.getId(), newData.getName(), newData.getDelay(),
