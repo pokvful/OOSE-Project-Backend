@@ -118,7 +118,6 @@ public class LocationServiceImplTest {
     public void testCreateLocationCallsDB() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
-        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
 
         // Act
         sut.createLocation(createLocationRequestDTO);

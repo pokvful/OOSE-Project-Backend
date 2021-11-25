@@ -4,7 +4,6 @@ import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestD
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
-import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -53,13 +52,13 @@ public class LocationServiceImpl implements LocationService {
     public void updateLocation(UpdateLocationRequestDTO newData) {
         newData.validate();
 
-        int id = newData.getLocationId();
+        int id = newData.getId();
         int areaId = newData.getAreaId();
 
         assertGeldigeLocation(id);
         assertValidArea(areaId);
 
-        locationDAO.updateLocation(newData.getLocationId(), newData.getName(), newData.getDelay(),
+        locationDAO.updateLocation(newData.getId(), newData.getName(), newData.getDelay(),
                 newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId, newData.getLinkedInterventions());
     }
 

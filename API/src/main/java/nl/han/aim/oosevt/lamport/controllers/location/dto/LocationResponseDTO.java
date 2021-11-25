@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LocationResponseDTO extends GeoFenceResponseDTO {
-    private int locationId;
+    private int id;
     private String name;
     private int delay;
 
@@ -21,19 +21,19 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
 
     public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, int delay, List<InterventionResponseDTO> linkedInterventions) {
         super(longitude, latitude, radius);
-        this.locationId = locationId;
+        this.id = locationId;
         this.name = name;
         this.area = area;
         this.delay = delay;
         this.linkedInterventions = linkedInterventions;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public int getId() {
+        return id;
     }
 
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -64,7 +64,7 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.longitude = location.getLongitude();
         this.latitude = location.getLatitude();
         this.radius = location.getRadius();
-        this.locationId = location.getId();
+        this.id = location.getId();
         this.name = location.getName();
         this.delay = location.getDelay();
 
