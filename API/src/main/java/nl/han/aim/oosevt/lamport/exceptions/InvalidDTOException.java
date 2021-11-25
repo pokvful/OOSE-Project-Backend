@@ -14,11 +14,7 @@ public class InvalidDTOException extends RuntimeException {
             errors.put(key, currentErrors);
             return;
         }
-        errors.put(key, new ArrayList<>() {
-            {
-                add(value);
-            }
-        });
+        errors.put(key, new ArrayList<>(List.of(value)));
     }
 
     public HashMap<String, List<String>> getErrors() {
