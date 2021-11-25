@@ -33,7 +33,7 @@ public class FranchiseController {
     @GetMapping("{id}")
     public ResponseEntity<FranchiseResponseDTO> getFranchise(@PathVariable("id") int id) {
         return new ResponseEntity<>(
-                franchiseService.getFranchise(id),
+                franchiseService.getFranchiseById(id),
                 HttpStatus.OK
         );
     }

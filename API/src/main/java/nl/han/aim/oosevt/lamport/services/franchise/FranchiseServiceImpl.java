@@ -1,6 +1,8 @@
 package nl.han.aim.oosevt.lamport.services.franchise;
 
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
@@ -19,12 +21,12 @@ public class FranchiseServiceImpl implements FranchiseService {
         this.franchiseDAO = franchiseDAO;
     }
     @Override
-    public void createFranchise(CreateLocationRequestDTO location) {
+    public void createFranchise(CreateFranchiseRequestDTO franchise) {
 
     }
 
     @Override
-    public void updateFranchise(UpdateLocationRequestDTO newData) {
+    public void updateFranchise(UpdateFranchiseRequestDTO newData) {
 
     }
 
@@ -34,7 +36,7 @@ public class FranchiseServiceImpl implements FranchiseService {
     }
 
     @Override
-    public FranchiseResponseDTO getFranchise(int id) {
+    public FranchiseResponseDTO getFranchiseById(int id) {
         return new FranchiseResponseDTO().fromData(franchiseDAO.getFranchiseById(id));
     }
 
