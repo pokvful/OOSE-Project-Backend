@@ -31,14 +31,14 @@ public class InterventionDAOImpl implements InterventionDAO {
         try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getInterventionsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
-            ResultSet resultSet = statement.executeQuery();
+            try(ResultSet resultSet = statement.executeQuery()) {
+                List<Intervention> foundInterventions = new ArrayList<>();
+                while (resultSet.next()) {
+                    foundInterventions.add(interventionFromResultSet(resultSet));
+                }
 
-            List<Intervention> foundInterventions = new ArrayList<>();
-            while (resultSet.next()) {
-                foundInterventions.add(interventionFromResultSet(resultSet));
+                return foundInterventions;
             }
-
-            return foundInterventions;
 
         } catch (SQLException e) {
             e.printStackTrace();

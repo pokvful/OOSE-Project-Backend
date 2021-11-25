@@ -36,13 +36,12 @@ public class AreaDAOImpl implements AreaDAO {
 
             List<Area> foundAreas = new ArrayList<>();
             while (resultSet.next()) {
-                final Area foundArea = new Area(
+                foundAreas.add(new Area(
                         resultSet.getInt("area_id"),
                         resultSet.getString("area_name"),
                         resultSet.getDouble("longitude"),
                         resultSet.getDouble("latitude"),
-                        resultSet.getInt("radius"));
-                foundAreas.add(foundArea);
+                        resultSet.getInt("radius")));
             }
             return foundAreas;
 
@@ -59,15 +58,15 @@ public class AreaDAOImpl implements AreaDAO {
              PreparedStatement statement = connection.prepareStatement("CALL getArea(?)")) {
             statement.setInt(1, areaId);
 
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                return new Area(
-                        resultSet.getInt("area_id"),
-                        resultSet.getString("area_name"),
-                        resultSet.getDouble("longitude"),
-                        resultSet.getDouble("latitude"),
-                        resultSet.getInt("radius"));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Area(
+                            resultSet.getInt("area_id"),
+                            resultSet.getString("area_name"),
+                            resultSet.getDouble("longitude"),
+                            resultSet.getDouble("latitude"),
+                            resultSet.getInt("radius"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
