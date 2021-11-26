@@ -165,4 +165,25 @@ BEGIN
     SELECT franchise_id, franchise_name
     FROM franchise;
 END //
+
+CREATE PROCEDURE deleteFranchise(
+    IN param_id INT
+) BEGIN
+    DELETE FROM franchise WHERE franchise_id = param_id;
+END //
+
+CREATE PROCEDURE updateFranchise(
+    IN param_id INT,
+    IN param_name VARCHAR(255)
+) BEGIN
+    UPDATE franchise
+        SET franchise_name = param_name
+    WHERE franchise_id = param_id;
+END //
+
+CREATE PROCEDURE createFranchise(
+    IN param_name VARCHAR(255)
+) BEGIN
+    INSERT INTO franchise(franchise_name) VALUES (param_name);
+END //
 DELIMITER ;
