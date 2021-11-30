@@ -16,7 +16,7 @@ public class DatabaseProperties {
             Class.forName(properties.getProperty("driver"));
             connectionString = properties.getProperty("connectionString");
         } catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, "Can\'t access property file database.properties", e);
+            logger.log(Level.SEVERE, "Can't access property file database.properties", e);
         }
     }
 
