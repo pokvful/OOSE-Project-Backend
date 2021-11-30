@@ -99,7 +99,7 @@ public class LocationServiceImplTest {
 
         interventionResponseDTOs = linkedInterventions
                 .stream()
-                .map((intervention) -> new InterventionResponseDTO().fromData(intervention))
+                .map(intervention -> new InterventionResponseDTO().fromData(intervention))
                 .collect(Collectors.toList());
 
         locationResponseDTO = new LocationResponseDTO(id, name, longitude, latitude, radius, areaResponseDTO, delay, interventionResponseDTOs);
