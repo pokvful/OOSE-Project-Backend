@@ -1,8 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
-import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
-import nl.han.aim.oosevt.lamport.data.entity.Location;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -22,7 +20,6 @@ public class InterventionDAOImpl implements InterventionDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -31,7 +28,7 @@ public class InterventionDAOImpl implements InterventionDAO {
         try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getInterventionsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 List<Intervention> foundInterventions = new ArrayList<>();
                 while (resultSet.next()) {
                     foundInterventions.add(interventionFromResultSet(resultSet));
