@@ -38,7 +38,7 @@ public class LocationDAOImpl implements LocationDAO {
                             resultSet.getInt("area_radius")
                     ),
                     interventionDAO.getInterventionsByLocationId(locationId)
-                );
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,7 +49,7 @@ public class LocationDAOImpl implements LocationDAO {
     @Override
     public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-            PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?, ?)")) {
             statement.setString(1, name);
             statement.setInt(2, delay);
             statement.setDouble(3, longitude);
@@ -72,7 +72,7 @@ public class LocationDAOImpl implements LocationDAO {
              PreparedStatement statement = connection.prepareStatement("CALL getLocationById(?)")) {
             statement.setInt(1, locationId);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return locationFromResultSet(resultSet);
                 }
@@ -97,8 +97,8 @@ public class LocationDAOImpl implements LocationDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return new ArrayList<>();
     }
 
     @Override
@@ -133,7 +133,7 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     private ArrayList<Integer> getListOfIdsFromString(final String input) {
-        if(input == null || input.isEmpty()) {
+        if (input == null || input.isEmpty()) {
             return new ArrayList<>();
         }
         return Arrays

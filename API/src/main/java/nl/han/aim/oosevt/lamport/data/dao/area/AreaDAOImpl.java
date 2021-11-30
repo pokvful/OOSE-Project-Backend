@@ -19,11 +19,8 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setDouble(2, longitude);
             statement.setDouble(3, latitude);
             statement.setInt(4, radius);
-
             statement.executeUpdate();
-
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
     }
@@ -46,10 +43,9 @@ public class AreaDAOImpl implements AreaDAO {
             return foundAreas;
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-            return null;
         }
+        return new ArrayList<>();
     }
 
     @Override
@@ -58,7 +54,7 @@ public class AreaDAOImpl implements AreaDAO {
              PreparedStatement statement = connection.prepareStatement("CALL getArea(?)")) {
             statement.setInt(1, areaId);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Area(
                             resultSet.getInt("area_id"),
@@ -76,7 +72,6 @@ public class AreaDAOImpl implements AreaDAO {
 
     @Override
     public void updateArea(int areaId, String name, double longitude, double latitude, int radius) {
-
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL updateArea(?, ?, ?, ?, ?)")) {
             statement.setInt(1, areaId);
@@ -84,7 +79,6 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setDouble(3, longitude);
             statement.setDouble(4, latitude);
             statement.setInt(5, radius);
-
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,11 +87,9 @@ public class AreaDAOImpl implements AreaDAO {
 
     @Override
     public void deleteArea(int areaId) {
-
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL deleteArea(?)")) {
             statement.setInt(1, areaId);
-
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
