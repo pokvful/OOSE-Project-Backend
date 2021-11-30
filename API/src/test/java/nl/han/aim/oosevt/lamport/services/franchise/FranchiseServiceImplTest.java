@@ -1,6 +1,8 @@
 package nl.han.aim.oosevt.lamport.services.franchise;
 
+import nl.han.aim.oosevt.lamport.ObjectAssertions;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Franchise;
@@ -27,6 +29,8 @@ public class FranchiseServiceImplTest {
 
     private FranchiseServiceImpl sut;
 
+    private FranchiseResponseDTO franchiseResponseDTO;
+
     private UpdateFranchiseRequestDTO updateFranchiseRequestDTO;
 
     private CreateFranchiseRequestDTO createFranchiseRequestDTO;
@@ -44,8 +48,22 @@ public class FranchiseServiceImplTest {
 
         franchise = new Franchise(id, name);
 
+        franchiseResponseDTO = new FranchiseResponseDTO(id, name);
+
         // instantiate SUT
         sut = new FranchiseServiceImpl(franchiseDAOFixture);
+    }
+
+    @Test
+    public void getFranchiseById() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(franchise);
+
+        // Act
+        FranchiseResponseDTO actual = sut.getFranchiseById(id);
+
+        // Assert
+        ObjectAssertions.assertEquals(franchiseResponseDTO, actual);
     }
 
     @Test
@@ -91,6 +109,14 @@ public class FranchiseServiceImplTest {
 
         //Assert
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getFranchiseByIdNotExisting() {
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> sut.getFranchiseById(id));
+
     }
 
     @Test

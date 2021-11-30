@@ -16,6 +16,12 @@ import java.util.stream.Collectors;
 public class FranchiseServiceImpl implements FranchiseService {
     private final FranchiseDAO franchiseDAO;
 
+    private void assertGeldigeFranchise(int id) {
+        if (this.franchiseDAO.getFranchiseById(id) == null) {
+            throw new NotFoundException();
+        }
+    }
+
     @Autowired
     public FranchiseServiceImpl(FranchiseDAO franchiseDAO) {
         this.franchiseDAO = franchiseDAO;
@@ -30,18 +36,14 @@ public class FranchiseServiceImpl implements FranchiseService {
     @Override
     public void updateFranchise(UpdateFranchiseRequestDTO newData) {
         newData.validate();
+        assertGeldigeFranchise(newData.getId());
 
-        if (this.franchiseDAO.getFranchiseById(newData.getId()) == null) {
-            throw new NotFoundException();
-        }
         this.franchiseDAO.updateFranchise(newData.getId(), newData.getName());
     }
 
     @Override
     public void deleteFranchise(int id) {
-        if (this.franchiseDAO.getFranchiseById(id) == null) {
-            throw new NotFoundException();
-        }
+        assertGeldigeFranchise(id);
         this.franchiseDAO.deleteFranchise(id);
     }
 
