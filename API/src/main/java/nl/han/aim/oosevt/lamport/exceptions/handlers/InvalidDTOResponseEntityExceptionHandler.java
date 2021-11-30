@@ -6,15 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ControllerAdvice
 public class InvalidDTOResponseEntityExceptionHandler {
     @ExceptionHandler(value = InvalidDTOException.class)
-    protected ResponseEntity<HashMap<String, List<String>>> handle(InvalidDTOException exception) {
+    protected ResponseEntity<Map<String, List<String>>> handle(InvalidDTOException exception) {
         return new ResponseEntity<>(
                 exception.getErrors(),
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.BAD_REQUEST
+        );
     }
 }

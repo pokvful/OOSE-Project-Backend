@@ -3,6 +3,7 @@ package nl.han.aim.oosevt.lamport.exceptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InvalidDTOException extends RuntimeException {
     private final HashMap<String, List<String>> errors = new HashMap<>();
@@ -17,7 +18,7 @@ public class InvalidDTOException extends RuntimeException {
         errors.put(key, new ArrayList<>(List.of(value)));
     }
 
-    public HashMap<String, List<String>> getErrors() {
+    public Map<String, List<String>> getErrors() {
         return errors;
     }
 }

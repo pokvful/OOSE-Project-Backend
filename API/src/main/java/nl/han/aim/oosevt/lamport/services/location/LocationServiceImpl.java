@@ -84,7 +84,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationResponseDTO> getLocations() {
         return locationDAO.getLocations().stream()
-                .map((locationEntity) -> new LocationResponseDTO().fromData(locationEntity))
+                .map(locationEntity -> new LocationResponseDTO().fromData(locationEntity))
                 .collect(Collectors.toList());
     }
 }
