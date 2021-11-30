@@ -65,6 +65,13 @@
                     <destFile>${basedir}/target/jacoco.exec</destFile>
                     <dataFile>${basedir}/target/jacoco.exec</dataFile>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,29 +1,24 @@
 package nl.han.aim.oosevt.lamport.services.franchise;
 
-import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
-import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
-import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
-import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
-import nl.han.aim.oosevt.lamport.data.entity.Area;
 import nl.han.aim.oosevt.lamport.data.entity.Franchise;
-import nl.han.aim.oosevt.lamport.data.entity.Intervention;
-import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
-import nl.han.aim.oosevt.lamport.services.location.LocationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FranchiseServiceImplTest {
+    private final int invalidFranchiseId = 0;
+    private final int deleteFranchiseId = 1;
     private final int id = 2;
+
     private final String name = "mcDonalds";
 
     private FranchiseDAO franchiseDAOFixture;
@@ -32,8 +27,19 @@ public class FranchiseServiceImplTest {
 
     private FranchiseServiceImpl sut;
 
+    private UpdateFranchiseRequestDTO updateFranchiseRequestDTO;
+
+    private CreateFranchiseRequestDTO createFranchiseRequestDTO;
+
     @BeforeEach
     public void setup() {
+        // Arrange create DTO
+        createFranchiseRequestDTO = Mockito.spy(
+                new CreateFranchiseRequestDTO(name));
+
+        updateFranchiseRequestDTO = Mockito.spy(
+                new UpdateFranchiseRequestDTO(id, name));
+
         franchiseDAOFixture = Mockito.mock(FranchiseDAO.class);
 
         franchise = new Franchise(id, name);
@@ -85,5 +91,78 @@ public class FranchiseServiceImplTest {
 
         //Assert
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCreateFranchiseVerifies() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(franchise);
+
+        // Act
+        sut.createFranchise(createFranchiseRequestDTO);
+
+        // Assert
+        Mockito.verify(createFranchiseRequestDTO).validate();
+    }
+
+    @Test
+    public void testCreateFranchiseCallsDB() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(franchise);
+
+        // Act
+        sut.createFranchise(createFranchiseRequestDTO);
+
+        // Assert
+        Mockito.verify(franchiseDAOFixture).createFranchise(name);
+    }
+
+    @Test
+    public void testUpdateChecksFranchiseExists() {
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> sut.updateFranchise(updateFranchiseRequestDTO));
+    }
+
+    @Test
+    public void testUpdateFranchiseVerifies() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(franchise);
+
+        // Act
+        sut.updateFranchise(updateFranchiseRequestDTO);
+
+        // Assert
+        Mockito.verify(updateFranchiseRequestDTO).validate();
+    }
+
+    @Test
+    public void testUpdateFranchiseUpdatesDB() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(id)).thenReturn(franchise);
+
+        // Act
+        sut.updateFranchise(updateFranchiseRequestDTO);
+
+        // Assert
+        Mockito.verify(franchiseDAOFixture).updateFranchise(id, name);
+    }
+
+    @Test
+    public void testDeleteFranchise() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(Mockito.anyInt())).thenReturn(new Franchise(deleteFranchiseId, name));
+        Mockito.doNothing().when(this.franchiseDAOFixture).deleteFranchise(Mockito.anyInt());
+
+        // Act
+        sut.deleteFranchise(deleteFranchiseId);
+
+        // Assert
+        Mockito.verify(franchiseDAOFixture).deleteFranchise(deleteFranchiseId);
+    }
+
+    @Test
+    public void testDeleteFranchiseThrowsException() {
+        assertThrows(NotFoundException.class, () -> sut.deleteFranchise(invalidFranchiseId));
     }
 }
