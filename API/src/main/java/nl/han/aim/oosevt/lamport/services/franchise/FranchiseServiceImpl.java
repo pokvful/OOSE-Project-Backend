@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseReques
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +47,13 @@ public class FranchiseServiceImpl implements FranchiseService {
 
     @Override
     public FranchiseResponseDTO getFranchiseById(int id) {
-        return new FranchiseResponseDTO().fromData(franchiseDAO.getFranchiseById(id));
+        final Franchise franchise = franchiseDAO.getFranchiseById(id);
+
+        if(franchise == null) {
+            throw new NotFoundException();
+        }
+
+        return new FranchiseResponseDTO().fromData(franchise);
     }
 
     @Override
