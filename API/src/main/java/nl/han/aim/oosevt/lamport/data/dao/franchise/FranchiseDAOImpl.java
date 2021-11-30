@@ -13,7 +13,13 @@ public class FranchiseDAOImpl implements FranchiseDAO {
 
     @Override
     public void createFranchise(String name) {
-
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL createFranchise(?)")) {
+            statement.setString(1, name);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -22,11 +28,11 @@ public class FranchiseDAOImpl implements FranchiseDAO {
              PreparedStatement statement = connection.prepareStatement("CALL getFranchiseById(?)")) {
             statement.setInt(1, franchiseId);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Franchise(
-                        resultSet.getInt("franchise_id"),
-                        resultSet.getString("franchise_name"));
+                            resultSet.getInt("franchise_id"),
+                            resultSet.getString("franchise_name"));
                 }
             }
         } catch (SQLException e) {
@@ -51,17 +57,31 @@ public class FranchiseDAOImpl implements FranchiseDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return new ArrayList<>();
     }
 
     @Override
     public void updateFranchise(int franchiseId, String name) {
-
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL updateFranchise(?, ?)")) {
+            statement.setInt(1, franchiseId);
+            statement.setString(2, name);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteFranchise(int franchiseId) {
-
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL deleteFranchise(?)")) {
+            statement.setInt(1, franchiseId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
+
