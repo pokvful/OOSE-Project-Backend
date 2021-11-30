@@ -54,14 +54,4 @@ public class LocationController {
     public void createLocation(@RequestBody CreateLocationRequestDTO location) {
         locationService.createLocation(location);
     }
-
-    //todo see if we can do this in a generic way without having to copy paste it into every controller.
-    //Bart - 15/11/2021
-    @ExceptionHandler(InvalidDTOException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<HashMap<String, List<String>>> handle(InvalidDTOException exception) {
-        return new ResponseEntity<>(
-                exception.getErrors(),
-                HttpStatus.BAD_REQUEST);
-    }
 }

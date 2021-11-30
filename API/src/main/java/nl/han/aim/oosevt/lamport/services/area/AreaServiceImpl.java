@@ -62,7 +62,7 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<AreaResponseDTO> getAreas() {
 
-        return this.areaDAO.getAreas().stream().map((areaEntity) -> new AreaResponseDTO().fromData(areaEntity))
+        return this.areaDAO.getAreas().stream().map(areaEntity -> new AreaResponseDTO().fromData(areaEntity))
                 .collect(Collectors.toList());
     }
 }

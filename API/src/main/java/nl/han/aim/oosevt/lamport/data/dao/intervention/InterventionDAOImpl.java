@@ -40,6 +40,7 @@ public class InterventionDAOImpl implements InterventionDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return new ArrayList<>();
     }
 }
