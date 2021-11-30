@@ -169,6 +169,8 @@ END //
 CREATE PROCEDURE deleteFranchise(
     IN param_id INT
 ) BEGIN
+    DELETE FROM location_intervention WHERE location_id IN (SELECT location_id FROM location WHERE area_id = param_id);
+    DELETE FROM location WHERE area_id = param_id;
     DELETE FROM franchise WHERE franchise_id = param_id;
 END //
 
