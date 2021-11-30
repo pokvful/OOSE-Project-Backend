@@ -1,6 +1,10 @@
 package nl.han.aim.oosevt.lamport.services.location;
 
+import nl.han.aim.oosevt.lamport.ObjectAssertions;
+import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
@@ -16,6 +20,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -51,6 +56,9 @@ public class LocationServiceImplTest {
     private Intervention interventionB;
     private Intervention interventionC;
     private List<Integer> linkedInterventionIds;
+    private LocationResponseDTO locationResponseDTO;
+    private List<InterventionResponseDTO> interventionResponseDTOs;
+    private AreaResponseDTO areaResponseDTO;
 
     private LocationServiceImpl sut;
 
@@ -84,11 +92,42 @@ public class LocationServiceImplTest {
         areaDAOFixture = Mockito.mock(AreaDAO.class);
         interventionDAOFixture = Mockito.mock(InterventionDAO.class);
 
-        mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions);
         mockArea = new Area(areaId, areaName, areaLongitude, areaLatitude, areaRadius);
+        mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions);
+
+        areaResponseDTO = new AreaResponseDTO().fromData(mockArea);
+
+        interventionResponseDTOs = linkedInterventions
+                .stream()
+                .map((intervention) -> new InterventionResponseDTO().fromData(intervention))
+                .collect(Collectors.toList());
+
+        locationResponseDTO = new LocationResponseDTO(id, name, longitude, latitude, radius, areaResponseDTO, delay, interventionResponseDTOs);
+
 
         // instantiate SUT
         sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
+    }
+
+    @Test
+    public void getLocationNotExisting() {
+        // Arrange
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(null);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.getLocation(id));
+    }
+
+    @Test
+    public void getLocation() {
+        // Arrange
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act
+        LocationResponseDTO actual = sut.getLocation(id);
+
+        // Assert
+        ObjectAssertions.assertEquals(locationResponseDTO, actual);
     }
 
     @Test

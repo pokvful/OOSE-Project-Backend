@@ -69,6 +69,7 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.delay = location.getDelay();
 
         this.area = new AreaResponseDTO().fromData(location.getArea());
+
         this.linkedInterventions = location
                 .getLinkedInterventions()
                 .stream()
