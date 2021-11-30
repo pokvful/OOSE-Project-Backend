@@ -1,6 +1,8 @@
 package nl.han.aim.oosevt.lamport.controllers.franchise;
 
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.services.franchise.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,21 @@ public class FranchiseController {
                 franchiseService.getFranchiseById(id),
                 HttpStatus.OK
         );
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteFranchise(@PathVariable("id") int id) {
+        franchiseService.deleteFranchise(id);
+    }
+
+    @PutMapping()
+    public void updateFranchise(@RequestBody UpdateFranchiseRequestDTO updateFranchiseRequestDTO) {
+        franchiseService.updateFranchise(updateFranchiseRequestDTO);
+    }
+
+    @PostMapping()
+    public void createFranchise(@RequestBody CreateFranchiseRequestDTO createFranchiseRequestDTO) {
+        franchiseService.createFranchise(createFranchiseRequestDTO);
     }
 
     //todo see if we can do this in a generic way without having to copy paste it into every controller.
