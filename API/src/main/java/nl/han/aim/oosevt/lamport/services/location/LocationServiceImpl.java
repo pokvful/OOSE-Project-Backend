@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestD
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
     private final LocationDAO locationDAO;
     private final AreaDAO areaDAO;
+    private final FranchiseDAO franchiseDAO;
 
     @Autowired
-    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO) {
+    public LocationServiceImpl(LocationDAO locationDAO, AreaDAO areaDAO, FranchiseDAO franchiseDAO) {
         this.locationDAO = locationDAO;
         this.areaDAO = areaDAO;
+        this.franchiseDAO = franchiseDAO;
     }
 
     private void assertValidArea(int areaId) {
@@ -44,8 +47,18 @@ public class LocationServiceImpl implements LocationService {
 
         assertValidArea(areaId);
 
+        int franchiseId = location.getFranchiseId();
+
+        assertValidFranchise(franchiseId);
+
         locationDAO.createLocation(location.getName(), location.getDelay(), location.getLongitude(),
-                location.getLatitude(), location.getRadius(), areaId, location.getLinkedInterventions());
+                location.getLatitude(), location.getRadius(), areaId, franchiseId, location.getLinkedInterventions());
+    }
+
+    private void assertValidFranchise(int franchiseId) {
+        if(franchiseDAO.getFranchiseById(franchiseId) == null) {
+            throw new NotFoundException();
+        }
     }
 
     @Override
@@ -54,12 +67,14 @@ public class LocationServiceImpl implements LocationService {
 
         int id = newData.getId();
         int areaId = newData.getAreaId();
+        int franchiseId = newData.getFranchiseId();
 
         assertValidLocation(id);
         assertValidArea(areaId);
+        assertValidFranchise(franchiseId);
 
         locationDAO.updateLocation(newData.getId(), newData.getName(), newData.getDelay(),
-                newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId, newData.getLinkedInterventions());
+                newData.getLongitude(), newData.getLatitude(), newData.getRadius(), areaId, franchiseId, newData.getLinkedInterventions());
     }
 
     @Override

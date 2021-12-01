@@ -15,30 +15,31 @@ public class UpdateDTOValidationTest {
 
     @ParameterizedTest()
     @MethodSource
-    public void invalidDTOsThrowException(int id, String name, int delay, double longitude, double latitude, int radius, int areaId) {
-        final UpdateLocationRequestDTO createLocationRequestDTO = new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, new ArrayList<>());
+    public void invalidDTOsThrowException(int id, String name, int delay, double longitude, double latitude, int radius, int areaId, int franchiseId) {
+        final UpdateLocationRequestDTO createLocationRequestDTO = new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, franchiseId, new ArrayList<>());
 
         Assertions.assertThrows(InvalidDTOException.class, createLocationRequestDTO::validate);
     }
 
     @Test
     public void validDTOPasses() {
-        final UpdateLocationRequestDTO createLocationRequestDTO = new UpdateLocationRequestDTO(1, "Subway", 1, 1,1, 1, 1, new ArrayList<>());
+        final UpdateLocationRequestDTO createLocationRequestDTO = new UpdateLocationRequestDTO(1, "Subway", 1, 1,1, 1, 1, 1, new ArrayList<>());
 
         Assertions.assertDoesNotThrow(createLocationRequestDTO::validate);
     }
 
     private static Stream<Arguments> invalidDTOsThrowException() {
         return Stream.of(
-                Arguments.arguments(0, "", 0, 0, 0, 0, 0),
-                Arguments.arguments(1, "", 1, 1, 1, 1, 1),
-                Arguments.arguments(1, "Test", 0, 1, 1, 1, 1),
-                Arguments.arguments(1, "Test", -181, 1, 1, 1, 0),
-                Arguments.arguments(1, "Test", 181, 1, 0, 1, 1),
-                Arguments.arguments(1, "Test", 1, 1, 0, 0, 1),
-                Arguments.arguments(1, "Test", 1, -91, 1, 1, 0),
-                Arguments.arguments(1, "Test", 1, 91, 1, 1, 0),
-                Arguments.arguments(1, "Test", 1, 0, 1, 1, 1)
+                Arguments.arguments(0, "", 0, 0, 0, 0, 0, 0),
+                Arguments.arguments(1, "", 1, 1, 1, 1, 1, 1),
+                Arguments.arguments(1, "Test", 0, 1, 1, 1, 1, 1),
+                Arguments.arguments(1, "Test", -181, 1, 1, 1, 0, 1),
+                Arguments.arguments(1, "Test", 181, 1, 0, 1, 1, 1),
+                Arguments.arguments(1, "Test", 1, 1, 0, 0, 1, 1),
+                Arguments.arguments(1, "Test", 1, -91, 1, 1, 0, 1),
+                Arguments.arguments(1, "Test", 1, 91, 1, 1, 0, 1),
+                Arguments.arguments(1, "Test", 1, 0, 1, 1, 1, 1),
+                Arguments.arguments(1, "Test", 1, 1, 1, 1, 1, 0)
         );
     }
 }

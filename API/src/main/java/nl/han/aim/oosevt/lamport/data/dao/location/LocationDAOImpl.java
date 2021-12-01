@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.data.dao.location;
 
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,10 @@ public class LocationDAOImpl implements LocationDAO {
                             resultSet.getDouble("area_latitude"),
                             resultSet.getInt("area_radius")
                     ),
+                    new Franchise(
+                            resultSet.getInt("franchise_id"),
+                            resultSet.getString("franchise_name")
+                    ),
                     interventionDAO.getInterventionsByLocationId(locationId)
             );
         } catch (SQLException e) {
@@ -47,16 +52,17 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     @Override
-    public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
+    public void createLocation(String name, int delay, double longitude, double latitude, int radius, int areaId, int franchiseId, List<Integer> linkedInterventions) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createLocation(?, ?, ?, ?, ?, ?, ?, ?)")) {
             statement.setString(1, name);
             statement.setInt(2, delay);
             statement.setDouble(3, longitude);
             statement.setDouble(4, latitude);
             statement.setInt(5, radius);
             statement.setInt(6, areaId);
-            statement.setString(7, linkedInterventions.stream().map(Object::toString).collect(Collectors.joining(",")));
+            statement.setInt(7, franchiseId);
+            statement.setString(8, linkedInterventions.stream().map(Object::toString).collect(Collectors.joining(",")));
 
             statement.executeUpdate();
 
@@ -102,9 +108,9 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     @Override
-    public void updateLocation(int locationId, String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
+    public void updateLocation(int locationId, String name, int delay, double longitude, double latitude, int radius, int areaId, int franchiseId, List<Integer> linkedInterventions) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateLocation(?, ?, ?, ?, ?, ?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL updateLocation(?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             statement.setInt(1, locationId);
             statement.setString(2, name);
             statement.setInt(3, delay);
@@ -112,7 +118,8 @@ public class LocationDAOImpl implements LocationDAO {
             statement.setDouble(5, latitude);
             statement.setInt(6, radius);
             statement.setInt(7, areaId);
-            statement.setString(8, linkedInterventions.stream().map(Object::toString).collect(Collectors.joining(",")));
+            statement.setInt(8, franchiseId);
+            statement.setString(9, linkedInterventions.stream().map(Object::toString).collect(Collectors.joining(",")));
 
             statement.executeUpdate();
         } catch (SQLException e) {
