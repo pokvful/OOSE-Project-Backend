@@ -53,6 +53,7 @@ CREATE PROCEDURE createLocation(
     IN param_latitude DECIMAL(9, 6),
     IN param_radius INT,
     IN param_areaId INT,
+    IN param_franchiseId INT,
     IN param_intervention_ids VARCHAR(500)) 
 BEGIN
     DECLARE param_geofence_id INT DEFAULT 0;
@@ -63,8 +64,8 @@ BEGIN
 
     SET param_geofence_id = LAST_INSERT_ID();
 
-    INSERT INTO location (area_id, geofence_id, location_name, delay)
-    VALUES (param_areaId, param_geofence_id, param_name, param_delay);
+    INSERT INTO location (area_id, geofence_id, location_name, delay, franchise_id)
+    VALUES (param_areaId, param_geofence_id, param_name, param_delay, param_franchiseId);
 
     SET last_insert_id = LAST_INSERT_ID();
 
@@ -82,10 +83,25 @@ END //
 CREATE PROCEDURE getLocationById(
     IN id INT
 ) BEGIN
-    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id AS area_id, area.area_name AS area_name, area_geofence.latitude AS area_latitude, area_geofence.longitude AS area_longitude, area_geofence.radius AS area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
+    SELECT 
+        location_id, 
+        location_name, 
+        delay, 
+        location_geofence.longitude, 
+        location_geofence.latitude, 
+        location_geofence.radius, 
+        area.area_id AS area_id, 
+        area.area_name AS area_name, 
+        franchise.franchise_id AS franchise_id, 
+        franchise.franchise_name AS franchise_name, 
+        area_geofence.latitude AS area_latitude, 
+        area_geofence.longitude AS area_longitude, 
+        area_geofence.radius AS area_radius, 
+        (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
     FROM location
     LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
     LEFT OUTER JOIN area ON location.area_id = area.area_id
+    LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
     LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
     WHERE location_id = id;
 END //
@@ -102,10 +118,25 @@ END //
 
 CREATE PROCEDURE getLocations()
 BEGIN
-    SELECT location_id, location_name, delay, location_geofence.longitude, location_geofence.latitude, location_geofence.radius, area.area_id AS area_id, area.area_name AS area_name, area_geofence.latitude AS area_latitude, area_geofence.longitude AS area_longitude, area_geofence.radius AS area_radius, (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
+    SELECT 
+    location_id, 
+    location_name, 
+    delay, 
+    location_geofence.longitude, 
+    location_geofence.latitude, 
+    location_geofence.radius, 
+    area.area_id AS area_id, 
+    area.area_name AS area_name, 
+    franchise.franchise_id AS franchise_id, 
+    franchise.franchise_name AS franchise_name, 
+    area_geofence.latitude AS area_latitude, 
+    area_geofence.longitude AS area_longitude, 
+    area_geofence.radius AS area_radius, 
+    (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
     FROM location
     LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
     LEFT OUTER JOIN area ON location.area_id = area.area_id
+        LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
     LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id;
 END //
 
@@ -117,6 +148,7 @@ CREATE PROCEDURE updateLocation(
     IN param_latitude DECIMAL(9, 6),
     IN param_radius INT,
     IN param_areaId INT,
+    IN param_franchiseId INT,
     IN param_intervention_ids VARCHAR(500)
 ) BEGIN
 
@@ -129,7 +161,7 @@ CREATE PROCEDURE updateLocation(
     );
 
     UPDATE location
-    SET area_id=param_areaId, location_name=param_name, delay = param_delay 
+    SET area_id=param_areaId, location_name=param_name, delay = param_delay, franchise_id = param_franchiseId
     WHERE location_id = param_id;
 
     DELETE FROM location_intervention WHERE location_id = param_id;

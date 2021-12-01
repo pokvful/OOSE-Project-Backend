@@ -58,7 +58,7 @@ INSERT INTO intervention (intervention_name) VALUES
     ("hardlopen"),
     ("tellen");
 
-CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, "");
+CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 1, "");
 
 
 -- SELECT * FROM answer;
