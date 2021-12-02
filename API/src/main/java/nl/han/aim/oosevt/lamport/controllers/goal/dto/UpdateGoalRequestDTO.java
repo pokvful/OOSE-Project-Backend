@@ -2,7 +2,7 @@ package nl.han.aim.oosevt.lamport.controllers.goal.dto;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
-public class UpdateGoalRequestDTO extends RequestDTO {
+public class UpdateGoalRequestDTO extends GoalRequestDTO {
     private String name;
     private int id;
 
