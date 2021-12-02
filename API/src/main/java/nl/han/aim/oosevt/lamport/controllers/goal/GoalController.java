@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.goal;
 
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.services.goal.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,10 @@ public class GoalController {
                 goalService.getGoal(id),
                 HttpStatus.OK
         );
+    }
+
+    @PostMapping()
+    public void createGoal(@RequestBody CreateGoalRequestDTO createGoalRequestDTO) {
+        goalService.createGoal(createGoalRequestDTO);
     }
 }
