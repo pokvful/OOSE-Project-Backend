@@ -1,7 +1,9 @@
 package nl.han.aim.oosevt.lamport.controllers.goal;
 
 import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.services.goal.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,11 @@ public class GoalController {
 
     @PutMapping()
     public void updateGoal(@RequestBody UpdateGoalRequestDTO updateGoalRequestDTO) {
-        areaService.updateArea(updateAreaRequestDTO);
+        goalService.updateArea(updateGoalRequestDTO);
+    }
+
+    @PostMapping()
+    public void createGoal(@RequestBody CreateGoalRequestDTO createGoalRequestDTO) {
+        goalService.createGoal(createGoalRequestDTO);
     }
 }

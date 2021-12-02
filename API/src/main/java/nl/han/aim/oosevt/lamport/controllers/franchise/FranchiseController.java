@@ -3,14 +3,12 @@ package nl.han.aim.oosevt.lamport.controllers.franchise;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
-import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.services.franchise.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

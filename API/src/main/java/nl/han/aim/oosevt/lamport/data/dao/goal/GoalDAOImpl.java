@@ -1,8 +1,8 @@
 package nl.han.aim.oosevt.lamport.data.dao.goal;
 
-import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public class GoalDAOImpl implements GoalDAO {
     @Override
     public void createGoal(String name) {
@@ -23,7 +24,7 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     @Override
-    public Franchise getGoalById(int goalId) {
+    public Goal getGoalById(int goalId) {
         return null;
     }
 
