@@ -13,5 +13,5 @@ public interface GoalService {
 
     void createGoal(CreateGoalRequestDTO createGoalRequestDTO);
 
-    void updateArea(UpdateGoalRequestDTO updateGoalRequestDTO);
+    void updateGoal(UpdateGoalRequestDTO updateGoalRequestDTO);
 }

@@ -36,7 +36,7 @@ public class GoalServiceImpl implements GoalService {
     }
 
     @Override
-    public void updateArea(UpdateGoalRequestDTO updateGoalRequestDTO) {
+    public void updateGoal(UpdateGoalRequestDTO updateGoalRequestDTO) {
 
     }
 }

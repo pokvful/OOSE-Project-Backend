@@ -41,7 +41,7 @@ public class GoalController {
 
     @PutMapping()
     public void updateGoal(@RequestBody UpdateGoalRequestDTO updateGoalRequestDTO) {
-        goalService.updateArea(updateGoalRequestDTO);
+        goalService.updateGoal(updateGoalRequestDTO);
     }
 
     @PostMapping()
