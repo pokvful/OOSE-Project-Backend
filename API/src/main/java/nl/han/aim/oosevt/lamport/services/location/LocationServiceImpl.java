@@ -56,7 +56,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     private void assertValidFranchise(int franchiseId) {
-        if(franchiseDAO.getFranchiseById(franchiseId) == null) {
+        if (franchiseDAO.getFranchiseById(franchiseId) == null) {
             throw new NotFoundException();
         }
     }
