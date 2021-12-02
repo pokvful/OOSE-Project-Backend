@@ -82,7 +82,7 @@ public class GoalServiceImplTest {
     }
 
     @Test
-    public void updateGoalGoalBestaatNiet() {
+    public void updateGoalGoalNonExistent() {
         // Arrange
         Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(null);
 

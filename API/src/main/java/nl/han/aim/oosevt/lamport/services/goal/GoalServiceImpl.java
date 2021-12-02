@@ -3,7 +3,6 @@ package nl.han.aim.oosevt.lamport.services.goal;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
-import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class GoalServiceImpl implements GoalService {
         this.goalDAO = goalDAO;
     }
 
-    private void assertGoalBestaat(int id) {
+    private void assertGoalExists(int id) {
         if (goalDAO.getGoalById(id) == null) {
             throw new NotFoundException();
         }
@@ -45,7 +44,7 @@ public class GoalServiceImpl implements GoalService {
     @Override
     public void updateGoal(UpdateGoalRequestDTO updateGoalRequestDTO) {
         updateGoalRequestDTO.validate();
-        assertGoalBestaat(updateGoalRequestDTO.getId());
+        assertGoalExists(updateGoalRequestDTO.getId());
 
         goalDAO.updateGoal(updateGoalRequestDTO.getId(), updateGoalRequestDTO.getName());
     }
