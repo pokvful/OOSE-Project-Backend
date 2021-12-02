@@ -12,5 +12,4 @@ public class Goal {
     public int getGoalId() { return goalId; }
 
     public String getGoalName() { return goalName; }
-
 }
