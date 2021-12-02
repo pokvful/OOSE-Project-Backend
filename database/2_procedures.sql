@@ -221,4 +221,10 @@ CREATE PROCEDURE createFranchise(
 ) BEGIN
     INSERT INTO franchise(franchise_name) VALUES (param_name);
 END //
-DELIMITER ;
+
+CREATE PROCEDURE createGoal(
+    IN param_name VARCHAR(255)
+) BEGIN
+    INSERT INTO goal(goal_name) VALUES (param_name);
+END //
+DELIMITER;
