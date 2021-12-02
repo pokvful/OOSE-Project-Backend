@@ -6,6 +6,5 @@ public class CreateGoalRequestDTO extends GoalRequestDTO {
     }
 
     public CreateGoalRequestDTO() {
-
     }
 }

@@ -27,5 +27,4 @@ public class GoalResponseDTO {
     public String getName() {
         return name;
     }
-
 }
