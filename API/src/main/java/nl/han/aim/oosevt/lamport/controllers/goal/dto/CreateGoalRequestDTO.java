@@ -5,6 +5,6 @@ public class CreateGoalRequestDTO extends GoalRequestDTO {
         super(name);
     }
 
-    CreateGoalRequestDTO() {
+    public CreateGoalRequestDTO() {
     }
 }
