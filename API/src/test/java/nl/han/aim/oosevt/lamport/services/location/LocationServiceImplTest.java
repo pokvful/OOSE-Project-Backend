@@ -152,7 +152,7 @@ public class LocationServiceImplTest {
     }
 
     @Test
-    public void testCreateLocationValidates() {
+    public void testCreateLocationVerifies() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
         Mockito.when(franchiseDAOFixture.getFranchiseById(franchiseId)).thenReturn(mockFranchise);
