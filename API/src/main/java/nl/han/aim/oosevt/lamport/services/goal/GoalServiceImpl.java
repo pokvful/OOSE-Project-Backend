@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.services.goal;
 
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class GoalServiceImpl implements GoalService {
     public void createGoal(CreateGoalRequestDTO goal) {
         goal.validate();
         goalDAO.createGoal(goal.getName());
+    }
+
+    @Override
+    public void updateGoal(UpdateGoalRequestDTO updateGoalRequestDTO) {
+
     }
 }
