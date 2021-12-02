@@ -1,13 +1,11 @@
 package nl.han.aim.oosevt.lamport.controllers.goal.dto;
 
-import nl.han.aim.oosevt.lamport.shared.RequestDTO;
-
 public class UpdateGoalRequestDTO extends GoalRequestDTO {
-    private String name;
     private int id;
 
-    public UpdateGoalRequestDTO(String name) {
-        this.name = name;
+    public UpdateGoalRequestDTO(String name, int id) {
+        super(name);
+        this.id = id;
     }
 
     public UpdateGoalRequestDTO() {
@@ -20,21 +18,16 @@ public class UpdateGoalRequestDTO extends GoalRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     protected void validateDTO() {
-        if(name.isEmpty()) {
-            addError("name", "Naam kan niet leeg zijn");
+        if (id == 0) {
+            addError("id", "Id kan niet leeg zijn");
         }
+        super.validateDTO();
         validateSpecificDTO();
     }
 
-    public void validateSpecificDTO() {}
+    public void validateSpecificDTO() {
+    }
 }

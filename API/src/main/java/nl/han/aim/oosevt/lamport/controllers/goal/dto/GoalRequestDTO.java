@@ -3,7 +3,7 @@ package nl.han.aim.oosevt.lamport.controllers.goal.dto;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class GoalRequestDTO extends RequestDTO {
-    private String name;
+    protected String name;
 
     public GoalRequestDTO(String name) {
         this.name = name;
