@@ -222,9 +222,23 @@ CREATE PROCEDURE createFranchise(
     INSERT INTO franchise(franchise_name) VALUES (param_name);
 END //
 
+CREATE PROCEDURE getGoalById(
+    IN param_id INT
+) BEGIN
+    SELECT goal_id, goal_name
+    FROM goal
+    WHERE goal_id = param_id;
+END //
+
+CREATE PROCEDURE getGoals()
+BEGIN
+    SELECT goal_id, goal_name
+    FROM goal;
+END //
+
 CREATE PROCEDURE createGoal(
     IN param_name VARCHAR(255)
 ) BEGIN
     INSERT INTO goal(goal_name) VALUES (param_name);
 END //
-DELIMITER;
+DELIMITER ;
