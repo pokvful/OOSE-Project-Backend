@@ -186,3 +186,8 @@ question_id INT(6) UNSIGNED,
 FOREIGN KEY (action_id) REFERENCES action(action_id),
 FOREIGN KEY (question_id) REFERENCES question(question_id)
 );
+
+create table if not exists goal (
+goal_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+goal_name VARCHAR(100)
+);
