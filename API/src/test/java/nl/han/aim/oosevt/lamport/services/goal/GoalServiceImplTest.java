@@ -40,7 +40,7 @@ public class GoalServiceImplTest {
     }
 
     @Test
-    public void testCreateLocationVerifies() {
+    public void testCreateGoalValidates() {
         // Arrange
         Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(goal);
 
@@ -52,7 +52,7 @@ public class GoalServiceImplTest {
     }
 
     @Test
-    public void testCreateLocationCallsDB() {
+    public void testCreateGoalCallsDB() {
         // Arrange
         Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(goal);
 
