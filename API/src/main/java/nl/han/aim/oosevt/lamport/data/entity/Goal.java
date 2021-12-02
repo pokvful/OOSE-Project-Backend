@@ -1,19 +1,15 @@
 package nl.han.aim.oosevt.lamport.data.entity;
 
 public class Goal {
-    private final int id;
-    private final String name;
+    private final int goalId;
+    private final String goalName;
 
-    public Goal(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public Goal(int goalId, String goalName) {
+        this.goalId = goalId;
+        this.goalName = goalName;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getGoalId() { return goalId; }
 
-    public String getName() {
-        return name;
-    }
+    public String getGoalName() { return goalName; }
 }

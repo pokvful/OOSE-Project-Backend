@@ -2,14 +2,17 @@ package nl.han.aim.oosevt.lamport.services.location;
 
 import nl.han.aim.oosevt.lamport.ObjectAssertions;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.area.AreaDAO;
+import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.dao.location.LocationDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -32,6 +35,8 @@ public class LocationServiceImplTest {
     private final double latitude = 51.32132431;
     private final int radius = 30;
     private final int areaId = 1;
+    private final int franchiseId = 1;
+    private final String franchiseName = "mcDonalds";
     private final String areaName = "Nijmegen";
     private final double areaLongitude = 5.312312;
     private final double areaLatitude = 40.432432;
@@ -46,11 +51,13 @@ public class LocationServiceImplTest {
 
     private LocationDAO locationDAOFixture;
     private AreaDAO areaDAOFixture;
+    private FranchiseDAO franchiseDAOFixture;
     private InterventionDAO interventionDAOFixture;
     private CreateLocationRequestDTO createLocationRequestDTO;
     private UpdateLocationRequestDTO updateLocationRequestDTO;
     private Location mockLocation;
     private Area mockArea;
+    private Franchise mockFranchise;
     private List<Intervention> linkedInterventions;
     private Intervention interventionA;
     private Intervention interventionB;
@@ -59,6 +66,7 @@ public class LocationServiceImplTest {
     private LocationResponseDTO locationResponseDTO;
     private List<InterventionResponseDTO> interventionResponseDTOs;
     private AreaResponseDTO areaResponseDTO;
+    private FranchiseResponseDTO franchiseResponseDTO;
 
     private LocationServiceImpl sut;
 
@@ -71,11 +79,11 @@ public class LocationServiceImplTest {
 
         // arrange create DTO
         createLocationRequestDTO = Mockito.spy(
-                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId, linkedInterventionIds)
+                new CreateLocationRequestDTO(name, delay, longitude, latitude, radius, areaId, franchiseId, linkedInterventionIds)
         );
 
         updateLocationRequestDTO = Mockito.spy(
-                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, linkedInterventionIds)
+                new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, franchiseId, linkedInterventionIds)
         );
 
         interventionA = new Intervention(interventionIdA, interventionNameA);
@@ -91,22 +99,25 @@ public class LocationServiceImplTest {
         locationDAOFixture = Mockito.mock(LocationDAO.class);
         areaDAOFixture = Mockito.mock(AreaDAO.class);
         interventionDAOFixture = Mockito.mock(InterventionDAO.class);
+        franchiseDAOFixture = Mockito.mock(FranchiseDAO.class);
 
         mockArea = new Area(areaId, areaName, areaLongitude, areaLatitude, areaRadius);
-        mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions);
+        mockFranchise = new Franchise(franchiseId, franchiseName);
+        mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions);
 
         areaResponseDTO = new AreaResponseDTO().fromData(mockArea);
+        franchiseResponseDTO = new FranchiseResponseDTO().fromData(mockFranchise);
 
         interventionResponseDTOs = linkedInterventions
                 .stream()
                 .map(intervention -> new InterventionResponseDTO().fromData(intervention))
                 .collect(Collectors.toList());
 
-        locationResponseDTO = new LocationResponseDTO(id, name, longitude, latitude, radius, areaResponseDTO, delay, interventionResponseDTOs);
+        locationResponseDTO = new LocationResponseDTO(id, name, longitude, latitude, radius, areaResponseDTO, franchiseResponseDTO, delay, interventionResponseDTOs);
 
 
         // instantiate SUT
-        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture);
+        sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture, franchiseDAOFixture);
     }
 
     @Test
@@ -144,6 +155,7 @@ public class LocationServiceImplTest {
     public void testCreateLocationVerifies() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(franchiseDAOFixture.getFranchiseById(franchiseId)).thenReturn(mockFranchise);
         Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
 
         // Act
@@ -157,6 +169,7 @@ public class LocationServiceImplTest {
     public void testCreateLocationCallsDB() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(franchiseDAOFixture.getFranchiseById(franchiseId)).thenReturn(mockFranchise);
 
         // Act
         sut.createLocation(createLocationRequestDTO);
@@ -169,6 +182,7 @@ public class LocationServiceImplTest {
                 latitude,
                 radius,
                 areaId,
+                franchiseId,
                 linkedInterventionIds
         );
     }
@@ -176,6 +190,7 @@ public class LocationServiceImplTest {
     @Test
     public void testUpdateChecksAreaExists() {
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(null);
+        Mockito.when(franchiseDAOFixture.getFranchiseById(franchiseId)).thenReturn(null);
 
         assertThrows(NotFoundException.class, () -> sut.updateLocation(updateLocationRequestDTO));
     }
@@ -194,6 +209,7 @@ public class LocationServiceImplTest {
     public void testUpdateLocationVerifies() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(franchiseDAOFixture.getFranchiseById(areaId)).thenReturn(mockFranchise);
         Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
 
         // Act
@@ -207,6 +223,7 @@ public class LocationServiceImplTest {
     public void testUpdateLocationCallsDB() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(franchiseDAOFixture.getFranchiseById(areaId)).thenReturn(mockFranchise);
         Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
 
         // Act
@@ -221,6 +238,7 @@ public class LocationServiceImplTest {
                 latitude,
                 radius,
                 areaId,
+                franchiseId,
                 linkedInterventionIds
         );
     }
@@ -228,7 +246,7 @@ public class LocationServiceImplTest {
     @Test
     public void testDeleteLocation() {
         // Arrange
-        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions));
+        Mockito.when(locationDAOFixture.getLocationById(Mockito.anyInt())).thenReturn(new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions));
         Mockito.doNothing().when(this.locationDAOFixture).deleteLocation(Mockito.anyInt());
 
         // Act
@@ -276,9 +294,9 @@ public class LocationServiceImplTest {
         int expected = 3;
 
         Mockito.when(this.locationDAOFixture.getLocations()).thenReturn(new ArrayList<>() {{
-            add(new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions));
-            add(new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions));
-            add(new Location(id, name, delay, longitude, latitude, radius, mockArea, linkedInterventions));
+            add(new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions));
+            add(new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions));
+            add(new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions));
         }});
 
         //Act

@@ -1,12 +1,14 @@
 package nl.han.aim.oosevt.lamport.data.dao.goal;
 
 import nl.han.aim.oosevt.lamport.data.entity.Franchise;
+import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class GoalDAOImpl implements GoalDAO {
     @Override

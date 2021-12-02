@@ -11,18 +11,20 @@ public abstract class LocationRequestDTO extends RequestDTO {
     private double latitude;
     private int radius;
     private int areaId;
+    private int franchiseId;
     private List<Integer> linkedInterventions;
 
     public LocationRequestDTO() {
     }
 
-    public LocationRequestDTO(String name, int delay, double longitude, double latitude, int radius, int areaId, List<Integer> linkedInterventions) {
+    public LocationRequestDTO(String name, int delay, double longitude, double latitude, int radius, int areaId, int franchiseId, List<Integer> linkedInterventions) {
         this.name = name;
         this.delay = delay;
         this.longitude = longitude;
         this.latitude = latitude;
         this.radius = radius;
         this.areaId = areaId;
+        this.franchiseId = franchiseId;
         this.linkedInterventions = linkedInterventions;
     }
 
@@ -82,6 +84,14 @@ public abstract class LocationRequestDTO extends RequestDTO {
         this.linkedInterventions = linkedInterventions;
     }
 
+    public int getFranchiseId() {
+        return franchiseId;
+    }
+
+    public void setFranchiseId(int franchiseId) {
+        this.franchiseId = franchiseId;
+    }
+
     @Override
     protected void validateDTO() {
         if (name.isEmpty()) {
@@ -107,6 +117,9 @@ public abstract class LocationRequestDTO extends RequestDTO {
         }
         if (areaId == 0) {
             addError("areaId", "AreaId mag niet leeg zijn!");
+        }
+        if (franchiseId == 0) {
+            addError("franchiseId", "FranchiseId mag niet leeg zijn!");
         }
         validateSpecificDto();
     }

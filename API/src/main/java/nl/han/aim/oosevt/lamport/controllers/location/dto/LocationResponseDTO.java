@@ -1,6 +1,7 @@
 package nl.han.aim.oosevt.lamport.controllers.location.dto;
 
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
@@ -14,16 +15,18 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
     private int delay;
 
     private AreaResponseDTO area;
+    private FranchiseResponseDTO franchise;
     private List<InterventionResponseDTO> linkedInterventions;
 
     public LocationResponseDTO() {
     }
 
-    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, int delay, List<InterventionResponseDTO> linkedInterventions) {
+    public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, FranchiseResponseDTO franchise, int delay, List<InterventionResponseDTO> linkedInterventions) {
         super(longitude, latitude, radius);
         this.id = locationId;
         this.name = name;
         this.area = area;
+        this.franchise = franchise;
         this.delay = delay;
         this.linkedInterventions = linkedInterventions;
     }
@@ -60,6 +63,14 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.delay = delay;
     }
 
+    public FranchiseResponseDTO getFranchise() {
+        return franchise;
+    }
+
+    public void setFranchise(FranchiseResponseDTO franchise) {
+        this.franchise = franchise;
+    }
+
     public LocationResponseDTO fromData(Location location) {
         this.longitude = location.getLongitude();
         this.latitude = location.getLatitude();
@@ -69,6 +80,7 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         this.delay = location.getDelay();
 
         this.area = new AreaResponseDTO().fromData(location.getArea());
+        this.franchise = new FranchiseResponseDTO().fromData(location.getFranchise());
 
         this.linkedInterventions = location
                 .getLinkedInterventions()
