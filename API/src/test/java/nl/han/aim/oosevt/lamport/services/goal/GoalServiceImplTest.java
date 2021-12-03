@@ -4,10 +4,8 @@ import nl.han.aim.oosevt.lamport.ObjectAssertions;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
-import nl.han.aim.oosevt.lamport.data.entity.Location;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -164,5 +162,26 @@ public class GoalServiceImplTest {
 
         // Assert
         ObjectAssertions.assertEquals(goalResponseDTO, actual);
+    }
+
+    @Test
+    void deleteGoalCallsDAO() {
+        // Arrange
+        Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(goal);
+
+        //Act
+        sut.deleteGoal(id);
+
+        //Assert
+        Mockito.verify(goalDAOFixture).deleteGoal(id);
+    }
+
+    @Test
+    void deleteGoalThrowsExceptionOnNonExistingGoal() {
+        //Arrange
+        Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(null);
+
+        //Act
+        Assertions.assertThrows(NotFoundException.class, () -> sut.deleteGoal(id));
     }
 }

@@ -1,6 +1,5 @@
 package nl.han.aim.oosevt.lamport.data.dao.goal;
 
-import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 import org.springframework.stereotype.Component;
@@ -68,6 +67,12 @@ public class GoalDAOImpl implements GoalDAO {
 
     @Override
     public void deleteGoal(int goalId) {
-
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL deleteGoal(?)")) {
+            statement.setInt(1, goalId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

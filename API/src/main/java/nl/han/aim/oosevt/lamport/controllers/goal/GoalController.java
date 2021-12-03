@@ -48,4 +48,9 @@ public class GoalController {
     public void createGoal(@RequestBody CreateGoalRequestDTO createGoalRequestDTO) {
         goalService.createGoal(createGoalRequestDTO);
     }
+
+    @DeleteMapping("{id}")
+    public void deleteGoal(@PathVariable("id") int id) {
+        goalService.deleteGoal(id);
+    }
 }
