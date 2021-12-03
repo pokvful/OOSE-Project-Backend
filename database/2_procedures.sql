@@ -241,4 +241,14 @@ CREATE PROCEDURE createGoal(
 ) BEGIN
     INSERT INTO goal(goal_name) VALUES (param_name);
 END //
+
+CREATE PROCEDURE updateGoal(
+    IN param_id INT,
+    IN param_name VARCHAR(255)
+) BEGIN
+    UPDATE goal
+        SET goal_name = param_name
+    WHERE goal_id = param_id;
+END //
+
 DELIMITER ;
