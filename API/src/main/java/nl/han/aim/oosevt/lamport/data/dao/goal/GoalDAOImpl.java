@@ -29,7 +29,7 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     @Override
-    public List<Goal> getGoal() {
+    public List<Goal> getGoals() {
         return null;
     }
 
