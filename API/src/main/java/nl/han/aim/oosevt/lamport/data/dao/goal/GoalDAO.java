@@ -7,7 +7,7 @@ import java.util.List;
 public interface GoalDAO {
     void createGoal(String name);
     Goal getGoalById(int goalId);
-    List<Goal> getGoal();
+    List<Goal> getGoals();
     void updateGoal(int goalId, String name);
     void deleteGoal(int goalId);
 }
