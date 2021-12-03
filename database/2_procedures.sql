@@ -242,6 +242,12 @@ CREATE PROCEDURE createGoal(
     INSERT INTO goal(goal_name) VALUES (param_name);
 END //
 
+CREATE PROCEDURE deleteGoal(
+    IN param_id INT
+) BEGIN
+    DELETE FROM goal WHERE goal_id = param_id;
+END //
+
 CREATE PROCEDURE updateGoal(
     IN param_id INT,
     IN param_name VARCHAR(255)

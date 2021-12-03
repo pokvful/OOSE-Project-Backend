@@ -59,4 +59,10 @@ public class GoalServiceImpl implements GoalService {
 
         goalDAO.updateGoal(updateGoalRequestDTO.getId(), updateGoalRequestDTO.getName());
     }
+
+    @Override
+    public void deleteGoal(int id) {
+        assertGoalExists(id);
+        goalDAO.deleteGoal(id);
+    }
 }

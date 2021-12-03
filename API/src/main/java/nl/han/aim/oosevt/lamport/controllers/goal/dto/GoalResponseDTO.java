@@ -11,7 +11,8 @@ public class GoalResponseDTO {
         this.name = name;
     }
 
-    public GoalResponseDTO() {}
+    public GoalResponseDTO() {
+    }
 
     public GoalResponseDTO fromData(Goal goal) {
         this.id = goal.getGoalId();
