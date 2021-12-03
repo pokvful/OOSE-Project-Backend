@@ -62,7 +62,14 @@ public class GoalDAOImpl implements GoalDAO {
 
     @Override
     public void updateGoal(int goalId, String name) {
-
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?)")) {
+            statement.setInt(1, goalId);
+            statement.setString(2, name);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

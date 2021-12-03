@@ -247,4 +247,14 @@ CREATE PROCEDURE deleteGoal(
 ) BEGIN
     DELETE FROM goal WHERE goal_id = param_id;
 END //
+
+CREATE PROCEDURE updateGoal(
+    IN param_id INT,
+    IN param_name VARCHAR(255)
+) BEGIN
+    UPDATE goal
+        SET goal_name = param_name
+    WHERE goal_id = param_id;
+END //
+
 DELIMITER ;
