@@ -60,6 +60,9 @@ INSERT INTO intervention (intervention_name) VALUES
 
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 1, "");
 
+INSERT INTO goal(goal_name) VALUES ("Afvallen");
+INSERT INTO goal(goal_name) VALUES ("Geld Besparen");
+
 
 -- SELECT * FROM answer;
 

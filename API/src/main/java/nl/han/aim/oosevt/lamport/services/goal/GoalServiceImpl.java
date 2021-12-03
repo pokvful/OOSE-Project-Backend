@@ -4,11 +4,13 @@ import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class GoalServiceImpl implements GoalService {
@@ -27,12 +29,21 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public List<GoalResponseDTO> getGoals() {
-        return null;
+        return goalDAO
+                .getGoals()
+                .stream()
+                .map(x ->
+                    new GoalResponseDTO().fromData(x))
+                .collect(Collectors.toList());
     }
 
     @Override
     public GoalResponseDTO getGoal(int id) {
-        return null;
+        final Goal goal = goalDAO.getGoalById(id);
+        if(goal == null) {
+            throw new NotFoundException();
+        }
+        return new GoalResponseDTO().fromData(goal);
     }
 
     @Override

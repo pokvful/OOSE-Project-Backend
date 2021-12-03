@@ -245,6 +245,6 @@ END //
 CREATE PROCEDURE deleteGoal(
     IN param_id INT
 ) BEGIN
-    DELETE FROM goal WHERE goal_id = param_id
+    DELETE FROM goal WHERE goal_id = param_id;
 END //
 DELIMITER ;

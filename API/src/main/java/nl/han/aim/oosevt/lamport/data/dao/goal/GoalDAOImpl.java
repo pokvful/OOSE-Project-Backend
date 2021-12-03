@@ -1,13 +1,12 @@
 package nl.han.aim.oosevt.lamport.data.dao.goal;
 
+import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -25,12 +24,41 @@ public class GoalDAOImpl implements GoalDAO {
 
     @Override
     public Goal getGoalById(int goalId) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getGoalById(?)")) {
+            statement.setInt(1, goalId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Goal(
+                            resultSet.getInt("goal_id"),
+                            resultSet.getString("goal_name"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Goal> getGoal() {
-        return null;
+    public List<Goal> getGoals() {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getGoals()");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            List<Goal> getGoals = new ArrayList<>();
+            while (resultSet.next()) {
+                getGoals.add(new Goal(
+                        resultSet.getInt("goal_id"),
+                        resultSet.getString("goal_name")));
+            }
+            return getGoals;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     @Override

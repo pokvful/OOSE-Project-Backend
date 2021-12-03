@@ -8,10 +8,7 @@ import java.util.List;
 
 public interface GoalService {
     List<GoalResponseDTO> getGoals();
-
     GoalResponseDTO getGoal(int id);
-
     void createGoal(CreateGoalRequestDTO createGoalRequestDTO);
-
     void updateGoal(UpdateGoalRequestDTO updateGoalRequestDTO);
 }
