@@ -180,6 +180,7 @@ END //
 CREATE PROCEDURE deleteLocation(
     IN param_id INT
 ) BEGIN
+    DELETE FROM location_intervention WHERE location_id = param_id;
     DELETE FROM location WHERE location_id = param_id;
 	DELETE FROM geofence WHERE geofence_id = (SELECT geofence_id FROM location WHERE location_id = param_id);
 END //
