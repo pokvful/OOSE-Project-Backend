@@ -6,7 +6,7 @@ BEGIN
 	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id;
 END //
 
-CREATE PROCEDURE getArea(IN param_id INT)
+CREATE PROCEDURE getAreaById(IN param_id INT)
 BEGIN
 	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id WHERE a.area_id = param_id;
 END //
