@@ -1,6 +1,7 @@
 USE lbc
 
 DELIMITER //
+
 CREATE PROCEDURE getAreas()
 BEGIN
 	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id;
@@ -9,6 +10,29 @@ END //
 CREATE PROCEDURE getAreaById(IN param_id INT)
 BEGIN
 	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id WHERE a.area_id = param_id;
+END //
+
+CREATE PROCEDURE getUserById(
+    IN param_user_id INT
+) BEGIN
+    SELECT user_id, username, password, email, users.role_id, role
+    FROM users
+    LEFT OUTER JOIN role ON users.role_id = role.role_id
+    WHERE users.user_id = param_user_id;
+END //
+
+
+CREATE PROCEDURE getUsers()
+BEGIN
+    SELECT user_id, username, password, email, users.role_id, role
+    FROM users
+    LEFT OUTER JOIN role ON users.role_id = role.role_id;
+END //
+
+CREATE PROCEDURE getRoles()
+BEGIN
+    SELECT role_id, role
+    FROM role;
 END //
 
 CREATE PROCEDURE createArea(
