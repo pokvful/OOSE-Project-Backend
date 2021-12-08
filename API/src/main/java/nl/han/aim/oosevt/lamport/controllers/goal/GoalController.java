@@ -1,6 +1,5 @@
 package nl.han.aim.oosevt.lamport.controllers.goal;
 
-import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;

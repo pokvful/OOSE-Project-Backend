@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionString;
@@ -18,8 +19,13 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class LocationDAOImpl implements LocationDAO {
 
+    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final InterventionDAO interventionDAO;
+
     @Autowired
-    private InterventionDAO interventionDAO;
+    public LocationDAOImpl(InterventionDAO interventionDAO) {
+        this.interventionDAO = interventionDAO;
+    }
 
     private Location locationFromResultSet(ResultSet resultSet) {
         try {
@@ -45,7 +51,7 @@ public class LocationDAOImpl implements LocationDAO {
                     interventionDAO.getInterventionsByLocationId(locationId)
             );
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
 
         return null;
@@ -69,10 +75,8 @@ public class LocationDAOImpl implements LocationDAO {
             statement.setString(8, linkedInterventions.stream().map(Object::toString).collect(Collectors.joining(",")));
 
             statement.executeUpdate();
-
         } catch (SQLException e) {
-
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -88,7 +92,7 @@ public class LocationDAOImpl implements LocationDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
     }
@@ -106,7 +110,7 @@ public class LocationDAOImpl implements LocationDAO {
             return foundLocations;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -131,7 +135,7 @@ public class LocationDAOImpl implements LocationDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -143,7 +147,7 @@ public class LocationDAOImpl implements LocationDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 }

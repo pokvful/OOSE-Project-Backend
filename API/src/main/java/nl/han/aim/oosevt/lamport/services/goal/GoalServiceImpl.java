@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class GoalServiceImpl implements GoalService {
-    private GoalDAO goalDAO;
+    private final GoalDAO goalDAO;
 
     @Autowired
     public GoalServiceImpl(GoalDAO goalDAO) {

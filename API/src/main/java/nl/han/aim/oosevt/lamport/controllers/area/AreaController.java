@@ -3,14 +3,12 @@ package nl.han.aim.oosevt.lamport.controllers.area;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.CreateAreaRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.area.dto.UpdateAreaRequestDTO;
-import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.services.area.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

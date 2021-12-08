@@ -6,11 +6,16 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionString;
 
 @Component
 public class InterventionDAOImpl implements InterventionDAO {
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
+
     private Intervention interventionFromResultSet(ResultSet resultSet) {
         try {
             return new Intervention(
@@ -18,7 +23,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                     resultSet.getString("intervention_name")
             );
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
     }
@@ -38,7 +43,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
 
         return new ArrayList<>();
