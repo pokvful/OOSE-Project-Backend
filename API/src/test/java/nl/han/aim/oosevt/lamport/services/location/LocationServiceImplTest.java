@@ -152,6 +152,28 @@ public class LocationServiceImplTest {
     }
 
     @Test
+    public void testCreateChecksFranchiseExists() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(franchiseId)).thenReturn(null);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.createLocation(createLocationRequestDTO));
+    }
+
+    @Test
+    public void testUpdateChecksFranchiseExists() {
+        // Arrange
+        Mockito.when(franchiseDAOFixture.getFranchiseById(franchiseId)).thenReturn(null);
+        Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);
+        Mockito.when(locationDAOFixture.getLocationById(id)).thenReturn(mockLocation);
+
+        // Act/Assert
+        assertThrows(NotFoundException.class, () -> sut.updateLocation(updateLocationRequestDTO));
+    }
+
+    @Test
     public void testCreateLocationVerifies() {
         // Arrange
         Mockito.when(areaDAOFixture.getAreaById(areaId)).thenReturn(mockArea);

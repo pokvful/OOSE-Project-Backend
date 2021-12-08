@@ -38,8 +38,7 @@ public class UpdateDTOValidationTest {
                 Arguments.arguments(1, "Test", 1, 1, 0, 0, 1, 1),
                 Arguments.arguments(1, "Test", 1, -91, 1, 1, 0, 1),
                 Arguments.arguments(1, "Test", 1, 91, 1, 1, 0, 1),
-                Arguments.arguments(1, "Test", 1, 0, 1, 1, 1, 1),
-                Arguments.arguments(1, "Test", 1, 1, 1, 1, 1, 0)
+                Arguments.arguments(1, "Test", 1, 0, 1, 1, 1, 1)
         );
     }
 }
