@@ -1,7 +1,7 @@
 use lbc;
 
 
-INSERT INTO role (role)
+INSERT INTO role (role_name)
 VALUES 
     ("beheerder"),
     ("gebruiker");

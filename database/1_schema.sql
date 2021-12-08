@@ -2,7 +2,7 @@ use lbc;
 
 create table if not exists role (
     role_id INT(6) UNSIGNED auto_increment PRIMARY KEY,
-    role VARCHAR(255) NOT NULL
+    role_name VARCHAR(255) NOT NULL
 );
 
 create table if not exists users (

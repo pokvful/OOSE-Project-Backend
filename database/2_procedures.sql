@@ -15,7 +15,7 @@ END //
 CREATE PROCEDURE getUserById(
     IN param_user_id INT
 ) BEGIN
-    SELECT user_id, username, password, email, users.role_id, role
+    SELECT user_id, username, password, email, users.role_id, role_name
     FROM users
     LEFT OUTER JOIN role ON users.role_id = role.role_id
     WHERE users.user_id = param_user_id;
@@ -24,14 +24,14 @@ END //
 
 CREATE PROCEDURE getUsers()
 BEGIN
-    SELECT user_id, username, password, email, users.role_id, role
+    SELECT user_id, username, password, email, users.role_id, role_name
     FROM users
     LEFT OUTER JOIN role ON users.role_id = role.role_id;
 END //
 
 CREATE PROCEDURE getRoles()
 BEGIN
-    SELECT role_id, role
+    SELECT role_id, role_name
     FROM role;
 END //
 
