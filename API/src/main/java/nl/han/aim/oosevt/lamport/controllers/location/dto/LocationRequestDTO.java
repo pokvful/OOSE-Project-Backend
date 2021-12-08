@@ -118,9 +118,6 @@ public abstract class LocationRequestDTO extends RequestDTO {
         if (areaId == 0) {
             addError("areaId", "AreaId mag niet leeg zijn!");
         }
-        if (franchiseId == 0) {
-            addError("franchiseId", "FranchiseId mag niet leeg zijn!");
-        }
         validateSpecificDto();
     }
 

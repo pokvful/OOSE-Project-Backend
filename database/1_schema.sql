@@ -86,7 +86,7 @@ FOREIGN KEY (command_id) REFERENCES command(command_id)
 
 create table if not exists location (
 location_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-franchise_id INT(6) UNSIGNED,
+franchise_id INT(6) UNSIGNED NULL,
 area_id INT(6) UNSIGNED,
 geofence_id INT(6) UNSIGNED,
 location_name VARCHAR(100),
