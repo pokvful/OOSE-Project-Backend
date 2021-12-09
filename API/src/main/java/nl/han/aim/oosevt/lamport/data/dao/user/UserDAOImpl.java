@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionString;
+
 @Component
 public class UserDAOImpl implements UserDAO {
 
@@ -48,8 +50,8 @@ public class UserDAOImpl implements UserDAO {
 
             statement.setInt(1, id);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
-                if(resultSet.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
                     return new User(
                             resultSet.getInt("user_id"),
                             resultSet.getString("username"),
@@ -64,5 +66,19 @@ public class UserDAOImpl implements UserDAO {
             logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
+    }
+
+    @Override
+    public void createUser(String username, String email, String password, int role_id) {
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL createUser(?, ?, ?, ?)")) {
+            statement.setString(1, username);
+            statement.setString(2, email);
+            statement.setString(3, password);
+            statement.setInt(4, role_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "A database error occurred!", e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.services.user;
 
 import nl.han.aim.oosevt.lamport.ObjectAssertions;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
@@ -28,6 +29,7 @@ public class UserServiceImplTest {
     private User mockUser;
     private UserResponseDTO mockUserResponseDTO;
     private RoleResponseDTO mockRoleResponseDTO;
+    private CreateUserRequestDTO mockCreateUserRequestDTO;
     private ArrayList<UserResponseDTO> usersResponseDTO;
     private ArrayList<User> mockUsers;
 
@@ -40,6 +42,10 @@ public class UserServiceImplTest {
         mockUser = new User(userId, username, email, password, mockRole);
 
         userDAOFixture = Mockito.mock(UserDAO.class);
+
+        mockCreateUserRequestDTO = Mockito.spy (
+                new CreateUserRequestDTO(username, email, password, mockRole)
+        );
 
         mockRoleResponseDTO = new RoleResponseDTO(roleId, roleName);
         mockUserResponseDTO = new UserResponseDTO(userId, username, email, mockRoleResponseDTO);
@@ -120,5 +126,29 @@ public class UserServiceImplTest {
 
         //Assert
         ObjectAssertions.assertEquals(usersResponseDTO, actual);
+    }
+
+    @Test
+    public void testCreateUserVerifies() {
+        // Arrange
+        Mockito.when(userDAOFixture.getUserById(mockUser.getUserId())).thenReturn(mockUser);
+
+        // Act
+        sut.createUser(mockCreateUserRequestDTO);
+
+        // Assert
+        Mockito.verify(mockCreateUserRequestDTO).validate();
+    }
+
+    @Test
+    public void testCreateUserCallsDB() {
+        // Arrange
+        Mockito.when(userDAOFixture.getUserById(mockUser.getUserId())).thenReturn(mockUser);
+
+        // Act
+        sut.createUser(mockCreateUserRequestDTO);
+
+        // Assert
+        Mockito.verify(userDAOFixture).createUser(mockUser.getUsername(), mockUser.getEmail(), mockUser.getPassword(), mockUser.getRole().getRoleId());
     }
 }

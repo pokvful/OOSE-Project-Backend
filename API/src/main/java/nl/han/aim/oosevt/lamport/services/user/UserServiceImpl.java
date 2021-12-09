@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.user;
 
+import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.User;
@@ -32,10 +33,17 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO getUserById(int id) {
         final User user = userDAO.getUserById(id);
 
-        if(user == null) {
+        if (user == null) {
             throw new NotFoundException();
         }
 
         return new UserResponseDTO().fromData(user);
     }
+
+    @Override
+    public void createUser(CreateUserRequestDTO create) {
+        create.validate();
+        userDAO.createUser(create.getUsername(), create.getEmail(), create.getPassword(), create.getRole().getRoleId());
+    }
 }
+
