@@ -22,11 +22,13 @@ public class GoalRequestDTO extends RequestDTO {
 
     @Override
     protected void validateDTO() {
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             addError("name", "Naam kan niet leeg zijn");
         }
         validateSpecificDTO();
     }
 
-    public void validateSpecificDTO() {}
+    public void validateSpecificDTO() {
+
+    }
 }
