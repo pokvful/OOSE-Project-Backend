@@ -29,6 +29,22 @@ BEGIN
     LEFT OUTER JOIN role ON users.role_id = role.role_id;
 END //
 
+CREATE PROCEDURE updateUser(
+    IN param_id INT,
+    IN param_username VARCHAR(255),
+    IN param_password VARCHAR(255),
+    IN param_email VARCHAR(255),
+    IN param_role_id INT
+) BEGIN
+    UPDATE users
+    SET 
+        username = param_username,
+        password = param_password,
+        email = param_email,
+        role_id = param_role_id
+    WHERE user_id = param_id;
+END //
+
 CREATE PROCEDURE getRoles()
 BEGIN
     SELECT role_id, role_name

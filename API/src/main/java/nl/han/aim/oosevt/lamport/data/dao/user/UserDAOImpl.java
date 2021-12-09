@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionString;
 
 @Component
 public class UserDAOImpl implements UserDAO {
@@ -48,8 +51,8 @@ public class UserDAOImpl implements UserDAO {
 
             statement.setInt(1, id);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
-                if(resultSet.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
                     return new User(
                             resultSet.getInt("user_id"),
                             resultSet.getString("username"),
@@ -64,5 +67,23 @@ public class UserDAOImpl implements UserDAO {
             logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
+    }
+
+    @Override
+    public void updateUser(int id, String username, String email, String password, int roleId) {
+        try (
+                Connection connection = DriverManager.getConnection(connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL updateUser(?, ?, ?, ?, ?)")
+        ) {
+            statement.setInt(1, id);
+            statement.setString(2, username);
+            statement.setString(3, email);
+            statement.setString(4, password);
+            statement.setInt(5, roleId);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "A database error occurred!", e);
+        }
     }
 }
