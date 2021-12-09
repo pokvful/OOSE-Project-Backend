@@ -1,22 +1,24 @@
 package nl.han.aim.oosevt.lamport.services.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nl.han.aim.oosevt.lamport.ObjectAssertions;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
+import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.AdditionalMatchers.not;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,18 +31,21 @@ public class UserServiceImplTest {
     private final int roleId = 1;
     private final String roleName = "Beheerder";
     private final String email = "b.barends@student.han.nl";
-    private final String password = "SomePassword";
+    private String password = "SomePassword";
+    private String hash = "SomeHash"; 
 
     private Role mockRole;
     private User mockUser;
     private UserResponseDTO mockUserResponseDTO;
     private RoleResponseDTO mockRoleResponseDTO;
+    private CreateUserRequestDTO mockCreateUserRequestDTO;
     private ArrayList<UserResponseDTO> usersResponseDTO;
     private ArrayList<User> mockUsers;
     private UpdateUserRequestDTO updateUserRequestDTO;
 
     private UserDAO userDAOFixture;
     private RoleDAO roleDAOFixture;
+    private HashProvider hashProviderFixture;
 
     private UserServiceImpl sut;
 
@@ -53,16 +58,21 @@ public class UserServiceImplTest {
         roleDAOFixture = Mockito.mock(RoleDAO.class);
 
         updateUserRequestDTO = new UpdateUserRequestDTO(userId, username, email, password, roleId);
+        hashProviderFixture = Mockito.mock(HashProvider.class);
+
+        mockCreateUserRequestDTO = Mockito.spy(
+                new CreateUserRequestDTO(username, email, password, roleId));
 
         mockRoleResponseDTO = new RoleResponseDTO(roleId, roleName);
-        mockUserResponseDTO = new UserResponseDTO(userId, username, email, mockRoleResponseDTO);
+        mockUserResponseDTO =
+                new UserResponseDTO(userId, username, email, mockRoleResponseDTO);
         mockUsers = new ArrayList<>();
         mockUsers.add(mockUser);
 
         usersResponseDTO = new ArrayList<>();
         usersResponseDTO.add(mockUserResponseDTO);
 
-        sut = new UserServiceImpl(userDAOFixture, roleDAOFixture);
+        sut = new UserServiceImpl(userDAOFixture, roleDAOFixture, hashProviderFixture);
     }
 
     @Test
@@ -115,75 +125,107 @@ public class UserServiceImplTest {
 
         //Assert
         Assertions.assertThrows(NotFoundException.class, act);
+        sut = new UserServiceImpl(userDAOFixture, roleDAOFixture, hashProviderFixture);
     }
 
     @Test
     void getUserCallsDAO() {
-        //Arrange
+        // Arrange
         Mockito.when(userDAOFixture.getUserById(userId)).thenReturn(mockUser);
 
-        //Act
+        // Act
         sut.getUserById(userId);
 
-        //Assert
+        // Assert
         Mockito.verify(userDAOFixture).getUserById(userId);
     }
 
     @Test
     void getExistingUser() {
-        //Arrange
+        // Arrange
         Mockito.when(userDAOFixture.getUserById(userId)).thenReturn(mockUser);
 
-        //Act
+        // Act
         UserResponseDTO actual = sut.getUserById(userId);
 
-        //Assert
+        // Assert
         ObjectAssertions.assertEquals(mockUserResponseDTO, actual);
     }
 
     @Test
     void getNoUser() {
-        //Arrange
+        // Arrange
         Mockito.when(userDAOFixture.getUserById(userId)).thenReturn(null);
 
-        //Assert
-        Assertions.assertThrows(NotFoundException.class, () -> sut.getUserById(userId));
+        // Assert
+        Assertions.assertThrows(NotFoundException.class,
+                () -> sut.getUserById(userId));
     }
-
 
     @Test
     void getUsersCallsDAO() {
-        //Act
+        // Act
         sut.getUsers();
 
-        //Assert
+        // Assert
         Mockito.verify(userDAOFixture).getUsers();
     }
 
     @Test
     void getExistingUsers() {
-        //Arrange
+        // Arrange
         Mockito.when(userDAOFixture.getUsers()).thenReturn(mockUsers);
 
-        //Act
+        // Act
         List<UserResponseDTO> actual = sut.getUsers();
 
-        //Assert
+        // Assert
         ObjectAssertions.assertEquals(usersResponseDTO, actual);
     }
 
     @Test
     void getNoUsers() {
-        //Arrange
+        // Arrange
         usersResponseDTO.clear();
         mockUsers.clear();
 
         Mockito.when(userDAOFixture.getUsers()).thenReturn(mockUsers);
 
-        //Act
+        // Act
         List<UserResponseDTO> actual = sut.getUsers();
 
-        //Assert
+        // Assert
         ObjectAssertions.assertEquals(usersResponseDTO, actual);
+    }
+
+    @Test
+    public void testCreateUserVerifies() {
+        // Arrange
+        Mockito.when(userDAOFixture.getUserById(mockUser.getUserId()))
+                .thenReturn(mockUser);
+
+        Mockito.when(hashProviderFixture.hash(password)).thenReturn(hash);
+
+        // Act
+        sut.createUser(mockCreateUserRequestDTO);
+
+        // Assert
+        Mockito.verify(mockCreateUserRequestDTO).validate();
+    }
+
+    @Test
+    public void testCreateUserCallsDB() {
+        // Arrange
+        Mockito.when(userDAOFixture.getUserById(mockUser.getUserId()))
+                .thenReturn(mockUser);
+        Mockito.when(hashProviderFixture.hash(password)).thenReturn(hash);
+
+        // Act
+        sut.createUser(mockCreateUserRequestDTO);
+
+        // Assert
+        Mockito.verify(userDAOFixture)
+                .createUser(mockUser.getUsername(), mockUser.getEmail(), hashProviderFixture.hash(mockUser.getPassword()),
+                        mockUser.getRole().getRoleId());
     }
 }

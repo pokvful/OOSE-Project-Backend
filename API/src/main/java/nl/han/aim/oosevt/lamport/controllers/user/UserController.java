@@ -1,7 +1,7 @@
 package nl.han.aim.oosevt.lamport.controllers.user;
 
-import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +41,10 @@ public class UserController {
                 userService.getUserById(id),
                 HttpStatus.OK
         );
+    }
+
+    @PostMapping()
+    public void createUser(CreateUserRequestDTO create) {
+        userService.createUser(create);
     }
 }

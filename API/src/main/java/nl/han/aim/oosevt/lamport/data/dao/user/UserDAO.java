@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface UserDAO {
     List<User> getUsers();
+
     User getUserById(int id);
     void updateUser(int id, String username, String email, String password, int roleId);
+    void createUser(String username, String email, String password, int role_id);
 }

@@ -11,6 +11,5 @@ public interface GoalService {
     GoalResponseDTO getGoal(int id);
     void createGoal(CreateGoalRequestDTO createGoalRequestDTO);
     void updateGoal(UpdateGoalRequestDTO updateGoalRequestDTO);
-
     void deleteGoal(int id);
 }
