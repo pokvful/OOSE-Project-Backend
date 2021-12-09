@@ -7,9 +7,14 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class GoalDAOImpl implements GoalDAO {
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
+
     @Override
     public void createGoal(String name) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
@@ -17,7 +22,7 @@ public class GoalDAOImpl implements GoalDAO {
             statement.setString(1, name);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -35,7 +40,7 @@ public class GoalDAOImpl implements GoalDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
     }
@@ -55,7 +60,7 @@ public class GoalDAOImpl implements GoalDAO {
             return getGoals;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -68,7 +73,7 @@ public class GoalDAOImpl implements GoalDAO {
             statement.setString(2, name);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -79,7 +84,7 @@ public class GoalDAOImpl implements GoalDAO {
             statement.setInt(1, goalId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 }

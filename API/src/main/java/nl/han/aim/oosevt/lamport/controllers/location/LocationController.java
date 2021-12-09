@@ -3,14 +3,12 @@ package nl.han.aim.oosevt.lamport.controllers.location;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;
-import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.services.location.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

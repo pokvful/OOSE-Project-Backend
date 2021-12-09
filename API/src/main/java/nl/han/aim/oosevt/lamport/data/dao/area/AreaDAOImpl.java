@@ -7,9 +7,12 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class AreaDAOImpl implements AreaDAO {
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     @Override
     public void createArea(String name, double longitude, double latitude, int radius) {
@@ -21,7 +24,7 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setInt(4, radius);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -43,7 +46,7 @@ public class AreaDAOImpl implements AreaDAO {
             return foundAreas;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -65,7 +68,7 @@ public class AreaDAOImpl implements AreaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
     }
@@ -81,7 +84,7 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setInt(5, radius);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -92,7 +95,7 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setInt(1, areaId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 }
