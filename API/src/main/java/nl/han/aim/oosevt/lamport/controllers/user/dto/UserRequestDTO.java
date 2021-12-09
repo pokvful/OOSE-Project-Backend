@@ -1,13 +1,12 @@
 package nl.han.aim.oosevt.lamport.controllers.user.dto;
 
-import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class UserRequestDTO extends RequestDTO {
     protected String username;
     protected String email;
     protected String password;
-    protected Role role;
+    protected int roleId;
 
     public String getUsername() {
         return username;
@@ -25,6 +24,14 @@ public class UserRequestDTO extends RequestDTO {
         this.email = email;
     }
 
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -33,19 +40,11 @@ public class UserRequestDTO extends RequestDTO {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public UserRequestDTO(String username, String email, String password, Role role) {
+    public UserRequestDTO(String username, String email, String password, int roleId) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.roleId = roleId;
     }
 
     public UserRequestDTO() {
@@ -63,7 +62,7 @@ public class UserRequestDTO extends RequestDTO {
         if (password.isEmpty()) {
             addError("password", "Wachtwoord mag niet leeg zijn!");
         }
-        if (role.getRoleName().isEmpty()) {
+        if (getRoleId() == 0) {
             addError("role", "Rol mag niet leeg zijn!");
         }
         validateSpecificDTO();
