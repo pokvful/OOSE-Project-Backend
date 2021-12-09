@@ -6,6 +6,7 @@ import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -43,7 +44,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(CreateUserRequestDTO create) {
         create.validate();
-        userDAO.createUser(create.getUsername(), create.getEmail(), create.getPassword(), create.getRole().getRoleId());
+        String hash = new BCryptPasswordEncoder().encode(create.getPassword());
+        userDAO.createUser(create.getUsername(), create.getEmail(), hash, create.getRole().getRoleId());
     }
 }
 
