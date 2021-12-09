@@ -282,4 +282,15 @@ CREATE PROCEDURE updateGoal(
     WHERE goal_id = param_id;
 END //
 
+CREATE PROCEDURE createUser(
+    IN param_name VARCHAR(255),
+    IN param_email VARCHAR(255),
+    IN param_password VARCHAR(255),
+    IN param_role_id INT
+) BEGIN
+    INSERT INTO users(username, password, email, role_id)
+        VALUES(param_name, param_password, param_email, param_role_id);
+END //
+
+
 DELIMITER ;
