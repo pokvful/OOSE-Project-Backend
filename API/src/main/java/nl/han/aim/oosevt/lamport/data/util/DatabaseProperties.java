@@ -6,8 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DatabaseProperties {
-    private final Logger logger = Logger.getLogger(getClass().getName());
-    private static String connectionString;
+    private static final Logger LOGGER = Logger.getLogger(DatabaseProperties.class.getName());
+    private String connectionString;
+    private static DatabaseProperties instance;
 
     public DatabaseProperties() {
         final Properties properties = new Properties();
@@ -15,13 +16,14 @@ public class DatabaseProperties {
             properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
             Class.forName(properties.getProperty("driver"));
             connectionString = properties.getProperty("connectionString");
+            instance = this;
         } catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, "Cant access property file database.properties", e);
+            LOGGER.log(Level.SEVERE, "Cant access property file database.properties", e);
         }
     }
 
 
     public static String connectionString() {
-        return connectionString;
+        return instance.connectionString;
     }
 }

@@ -16,7 +16,7 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class UserDAOImpl implements UserDAO {
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final static Logger LOGGER = Logger.getLogger(UserDAOImpl.class.getName());
 
     @Override
     public List<User> getUsers() {
@@ -38,7 +38,7 @@ public class UserDAOImpl implements UserDAO {
             return getUsers;
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -63,7 +63,32 @@ public class UserDAOImpl implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+        }
+        return null;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getUserByUsername(?)")) {
+
+            statement.setString(1, username);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(
+                            resultSet.getInt("user_id"),
+                            resultSet.getString("username"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            new Role(
+                                    resultSet.getInt("role_id"),
+                                    resultSet.getString("role_name")));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
         return null;
     }
@@ -78,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setInt(4, role_id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 
@@ -89,7 +114,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 }
