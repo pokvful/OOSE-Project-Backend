@@ -86,13 +86,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void createUser(String username, String email, String password, int role_id) {
+    public void createUser(String username, String email, String password, int roleId) {
         try (Connection connection = DriverManager.getConnection(connectionString());
                 PreparedStatement statement = connection.prepareStatement("CALL createUser(?, ?, ?, ?)")) {
             statement.setString(1, username);
             statement.setString(2, email);
             statement.setString(3, password);
-            statement.setInt(4, role_id);
+            statement.setInt(4, roleId);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "A database error occurred!", e);

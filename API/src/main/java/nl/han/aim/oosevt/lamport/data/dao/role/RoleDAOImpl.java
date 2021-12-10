@@ -17,11 +17,19 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public List<Role> getRoles() {
-        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getRoles()"); ResultSet resultSet = statement.executeQuery()) {
-
+        try (
+                Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL getRoles()");
+                ResultSet resultSet = statement.executeQuery()
+        ) {
             List<Role> roles = new ArrayList<>();
             while (resultSet.next()) {
-                roles.add(new Role(resultSet.getInt("role_id"), resultSet.getString("role_name")));
+                int id = resultSet.getInt("role_id");
+                String name = resultSet.getString("role_name");
+
+                Role role = new Role(id, name);
+
+                roles.add(role);
             }
             return roles;
 
@@ -38,8 +46,9 @@ public class RoleDAOImpl implements RoleDAO {
                 PreparedStatement statement = connection.prepareStatement("CALL getRoleById(?)")
         ) {
             statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            return new Role(resultSet.getInt("role_id"), resultSet.getString("role_name"));
+            try(ResultSet resultSet = statement.executeQuery()) {
+                return new Role(resultSet.getInt("role_id"), resultSet.getString("role_name"));
+            }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "A database error occurred!", e);
         }
