@@ -11,7 +11,6 @@ INSERT INTO users (username, password, email, role_id) VALUES ("wur", "password"
 INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "hashhashhashbart", "bart@han.nl", 2);
 INSERT INTO users (username, password, email, role_id) VALUES ("Tim", "hashhashhashtim", "tim@han.nl", 2);
 
-INSERT INTO token (token, user_id) VALUES ("123", 1);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.8425, 5.85278, 600);
 INSERT INTO area(area_name, geofence_id) VALUES ("Nijmegen", 1);
 INSERT INTO franchise(franchise_name) VALUES ("McDonalds");
