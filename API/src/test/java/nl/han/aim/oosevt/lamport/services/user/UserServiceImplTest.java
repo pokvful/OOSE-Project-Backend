@@ -17,6 +17,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class UserServiceImplTest {
 
     private final int userId = 1;
@@ -161,4 +163,25 @@ public class UserServiceImplTest {
                 .createUser(mockUser.getUsername(), mockUser.getEmail(), hashProviderFixture.hash(mockUser.getPassword()),
                         mockUser.getRole().getRoleId());
     }
+
+    @Test
+    public void testDeleteLocation() {
+        // Arrange
+        Mockito.when(userDAOFixture.getUserById(Mockito.anyInt())).thenReturn(new User(userId, username, email, password, mockRole));
+        Mockito.doNothing().when(this.userDAOFixture).deleteUser(Mockito.anyInt());
+
+        // Act
+        sut.deleteUser(userId);
+
+        // Assert
+        Mockito.verify(userDAOFixture).deleteUser(userId);
+    }
+
+    @Test
+    public void testDeleteLocationThrowsException() {
+        final int exceptionId = 0;
+
+        assertThrows(NotFoundException.class, () -> sut.deleteUser(exceptionId));
+    }
+
 }

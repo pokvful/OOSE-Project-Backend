@@ -7,7 +7,6 @@ import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -53,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(int id) {
+        if (userDAO.getUserById(id) == null) {
+            throw new NotFoundException();
+        }
         userDAO.deleteUser(id);
     }
 }
