@@ -50,5 +50,10 @@ public class UserServiceImpl implements UserService {
         final String hash = hashProvider.hash(create.getPassword());
         userDAO.createUser(create.getUsername(), create.getEmail(), hash, create.getRoleId());
     }
+
+    @Override
+    public void deleteUser(int id) {
+        userDAO.deleteUser(id);
+    }
 }
 
