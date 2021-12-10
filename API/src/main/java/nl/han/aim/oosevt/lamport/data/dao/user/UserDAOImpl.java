@@ -21,8 +21,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> getUsers() {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getUsers()");
-             ResultSet resultSet = statement.executeQuery()) {
+                PreparedStatement statement = connection.prepareStatement("CALL getUsers()");
+                ResultSet resultSet = statement.executeQuery()) {
 
             List<User> getUsers = new ArrayList<>();
             while (resultSet.next()) {
@@ -46,7 +46,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUserById(int id) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getUserById(?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL getUserById(?)")) {
 
             statement.setInt(1, id);
 
@@ -69,13 +69,30 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void createUser(String username, String email, String password, int role_id) {
+    public void updateUser(int id, String username, String email, String password, int roleId) {
+        try (
+                Connection connection = DriverManager.getConnection(connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL updateUser(?, ?, ?, ?, ?)")) {
+            statement.setInt(1, id);
+            statement.setString(2, username);
+            statement.setString(3, email);
+            statement.setString(4, password);
+            statement.setInt(5, roleId);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "A database error occurred!", e);
+        }
+    }
+
+    @Override
+    public void createUser(String username, String email, String password, int roleId) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createUser(?, ?, ?, ?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL createUser(?, ?, ?, ?)")) {
             statement.setString(1, username);
             statement.setString(2, email);
             statement.setString(3, password);
-            statement.setInt(4, role_id);
+            statement.setInt(4, roleId);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "A database error occurred!", e);

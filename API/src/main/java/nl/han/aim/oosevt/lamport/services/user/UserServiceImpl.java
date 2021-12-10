@@ -1,12 +1,15 @@
 package nl.han.aim.oosevt.lamport.services.user;
 
+import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
+import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,11 +18,13 @@ import java.util.stream.Collectors;
 @Component
 public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
-    private final HashProvider hashProvider;
+    private final RoleDAO roleDAO;
+    private HashProvider hashProvider;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, HashProvider hashProvider) {
+    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, HashProvider hashProvider) {
         this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
         this.hashProvider = hashProvider;
     }
 
@@ -44,6 +49,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
+        final int id = updateUserRequestDTO.getId();
+        final String username = updateUserRequestDTO.getUsername();
+        final String email = updateUserRequestDTO.getEmail();
+        final String password = updateUserRequestDTO.getPassword();
+        final int roleId = updateUserRequestDTO.getRoleId();
+
+        final String hash = new BCryptPasswordEncoder().encode(password);
+
+        if (userDAO.getUserById(id) == null || roleDAO.getRoleById(roleId) == null) {
+            throw new NotFoundException();
+        }
+
+        userDAO.updateUser(id, username, email, hash, roleId);
+    }
+
     public void createUser(CreateUserRequestDTO create) {
         create.validate();
         final String hash = hashProvider.hash(create.getPassword());
@@ -58,4 +79,3 @@ public class UserServiceImpl implements UserService {
         userDAO.deleteUser(id);
     }
 }
-
