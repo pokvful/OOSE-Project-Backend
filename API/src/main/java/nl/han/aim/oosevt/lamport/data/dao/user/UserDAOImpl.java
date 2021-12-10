@@ -98,4 +98,15 @@ public class UserDAOImpl implements UserDAO {
             logger.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
+
+    @Override
+    public void deleteUser(int id) {
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL deleteUser(?)")) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "A database error occurred!", e);
+        }
+    }
 }

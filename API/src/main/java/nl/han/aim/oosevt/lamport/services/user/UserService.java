@@ -11,4 +11,5 @@ public interface UserService {
     UserResponseDTO getUserById(int id);
     void updateUser(UpdateUserRequestDTO updateUserRequestDTO);
     void createUser(CreateUserRequestDTO create);
+    void deleteUser(int id);
 }

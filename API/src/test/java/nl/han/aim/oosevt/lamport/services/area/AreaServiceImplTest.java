@@ -39,7 +39,7 @@ class AreaServiceImplTest {
         mockArea = new Area(areaId, name, longitude, latitude, radius);
 
         areaDAOFixture = Mockito.mock(AreaDAOImpl.class);
-        
+
         mockAreaResponseDTO = new AreaResponseDTO(areaId, name, longitude, latitude, radius);
         createAreaRequestDTO = new CreateAreaRequestDTO(name, longitude, latitude, radius);
         updateAreaRequestDTO = new UpdateAreaRequestDTO(areaId, name, longitude, latitude, radius);
@@ -117,7 +117,7 @@ class AreaServiceImplTest {
         //Act
         Assertions.assertThrows(NotFoundException.class, () -> sut.deleteArea(areaId));
     }
-    
+
     @Test
     void createAreaCallsDAO() {
         //Act

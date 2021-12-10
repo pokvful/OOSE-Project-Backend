@@ -47,4 +47,9 @@ public class UserController {
     public void createUser(CreateUserRequestDTO create) {
         userService.createUser(create);
     }
+
+    @DeleteMapping({"id"})
+    public void deleteUser(@PathVariable("id") int id) {
+        userService.deleteUser(id);
+    }
 }
