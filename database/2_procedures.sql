@@ -292,5 +292,10 @@ CREATE PROCEDURE createUser(
         VALUES(param_name, param_password, param_email, param_role_id);
 END //
 
+CREATE PROCEDURE deleteUser(
+    IN param_id INT
+) BEGIN
+    DELETE FROM users WHERE user_id = param_id;
+END //
 
 DELIMITER ;
