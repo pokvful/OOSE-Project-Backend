@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.user;
 
+import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.services.user.UserService;
@@ -19,6 +20,11 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PutMapping()
+    public void updateUser(@RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+        userService.updateUser(updateUserRequestDTO);
     }
 
     @GetMapping("")
