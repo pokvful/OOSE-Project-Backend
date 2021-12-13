@@ -21,6 +21,15 @@ CREATE PROCEDURE getUserById(
     WHERE users.user_id = param_user_id;
 END //
 
+CREATE PROCEDURE getUserByUsername(
+    IN param_user_name VARCHAR(200)
+) BEGIN
+    SELECT user_id, username, password, email, users.role_id, role_name
+    FROM users
+    LEFT OUTER JOIN role ON users.role_id = role.role_id
+    WHERE users.username = param_user_name;
+END //
+
 
 CREATE PROCEDURE getUsers()
 BEGIN
