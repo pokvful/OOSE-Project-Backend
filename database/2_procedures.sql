@@ -51,6 +51,15 @@ BEGIN
     FROM role;
 END //
 
+CREATE PROCEDURE getRoleById(
+    IN param_id INT
+)
+BEGIN
+    SELECT role_id, role_name
+    FROM role
+    WHERE role_id = param_id;
+END //
+
 CREATE PROCEDURE createArea(
     IN param_name VARCHAR(255),
     IN param_longitude DECIMAL(9,6),
