@@ -106,7 +106,7 @@ public class UserDAOImpl implements UserDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 

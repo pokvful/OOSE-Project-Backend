@@ -50,7 +50,7 @@ public class RoleDAOImpl implements RoleDAO {
                 return new Role(resultSet.getInt("role_id"), resultSet.getString("role_name"));
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
 
         return null;

@@ -7,7 +7,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import nl.han.aim.oosevt.lamport.exceptions.ForbiddenException;
 import nl.han.aim.oosevt.lamport.exceptions.UnauthorizedException;
 import nl.han.aim.oosevt.lamport.shared.Permission;
-import org.springframework.core.env.Environment;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
