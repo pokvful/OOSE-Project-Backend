@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/interventions")
 @CrossOrigin
 public class InterventionController {
-    private InterventionService interventionService;
+    private final InterventionService interventionService;
 
     @Autowired
     public InterventionController(InterventionService interventionService) {
