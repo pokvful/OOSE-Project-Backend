@@ -8,7 +8,7 @@ VALUES
 
 INSERT INTO users (username, password, email, role_id) VALUES ("ivan", "hashhashhash", "ivan@hp2.nl", 1);
 INSERT INTO users (username, password, email, role_id) VALUES ("wur", "password", "info@wur.nl", 1);
-INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "hashhashhashbart", "bart@han.nl", 2);
+INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", "bart@han.nl", 2);
 INSERT INTO users (username, password, email, role_id) VALUES ("Tim", "hashhashhashtim", "tim@han.nl", 2);
 
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.8425, 5.85278, 600);
@@ -59,11 +59,6 @@ INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (
 INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (2,4);
 
 INSERT INTO answers (answer_id, answer) VALUES (1, "Is de kerk groot?");
-
-INSERT INTO intervention (intervention_name) VALUES 
-    ("saladebar"),
-    ("hardlopen"),
-    ("tellen");
 
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, null, "");
 

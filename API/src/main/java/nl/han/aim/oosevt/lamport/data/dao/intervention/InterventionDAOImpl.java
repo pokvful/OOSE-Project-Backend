@@ -16,7 +16,7 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class InterventionDAOImpl implements InterventionDAO {
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final static Logger LOGGER = Logger.getLogger(InterventionDAOImpl.class.getName());
 
     private Intervention interventionFromResultSet(ResultSet resultSet) {/*
         try {
@@ -25,7 +25,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                     resultSet.getString("intervention_name")
             );
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }*/
         return null;
     }
@@ -45,7 +45,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             }
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
 
         return new ArrayList<>();
@@ -64,7 +64,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
     }
 

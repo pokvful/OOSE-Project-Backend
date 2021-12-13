@@ -43,12 +43,12 @@ public class UserController {
         );
     }
 
-    @PostMapping()
-    public void createUser(CreateUserRequestDTO create) {
+    @PostMapping("")
+    public void createUser(@RequestBody CreateUserRequestDTO create) {
         userService.createUser(create);
     }
 
-    @DeleteMapping({"id"})
+    @DeleteMapping("{id}")
     public void deleteUser(@PathVariable("id") int id) {
         userService.deleteUser(id);
     }
