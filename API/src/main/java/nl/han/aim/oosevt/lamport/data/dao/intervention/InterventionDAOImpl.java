@@ -17,21 +17,22 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     private final static Logger LOGGER = Logger.getLogger(InterventionDAOImpl.class.getName());
 
-    private Intervention interventionFromResultSet(ResultSet resultSet) {/*
+    private Intervention interventionFromResultSet(ResultSet resultSet) {
         try {
-            return new Intervention(
+            return new Command(
                     resultSet.getInt("intervention_id"),
-                    resultSet.getString("intervention_name")
+                    resultSet.getString("intervention_name"),
+                    resultSet.getString("command")
             );
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
-        }*/
+        }
         return null;
     }
 
     @Override
     public List<Intervention> getInterventionsByLocationId(int locationId) {
-        try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getInterventionsByLocationId(?)")) {
+        try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
             try (ResultSet resultSet = statement.executeQuery()) {

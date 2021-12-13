@@ -5,7 +5,7 @@ import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.Que
 import java.util.List;
 
 public class Questionnaire extends Intervention {
-    private List<Question> questions;
+    private final List<Question> questions;
 
     public Questionnaire(int id, String name, List<Question> questions) {
         super(id, name);
@@ -14,9 +14,5 @@ public class Questionnaire extends Intervention {
 
     public List<Question> getQuestions() {
         return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
     }
 }

@@ -4,6 +4,8 @@ public abstract class QuestionRequestDTO extends InterventionRequestDTO {
     private AnswerRequestDTO answer;
     private String question;
 
+    public QuestionRequestDTO() {}
+
     public QuestionRequestDTO(String name, AnswerRequestDTO answer, String question) {
         super(name);
         this.answer = answer;

@@ -5,6 +5,8 @@ import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.Com
 public class UpdateCommandRequestDTO extends CommandRequestDTO {
     private int id;
 
+    public UpdateCommandRequestDTO() {}
+
     public UpdateCommandRequestDTO(String name, String command, int id) {
         super(name, command);
         this.id = id;

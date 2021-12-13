@@ -6,7 +6,7 @@ import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static java.util.Objects.isNull;
+import java.util.Objects;
 
 @Component
 public class InterventionServiceImpl implements InterventionService {
@@ -18,7 +18,7 @@ public class InterventionServiceImpl implements InterventionService {
     }
 
     private void assertInterventionExists(int id) {
-        if (isNull(interventionDAO.getInterventionById(id))) {
+        if (Objects.isNull(interventionDAO.getInterventionById(id))) {
             throw new NotFoundException();
         }
     }
@@ -27,9 +27,9 @@ public class InterventionServiceImpl implements InterventionService {
     public void updateCommand(UpdateCommandRequestDTO updateCommandRequestDTO) {
         updateCommandRequestDTO.validate();
 
-        int id = updateCommandRequestDTO.getId();
-        String name = updateCommandRequestDTO.getName();
-        String command = updateCommandRequestDTO.getCommand();
+        final int id = updateCommandRequestDTO.getId();
+        final String name = updateCommandRequestDTO.getName();
+        final String command = updateCommandRequestDTO.getCommand();
 
         assertInterventionExists(id);
 

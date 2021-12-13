@@ -5,6 +5,8 @@ import java.util.List;
 public abstract class QuestionnaireRequestDTO extends InterventionRequestDTO {
     private List<QuestionRequestDTO> questions;
 
+    public QuestionnaireRequestDTO() {}
+
     public QuestionnaireRequestDTO(String name, List<QuestionRequestDTO> questions) {
         super(name);
         this.questions = questions;
