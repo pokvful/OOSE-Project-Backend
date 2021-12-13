@@ -4,7 +4,6 @@ import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseReques
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.services.franchise.FranchiseService;
-import nl.han.aim.oosevt.lamport.shared.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
