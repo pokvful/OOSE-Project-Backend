@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 @Component
 public class RoleDAOImpl implements RoleDAO {
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final static Logger LOGGER = Logger.getLogger(RoleDAOImpl.class.getName());
 
     @Override
     public List<Role> getRoles() {
@@ -34,7 +34,7 @@ public class RoleDAOImpl implements RoleDAO {
             return roles;
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -52,7 +52,7 @@ public class RoleDAOImpl implements RoleDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
 
         return null;
