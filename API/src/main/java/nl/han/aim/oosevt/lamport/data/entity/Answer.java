@@ -1,7 +1,7 @@
 package nl.han.aim.oosevt.lamport.data.entity;
 
 public class Answer {
-    private String answer;
+    private final String answer;
 
     public Answer(String answer) {
         this.answer = answer;
@@ -9,9 +9,5 @@ public class Answer {
 
     public String getAnswer() {
         return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
     }
 }

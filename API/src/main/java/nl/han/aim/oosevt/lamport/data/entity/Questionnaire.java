@@ -1,7 +1,5 @@
 package nl.han.aim.oosevt.lamport.data.entity;
 
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.QuestionRequestDTO;
-
 import java.util.List;
 
 public class Questionnaire extends Intervention {
