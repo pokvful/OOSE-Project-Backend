@@ -59,9 +59,6 @@ public class UserServiceImpl implements UserService {
 
         final String hash = new BCryptPasswordEncoder().encode(password);
 
-        final User user = userDAO.getUserById(id);
-        final Role role = roleDAO.getRoleById(roleId);
-
         if (userDAO.getUserById(id) == null || roleDAO.getRoleById(roleId) == null) {
             throw new NotFoundException();
         }
