@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
+import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionString;
 
@@ -16,7 +18,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
-    private Intervention interventionFromResultSet(ResultSet resultSet) {
+    private Intervention interventionFromResultSet(ResultSet resultSet) {/*
         try {
             return new Intervention(
                     resultSet.getInt("intervention_id"),
@@ -24,7 +26,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             );
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "A database error occurred!", e);
-        }
+        }*/
         return null;
     }
 
@@ -47,5 +49,27 @@ public class InterventionDAOImpl implements InterventionDAO {
         }
 
         return new ArrayList<>();
+    }
+
+    @Override
+    public void updateCommand(int id, String name, String command) {
+
+        try (
+            Connection connection = DriverManager.getConnection(connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")
+        ) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, command);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "A database error occurred!", e);
+        }
+    }
+
+    @Override
+    public Intervention getInterventionById(int id) {
+        return new Command(1, "mock intervention from InterventionDAOImpl", "ga naar saladebami");
     }
 }

@@ -1,4 +1,4 @@
-package nl.han.aim.oosevt.lamport.controllers.intervention.dto;
+package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 

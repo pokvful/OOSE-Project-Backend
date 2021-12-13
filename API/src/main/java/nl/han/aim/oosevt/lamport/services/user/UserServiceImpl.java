@@ -50,6 +50,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
+        updateUserRequestDTO.validate();
+
         final int id = updateUserRequestDTO.getId();
         final String username = updateUserRequestDTO.getUsername();
         final String email = updateUserRequestDTO.getEmail();

@@ -2,6 +2,8 @@ package nl.han.aim.oosevt.lamport.controllers.user.dto;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
+import static java.util.Objects.isNull;
+
 public class UserRequestDTO extends RequestDTO {
     protected String username;
     protected String email;
@@ -53,13 +55,13 @@ public class UserRequestDTO extends RequestDTO {
 
     @Override
     protected void validateDTO() {
-        if (username.isEmpty()) {
+        if (isNull(username) || username.isEmpty()) {
             addError("username", "Gebruikersnaam mag niet leeg zijn!");
         }
-        if (email.isEmpty()) {
+        if (isNull(email) || email.isEmpty()) {
             addError("email", "Email mag niet leeg zijn!");
         }
-        if (password.isEmpty()) {
+        if (isNull(password) || password.isEmpty()) {
             addError("password", "Wachtwoord mag niet leeg zijn!");
         }
         if (getRoleId() == 0) {

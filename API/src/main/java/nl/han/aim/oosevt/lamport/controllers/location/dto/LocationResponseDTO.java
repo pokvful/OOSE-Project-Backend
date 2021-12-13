@@ -2,7 +2,7 @@ package nl.han.aim.oosevt.lamport.controllers.location.dto;
 
 import nl.han.aim.oosevt.lamport.controllers.area.dto.AreaResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.InterventionResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 
