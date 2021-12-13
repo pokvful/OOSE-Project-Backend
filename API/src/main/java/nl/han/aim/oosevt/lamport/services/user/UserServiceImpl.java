@@ -5,6 +5,7 @@ import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
@@ -57,6 +58,9 @@ public class UserServiceImpl implements UserService {
         final int roleId = updateUserRequestDTO.getRoleId();
 
         final String hash = new BCryptPasswordEncoder().encode(password);
+
+        final User user = userDAO.getUserById(id);
+        final Role role = roleDAO.getRoleById(roleId);
 
         if (userDAO.getUserById(id) == null || roleDAO.getRoleById(roleId) == null) {
             throw new NotFoundException();

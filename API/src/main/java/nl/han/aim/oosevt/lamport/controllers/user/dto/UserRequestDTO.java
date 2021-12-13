@@ -3,10 +3,10 @@ package nl.han.aim.oosevt.lamport.controllers.user.dto;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class UserRequestDTO extends RequestDTO {
-    protected String username;
-    protected String email;
-    protected String password;
-    protected int roleId;
+    private String username;
+    private String email;
+    private String password;
+    private int roleId;
 
     public String getUsername() {
         return username;
