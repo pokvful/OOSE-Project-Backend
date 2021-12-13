@@ -23,9 +23,25 @@ INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (
 INSERT INTO command(command) VALUES ("Koop Big Mac");
 INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (1,1);
 INSERT INTO location_intervention(location_id, intervention_id) VALUES (1,1);
+
 INSERT INTO question (type, question_text, question) VALUES ("question", "Is de kerk groot?", "Is de kerk groot?");
 INSERT INTO answer (answer, question_id) VALUES ("Ja", 1);
 INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (1, 1);
+
+INSERT INTO question (type, question_text, question) VALUES ("questionnaire", "vraag a", "vraag a");
+INSERT INTO question (type, question_text, question) VALUES ("questionnaire", "vraag b", "vraag b");
+INSERT INTO question (type, question_text, question) VALUES ("questionnaire", "vraag c", "vraag c");
+
+INSERT INTO answer (answer, question_id) VALUES ("antwoord a1", 2);
+INSERT INTO answer (answer, question_id) VALUES ("antwoord a2", 2);
+INSERT INTO answer (answer, question_id) VALUES ("antwoord a3", 2);
+INSERT INTO answer (answer, question_id) VALUES ("antwoord b", 3);
+INSERT INTO answer (answer, question_id) VALUES ("antwoord c", 4);
+
+
+INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (2, 2);
+INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (2, 3);
+INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (2, 4);
 
 
 

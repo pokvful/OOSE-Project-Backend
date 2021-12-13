@@ -124,12 +124,6 @@ create table if not exists answers (
     FOREIGN KEY (answer_id) REFERENCES answer(answer_id)
 );
 
-create table if not exists answer_to_question (
-    question_id INT(6) UNSIGNED,
-    answer_id INT(6) UNSIGNED,
-    FOREIGN KEY (answer_id) REFERENCES answer(answer_id)
-);
-
 create table if not exists followup_question (
     followup_question_id INT(6) UNSIGNED,
     original_answer_id INT(6) UNSIGNED

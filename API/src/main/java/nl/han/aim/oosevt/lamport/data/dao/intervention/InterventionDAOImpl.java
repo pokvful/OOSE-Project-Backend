@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
+import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +19,10 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     private Intervention interventionFromResultSet(ResultSet resultSet) {
         try {
-            return new Intervention(
+            return new Command(
                     resultSet.getInt("intervention_id"),
-                    resultSet.getString("intervention_name")
+                    resultSet.getString("intervention_name"),
+                    resultSet.getString("command")
             );
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
@@ -30,7 +32,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     @Override
     public List<Intervention> getInterventionsByLocationId(int locationId) {
-        try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getInterventionsByLocationId(?)")) {
+        try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -47,5 +49,27 @@ public class InterventionDAOImpl implements InterventionDAO {
         }
 
         return new ArrayList<>();
+    }
+
+    @Override
+    public void updateCommand(int id, String name, String command) {
+
+        try (
+            Connection connection = DriverManager.getConnection(connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")
+        ) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, command);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+        }
+    }
+
+    @Override
+    public Intervention getInterventionById(int id) {
+        return new Command(1, "mock intervention from InterventionDAOImpl", "ga naar saladebami");
     }
 }

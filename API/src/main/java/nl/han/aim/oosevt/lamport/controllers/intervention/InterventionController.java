@@ -1,12 +1,12 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention;
 
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.InterventionResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
+import nl.han.aim.oosevt.lamport.services.intervention.InterventionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +15,25 @@ import java.util.List;
 @RequestMapping("/interventions")
 @CrossOrigin
 public class InterventionController {
+    private final InterventionService interventionService;
+
+    @Autowired
+    public InterventionController(InterventionService interventionService) {
+        this.interventionService = interventionService;
+    }
+
     @GetMapping("")
     public ResponseEntity<List<InterventionResponseDTO>> getInterventions() {
         return new ResponseEntity<>(
                 getMockInterventions(),
                 HttpStatus.OK
         );
+    }
+
+
+    @PutMapping()
+    public void updateIntervention(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
+        interventionService.updateCommand(updateCommandRequestDTO);
     }
 
     private List<InterventionResponseDTO> getMockInterventions() {

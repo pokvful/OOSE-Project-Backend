@@ -1,6 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.entity;
 
-public class Intervention {
+public abstract class Intervention {
     private final int id;
     private final String name;
 
