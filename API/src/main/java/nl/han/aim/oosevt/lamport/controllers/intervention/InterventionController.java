@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention;
 
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.services.intervention.InterventionService;
@@ -26,10 +27,8 @@ public class InterventionController {
     public ResponseEntity<List<InterventionResponseDTO>> getInterventions() {
         return new ResponseEntity<>(
                 getMockInterventions(),
-                HttpStatus.OK
-        );
+                HttpStatus.OK);
     }
-
 
     @PutMapping()
     public void updateIntervention(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
@@ -45,5 +44,10 @@ public class InterventionController {
         interventionResponseDTOS.add(new InterventionResponseDTO(4, "Kerk bekijken"));
 
         return interventionResponseDTOS;
+    }
+
+    @PostMapping("/command")
+    private void createCommand(@RequestBody CreateCommandRequestDTO createCommandRequestDTO) {
+        interventionService.createCommand(createCommandRequestDTO);
     }
 }

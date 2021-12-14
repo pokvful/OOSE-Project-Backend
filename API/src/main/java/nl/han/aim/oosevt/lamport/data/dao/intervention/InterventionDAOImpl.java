@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
 import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
+import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -22,8 +23,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             return new Command(
                     resultSet.getInt("intervention_id"),
                     resultSet.getString("intervention_name"),
-                    resultSet.getString("command")
-            );
+                    resultSet.getString("command"));
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }
@@ -32,7 +32,8 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     @Override
     public List<Intervention> getInterventionsByLocationId(int locationId) {
-        try (Connection connection = DriverManager.getConnection(connectionString()); PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -53,15 +54,22 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     @Override
     public void updateCommand(int id, String name, String command) {
-
-        try (
-            Connection connection = DriverManager.getConnection(connectionString());
-            PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")
         ) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, command);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+        }
+    }
 
+    public void createCommand(String name, String command) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL createGoal(?, ?)")) {
+            statement.setString(1, name);
+            statement.setString(2, command);
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
