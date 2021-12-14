@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Component
 public class InterventionServiceImpl implements InterventionService {
-    private InterventionDAO interventionDAO;
+    private final InterventionDAO interventionDAO;
 
     @Autowired
     public InterventionServiceImpl(InterventionDAO interventionDAO) {
