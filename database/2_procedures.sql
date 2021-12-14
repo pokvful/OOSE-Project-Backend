@@ -104,6 +104,14 @@ BEGIN
 	DELETE FROM geofence WHERE geofence_id = (SELECT geofence_id FROM area WHERE area_id = param_id);
 END //
 
+CREATE PROCEDURE getCommands()
+BEGIN
+    SELECT intervention.intervention_id, intervention_name, command
+    FROM command_in_intervention
+    LEFT OUTER JOIN intervention ON command_in_intervention.intervention_id = intervention.intervention_id
+    LEFT OUTER JOIN command ON command_in_intervention.command_id = command.command_id;
+END //
+
 CREATE PROCEDURE createLocation(
     IN param_name VARCHAR(255),
     IN param_delay INT,
