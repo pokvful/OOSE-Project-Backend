@@ -100,8 +100,8 @@ public class UserDAOImpl implements UserDAO {
                 PreparedStatement statement = connection.prepareStatement("CALL updateUser(?, ?, ?, ?, ?)")) {
             statement.setInt(1, id);
             statement.setString(2, username);
-            statement.setString(3, email);
-            statement.setString(4, password);
+            statement.setString(3, password);
+            statement.setString(4, email);
             statement.setInt(5, roleId);
 
             statement.executeUpdate();
