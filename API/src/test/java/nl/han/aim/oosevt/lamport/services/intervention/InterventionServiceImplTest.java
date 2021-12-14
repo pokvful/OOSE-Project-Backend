@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.intervention;
 
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
@@ -35,9 +36,11 @@ public class InterventionServiceImplTest {
     private Answer answerA;
     private Answer answerB;
     private Answer answerC;
+
     private Command interventionA;
     private Question interventionB;
     private Questionnaire interventionC;
+
     private List<Answer> answers;
     private List<Question> questions;
 
@@ -46,6 +49,13 @@ public class InterventionServiceImplTest {
     private InterventionDAO mockInterventionDAO;
 
     private InterventionService sut;
+
+    private CreateCommandRequestDTO createCommandRequestDTO;
+    private Command command;
+
+    final int commandId = 1;
+    final String commandName = "Name";
+    final String commandText = "Command";
 
     @BeforeEach
     public void setup() {
@@ -73,6 +83,11 @@ public class InterventionServiceImplTest {
         updateInterventionRequestA = new UpdateCommandRequestDTO(interventionNameA, commandA, interventionIdA);
 
         sut = new InterventionServiceImpl(mockInterventionDAO);
+
+        createCommandRequestDTO = Mockito.spy(
+                new CreateCommandRequestDTO(commandName, commandText));
+
+        command = new Command(commandId, commandName, commandText);
     }
 
     @Test
@@ -97,5 +112,32 @@ public class InterventionServiceImplTest {
 
         // Assert
         Assertions.assertThrows(NotFoundException.class, act);
+    }
+
+    @Test
+    public void testCreateCommandValidates() {
+        // Arrange
+        Mockito.when(mockInterventionDAO.getInterventionById(commandId)).thenReturn(command);
+
+        // Act
+        sut.createCommand(createCommandRequestDTO);
+
+        // Assert
+        Mockito.verify(createCommandRequestDTO).validate();
+    }
+
+    @Test
+    public void testCreateCommandCallsDB() {
+        // Arrange
+        Mockito.when(mockInterventionDAO.getInterventionById(interventionIdB)).thenReturn(interventionB);
+
+        // Act
+        sut.createCommand(new CreateCommandRequestDTO("Name", "Command"));
+
+        // Assert
+        Mockito.verify(mockInterventionDAO).createCommand(
+                "Name",
+                "Command"
+        );
     }
 }

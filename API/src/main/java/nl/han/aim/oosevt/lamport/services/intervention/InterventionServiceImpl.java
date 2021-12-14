@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.intervention;
 
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 @Component
 public class InterventionServiceImpl implements InterventionService {
-    private InterventionDAO interventionDAO;
+    private final InterventionDAO interventionDAO;
 
     @Autowired
     public InterventionServiceImpl(InterventionDAO interventionDAO) {
@@ -34,5 +35,11 @@ public class InterventionServiceImpl implements InterventionService {
         assertInterventionExists(id);
 
         interventionDAO.updateCommand(id, name, command);
+    }
+
+    @Override
+    public void createCommand(CreateCommandRequestDTO createCommandRequestDTO) {
+        createCommandRequestDTO.validate();
+        interventionDAO.createCommand(createCommandRequestDTO.getName(), createCommandRequestDTO.getCommand());
     }
 }
