@@ -36,9 +36,11 @@ public class InterventionServiceImplTest {
     private Answer answerA;
     private Answer answerB;
     private Answer answerC;
+
     private Command interventionA;
     private Question interventionB;
     private Questionnaire interventionC;
+
     private List<Answer> answers;
     private List<Question> questions;
 
@@ -85,7 +87,7 @@ public class InterventionServiceImplTest {
         createCommandRequestDTO = Mockito.spy(
                 new CreateCommandRequestDTO(commandName, commandText));
 
-        Command command = new Command(commandId, commandName, commandText);
+        command = new Command(commandId, commandName, commandText);
     }
 
     @Test
