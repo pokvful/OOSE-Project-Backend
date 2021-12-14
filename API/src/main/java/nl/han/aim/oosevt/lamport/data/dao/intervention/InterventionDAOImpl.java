@@ -67,7 +67,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     public void createCommand(String name, String command) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createGoal(?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createCommand(?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, command);
             statement.executeUpdate();
