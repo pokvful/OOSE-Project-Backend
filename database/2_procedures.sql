@@ -95,6 +95,50 @@ BEGIN
     UPDATE area SET area_name = param_name WHERE area_id = param_id;
 END //
 
+CREATE PROCEDURE getQuestions()
+BEGIN
+    SELECT intervention.intervention_id, intervention_name, question, question_text, question.question_id 
+	FROM (
+	    SELECT question_in_intervention.intervention_id
+	    FROM question_in_intervention
+	    GROUP BY question_in_intervention.intervention_id
+	    HAVING COUNT(question_in_intervention.intervention_id) = 1
+	) AS questions
+	LEFT OUTER JOIN question_in_intervention ON questions.intervention_id = question_in_intervention.intervention_id
+	LEFT OUTER JOIN intervention ON question_in_intervention.intervention_id = intervention.intervention_id
+	LEFT OUTER JOIN question ON question_in_intervention.question_id = question.question_id;
+END //
+
+CREATE PROCEDURE getQuestionnaires()
+BEGIN
+	SELECT intervention.intervention_id, intervention_name 
+	FROM (
+	    SELECT question_in_intervention.intervention_id
+	    FROM question_in_intervention
+	    GROUP BY question_in_intervention.intervention_id
+	    HAVING COUNT(question_in_intervention.intervention_id) > 1
+	) AS questions
+	LEFT OUTER JOIN intervention ON questions.intervention_id = intervention.intervention_id;
+END //
+
+CREATE PROCEDURE getAnswersByQuestionId(
+    IN param_question_id INT
+) BEGIN
+	SELECT answer
+	FROM answer
+	WHERE answer.question_id = param_question_id;
+END //
+
+CREATE PROCEDURE getQuestionsByQuestionnaireInterventionId(
+    IN param_intervention_id INT
+) BEGIN
+    SELECT question, question_text, question.question_id 
+	FROM question_in_intervention
+	LEFT OUTER JOIN intervention ON question_in_intervention.intervention_id = intervention.intervention_id
+	LEFT OUTER JOIN question ON question_in_intervention.question_id = question.question_id
+	WHERE question_in_intervention.intervention_id = param_intervention_id;
+END //
+
 CREATE PROCEDURE deleteArea(
     IN param_id INT)
 BEGIN

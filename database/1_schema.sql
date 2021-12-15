@@ -14,12 +14,6 @@ create table if not exists users (
     FOREIGN KEY (role_id) REFERENCES role(role_id)
 );
 
-create table if not exists token (
-    token varchar(255),
-    user_id INT(6) UNSIGNED,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
 create table if not exists geofence (
     geofence_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     longitude DOUBLE NOT NULL,
