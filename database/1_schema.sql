@@ -7,7 +7,7 @@ create table if not exists role (
 
 create table if not exists role_permissions (
     role_id INT(6) UNSIGNED PRIMARY KEY,
-    permission VARCHAR(50) NOT NULL,
+    permission VARCHAR(50) NOT NULL PRIMARY KEY,
     FOREIGN KEY (role_id) REFERENCES role(role_id)
 );
 
