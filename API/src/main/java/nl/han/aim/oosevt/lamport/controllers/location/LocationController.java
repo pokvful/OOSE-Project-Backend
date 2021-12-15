@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.location;
 
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.CreateLocationRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.LocationResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.location.dto.UpdateLocationRequestDTO;

@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.AnswerRequestDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
@@ -77,7 +78,22 @@ public class InterventionDAOImpl implements InterventionDAO {
     }
 
     @Override
+    public void updateQuestion(int id, String name, String question, AnswerRequestDTO answer) {
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?, ?)")
+        ) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, question);
+            statement.setString(3, answer.getAnswer());
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+        }
+    }
+
+    @Override
     public Intervention getInterventionById(int id) {
         return new Command(1, "mock intervention from InterventionDAOImpl", "ga naar saladebami");
     }
+
 }
