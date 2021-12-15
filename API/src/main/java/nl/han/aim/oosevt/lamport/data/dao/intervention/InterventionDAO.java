@@ -15,7 +15,7 @@ public interface InterventionDAO {
 
     void createCommand(String name, String command);
 
-    void updateQuestion(int id, String name, String question, List<Answer> answer);
+    void updateQuestion(int id, String name, String question, List<Answer> answers);
 
-    void createQuestion(String name, String question, List<Answer> answer);
+    void createQuestion(String name, String question, List<Answer> answers);
 }

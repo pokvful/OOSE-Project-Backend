@@ -1,6 +1,5 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.AnswerRequestDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
@@ -74,12 +73,12 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setString(2, command);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createCommand::A database error occurred!", e);
         }
     }
 
     @Override
-    public void updateQuestion(int id, String name, String question, List<Answer> answer) {
+    public void updateQuestion(int id, String name, String question, List<Answer> answers) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?)")) {
             statement.setInt(1, id);
@@ -89,23 +88,23 @@ public class InterventionDAOImpl implements InterventionDAO {
                 if (!resultSet.next()) {
                     return;
                 }
-                answer.forEach(x -> {
+                answers.forEach(x -> {
                     try (PreparedStatement statement1 = connection.prepareStatement("CALL updateAnswer(?, ?)")) {
                         statement1.setInt(1, resultSet.getInt("question_id"));
                         statement1.setString(2, x.getAnswer());
                         statement.executeUpdate();
 
                     } catch (SQLException e) {
-                        LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+                        LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
                     }
                 });
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
         }
     }
 
-    public void createQuestion(String name, String question, List<Answer> answer) {
+    public void createQuestion(String name, String question, List<Answer> answers) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?, ?)")) {
             statement.setString(1, name);
@@ -114,19 +113,19 @@ public class InterventionDAOImpl implements InterventionDAO {
                 if (!resultSet.next()) {
                     return;
                 }
-                answer.forEach(x -> {
+                answers.forEach(x -> {
                     try (PreparedStatement statement1 = connection.prepareStatement("CALL createAnswer(?, ?)")) {
                         statement1.setInt(1, resultSet.getInt("question_id"));
                         statement1.setString(2, x.getAnswer());
                         statement.executeUpdate();
 
                     } catch (SQLException e) {
-                        LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+                        LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
                     }
                 });
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
         }
     }
 

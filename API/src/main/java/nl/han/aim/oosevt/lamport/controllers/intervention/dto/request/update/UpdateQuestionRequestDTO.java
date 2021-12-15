@@ -13,8 +13,8 @@ public class UpdateQuestionRequestDTO extends QuestionRequestDTO {
 
     }
 
-    public UpdateQuestionRequestDTO(int id, String name, String question, List<AnswerRequestDTO> answer) {
-        super(name, answer, question);
+    public UpdateQuestionRequestDTO(int id, String name, String question, List<AnswerRequestDTO> answers) {
+        super(name, answers, question);
         this.id = id;
     }
 

@@ -51,23 +51,23 @@ public class InterventionServiceImpl implements InterventionService {
 
     @Override
     public void updateQuestion(UpdateQuestionRequestDTO updateQuestionRequestDTO) {
-        final AnswerRequestDTO answerRequestDTO = updateQuestionRequestDTO.getAnswer();
-        final List<Answer> answer = new ArrayList<>();
-        answer.add(answerRequestDTO.getAnswer());
+        final AnswerRequestDTO answerRequestDTO = updateQuestionRequestDTO.getAnswers();
+        final List<Answer> answers = new ArrayList<>();
+        answers.add(answerRequestDTO.getAnswer());
 
         updateQuestionRequestDTO.validate();
 
         assertInterventionExists(updateQuestionRequestDTO.getId());
 
         interventionDAO.updateQuestion(updateQuestionRequestDTO.getId(), updateQuestionRequestDTO.getName(), updateQuestionRequestDTO.getQuestion(),
-                answer);
+                answers);
     }
 
     public void createQuestion(CreateQuestionRequestDTO createQuestionRequestDTO) {
-        final AnswerRequestDTO answerRequestDTO = createQuestionRequestDTO.getAnswer();
-        final List<Answer> answer = new ArrayList<>();
-        answer.add(answerRequestDTO.getAnswer());
+        final AnswerRequestDTO answerRequestDTO = createQuestionRequestDTO.getAnswers();
+        final List<Answer> answers = new ArrayList<>();
+        answers.add(answerRequestDTO.getAnswer());
         createQuestionRequestDTO.validate();
-        interventionDAO.createQuestion(createQuestionRequestDTO.getName(), createQuestionRequestDTO.getQuestion(), answer);
+        interventionDAO.createQuestion(createQuestionRequestDTO.getName(), createQuestionRequestDTO.getQuestion(), answers);
     }
 }
