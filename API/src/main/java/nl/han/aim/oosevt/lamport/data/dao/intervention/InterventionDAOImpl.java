@@ -84,7 +84,7 @@ public class InterventionDAOImpl implements InterventionDAO {
              PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, question);
-            statement.setString(3, String.valueOf(answer));
+            statement.setString(3, answer.getAnswer());
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
