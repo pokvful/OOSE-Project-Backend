@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class InterventionServiceImpl implements InterventionService {
@@ -51,23 +52,30 @@ public class InterventionServiceImpl implements InterventionService {
 
     @Override
     public void updateQuestion(UpdateQuestionRequestDTO updateQuestionRequestDTO) {
-        final AnswerRequestDTO answerRequestDTO = updateQuestionRequestDTO.getAnswers();
-        final List<Answer> answers = new ArrayList<>();
-        answers.add(answerRequestDTO.getAnswer());
-
         updateQuestionRequestDTO.validate();
 
         assertInterventionExists(updateQuestionRequestDTO.getId());
 
-        interventionDAO.updateQuestion(updateQuestionRequestDTO.getId(), updateQuestionRequestDTO.getName(), updateQuestionRequestDTO.getQuestion(),
-                answers);
+        interventionDAO.updateQuestion(
+                updateQuestionRequestDTO.getId(),
+                updateQuestionRequestDTO.getName(),
+                updateQuestionRequestDTO.getQuestion(),
+                updateQuestionRequestDTO
+                        .getAnswers()
+                        .stream()
+                        .map(x -> new Answer(x.getId(), x.getAnswer()))
+                        .collect(Collectors.toList()));
     }
 
     public void createQuestion(CreateQuestionRequestDTO createQuestionRequestDTO) {
-        final AnswerRequestDTO answerRequestDTO = createQuestionRequestDTO.getAnswers();
-        final List<Answer> answers = new ArrayList<>();
-        answers.add(answerRequestDTO.getAnswer());
         createQuestionRequestDTO.validate();
-        interventionDAO.createQuestion(createQuestionRequestDTO.getName(), createQuestionRequestDTO.getQuestion(), answers);
+        interventionDAO.createQuestion(
+                createQuestionRequestDTO.getName(),
+                createQuestionRequestDTO.getQuestion(),
+                createQuestionRequestDTO
+                        .getAnswers()
+                        .stream()
+                        .map(x -> new Answer(x.getId(), x.getAnswer()))
+                        .collect(Collectors.toList()));
     }
 }

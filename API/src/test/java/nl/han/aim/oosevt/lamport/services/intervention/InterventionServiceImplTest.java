@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -178,7 +179,7 @@ public class InterventionServiceImplTest {
         sut.createQuestion(new CreateQuestionRequestDTO(questionName, answerRequestDTO, questionText));
 
         // Assert
-        Mockito.verify(mockInterventionDAO).createQuestion(questionName, questionText, answers);
+        Mockito.verify(mockInterventionDAO).createQuestion(ArgumentMatchers.eq(questionName), ArgumentMatchers.eq(questionText), ArgumentMatchers.any());
     }
 
     @Test
@@ -190,7 +191,7 @@ public class InterventionServiceImplTest {
         sut.updateQuestion(updateQuestionRequestDTO);
 
         // Assert
-        Mockito.verify(mockInterventionDAO).updateQuestion(questionId, questionName, questionText, answers);
+        Mockito.verify(mockInterventionDAO).updateQuestion(ArgumentMatchers.eq(questionId), ArgumentMatchers.eq(questionName), ArgumentMatchers.eq(questionText), ArgumentMatchers.any());
     }
 
     @Test

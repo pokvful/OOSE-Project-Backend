@@ -3,6 +3,7 @@ package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class AnswerRequestDTO extends RequestDTO {
+    private int id;
     private String answer;
 
     public AnswerRequestDTO() {
@@ -18,6 +19,14 @@ public class AnswerRequestDTO extends RequestDTO {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
