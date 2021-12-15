@@ -1,6 +1,7 @@
 package nl.han.aim.oosevt.lamport.services.intervention;
 
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
@@ -51,5 +52,10 @@ public class InterventionServiceImpl implements InterventionService {
         assertInterventionExists(updateQuestionRequestDTO.getId());
 
         interventionDAO.updateQuestion(updateQuestionRequestDTO.getId(), updateQuestionRequestDTO.getName(), updateQuestionRequestDTO.getQuestion(), updateQuestionRequestDTO.getAnswer());
+
+    public void createQuestion(CreateQuestionRequestDTO createQuestionRequestDTO) {
+        createQuestionRequestDTO.validate();
+        interventionDAO.createQuestion(createQuestionRequestDTO.getName(), createQuestionRequestDTO.getQuestion(),
+                createQuestionRequestDTO.getAnswer());
     }
 }

@@ -34,7 +34,7 @@ public class InterventionDAOImpl implements InterventionDAO {
     @Override
     public List<Intervention> getInterventionsByLocationId(int locationId) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -56,8 +56,7 @@ public class InterventionDAOImpl implements InterventionDAO {
     @Override
     public void updateCommand(int id, String name, String command) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")
-        ) {
+                PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, command);
@@ -66,9 +65,10 @@ public class InterventionDAOImpl implements InterventionDAO {
         }
     }
 
+    @Override
     public void createCommand(String name, String command) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createCommand(?, ?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL createCommand(?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, command);
             statement.executeUpdate();
@@ -86,6 +86,14 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setString(2, name);
             statement.setString(3, question);
             statement.setString(3, answer.getAnswer());
+
+    public void createQuestion(String name, String question, AnswerRequestDTO answer) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?, ?)")) {
+            statement.setString(1, name);
+            statement.setString(2, question);
+            statement.setString(3, answer.getAnswer());
+            statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }

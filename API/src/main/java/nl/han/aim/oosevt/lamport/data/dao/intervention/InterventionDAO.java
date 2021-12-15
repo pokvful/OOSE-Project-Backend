@@ -15,4 +15,6 @@ public interface InterventionDAO {
     void createCommand(String name, String command);
 
     void updateQuestion(int id, String name, String question, AnswerRequestDTO answer);
+
+    void createQuestion(String name, String question, AnswerRequestDTO answer);
 }
