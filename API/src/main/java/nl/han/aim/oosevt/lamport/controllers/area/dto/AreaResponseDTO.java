@@ -25,8 +25,8 @@ public class AreaResponseDTO extends GeoFenceResponseDTO {
         return new AreaResponseDTO(
                 area.getId(),
                 area.getName(),
-                area.getLatitude(),
                 area.getLongitude(),
+                area.getLatitude(),
                 area.getRadius());
     }
 }
