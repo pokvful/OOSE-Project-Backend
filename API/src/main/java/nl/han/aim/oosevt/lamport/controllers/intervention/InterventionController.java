@@ -1,6 +1,7 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention;
 
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.services.intervention.InterventionService;
@@ -47,7 +48,12 @@ public class InterventionController {
     }
 
     @PostMapping("/command")
-    private void createCommand(@RequestBody CreateCommandRequestDTO createCommandRequestDTO) {
+    public void createCommand(@RequestBody CreateCommandRequestDTO createCommandRequestDTO) {
         interventionService.createCommand(createCommandRequestDTO);
+    }
+
+    @PostMapping("/question")
+    public void createQuestion(@RequestBody CreateQuestionRequestDTO createQuestionRequestDTO) {
+        interventionService.createQuestion(createQuestionRequestDTO);
     }
 }
