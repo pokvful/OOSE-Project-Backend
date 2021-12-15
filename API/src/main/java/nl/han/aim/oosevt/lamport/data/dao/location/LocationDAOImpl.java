@@ -19,7 +19,7 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class LocationDAOImpl implements LocationDAO {
 
-    private final static Logger LOGGER = Logger.getLogger(LocationDAOImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LocationDAOImpl.class.getName());
     private final InterventionDAO interventionDAO;
 
     @Autowired
@@ -51,7 +51,7 @@ public class LocationDAOImpl implements LocationDAO {
                     interventionDAO.getInterventionsByLocationId(locationId)
             );
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "locationFromResultSet::A database error occurred!", e);
         }
 
         return null;
@@ -76,7 +76,7 @@ public class LocationDAOImpl implements LocationDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createLocation::A database error occurred!", e);
         }
     }
 
@@ -92,7 +92,7 @@ public class LocationDAOImpl implements LocationDAO {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getLocationById::A database error occurred!", e);
         }
         return null;
     }
@@ -110,7 +110,7 @@ public class LocationDAOImpl implements LocationDAO {
             return foundLocations;
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getLocations::A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -135,7 +135,7 @@ public class LocationDAOImpl implements LocationDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateLocation::A database error occurred!", e);
         }
     }
 
@@ -147,7 +147,7 @@ public class LocationDAOImpl implements LocationDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "deleteLocation::A database error occurred!", e);
         }
     }
 }

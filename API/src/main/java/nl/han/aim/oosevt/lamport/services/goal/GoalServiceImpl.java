@@ -32,8 +32,7 @@ public class GoalServiceImpl implements GoalService {
         return goalDAO
                 .getGoals()
                 .stream()
-                .map(x ->
-                    new GoalResponseDTO().fromData(x))
+                .map(GoalResponseDTO::fromData)
                 .collect(Collectors.toList());
     }
 
@@ -43,7 +42,7 @@ public class GoalServiceImpl implements GoalService {
         if(goal == null) {
             throw new NotFoundException();
         }
-        return new GoalResponseDTO().fromData(goal);
+        return GoalResponseDTO.fromData(goal);
     }
 
     @Override

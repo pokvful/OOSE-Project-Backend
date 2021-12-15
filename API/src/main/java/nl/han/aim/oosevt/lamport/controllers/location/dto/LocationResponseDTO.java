@@ -10,16 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LocationResponseDTO extends GeoFenceResponseDTO {
-    private int id;
-    private String name;
-    private int delay;
+    private final int id;
+    private final String name;
+    private final int delay;
 
-    private AreaResponseDTO area;
-    private FranchiseResponseDTO franchise;
-    private List<InterventionResponseDTO> linkedInterventions;
-
-    public LocationResponseDTO() {
-    }
+    private final AreaResponseDTO area;
+    private final FranchiseResponseDTO franchise;
+    private final List<InterventionResponseDTO> linkedInterventions;
 
     public LocationResponseDTO(int locationId, String name, double longitude, double latitude, int radius, AreaResponseDTO area, FranchiseResponseDTO franchise, int delay, List<InterventionResponseDTO> linkedInterventions) {
         super(longitude, latitude, radius);
@@ -35,68 +32,42 @@ public class LocationResponseDTO extends GeoFenceResponseDTO {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public AreaResponseDTO getArea() {
         return area;
     }
 
-    public void setArea(AreaResponseDTO area) {
-        this.area = area;
-    }
-
     public int getDelay() {
         return delay;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
     }
 
     public FranchiseResponseDTO getFranchise() {
         return franchise;
     }
 
-    public void setFranchise(FranchiseResponseDTO franchise) {
-        this.franchise = franchise;
-    }
-
-    public LocationResponseDTO fromData(Location location) {
-        this.longitude = location.getLongitude();
-        this.latitude = location.getLatitude();
-        this.radius = location.getRadius();
-        this.id = location.getId();
-        this.name = location.getName();
-        this.delay = location.getDelay();
-
-        this.area = new AreaResponseDTO().fromData(location.getArea());
-        this.franchise = new FranchiseResponseDTO().fromData(location.getFranchise());
-
-        this.linkedInterventions = location
-                .getLinkedInterventions()
-                .stream()
-                .map(intervention -> new InterventionResponseDTO().fromData(intervention))
-                .collect(Collectors.toList());
-
-        return this;
-    }
-
     public List<InterventionResponseDTO> getLinkedInterventions() {
         return linkedInterventions;
     }
 
-    public void setLinkedInterventions(List<InterventionResponseDTO> linkedInterventions) {
-        this.linkedInterventions = linkedInterventions;
+    public static LocationResponseDTO fromData(Location location) {
+        return new LocationResponseDTO(
+                location.getId(),
+                location.getName(),
+                location.getLongitude(),
+                location.getLatitude(),
+                location.getRadius(),
+                AreaResponseDTO.fromData(location.getArea()),
+                FranchiseResponseDTO.fromData(location.getFranchise()),
+                location.getDelay(),
+                location
+                        .getLinkedInterventions()
+                        .stream()
+                        .map(InterventionResponseDTO::fromData)
+                        .collect(Collectors.toList())
+        );
     }
 }
 

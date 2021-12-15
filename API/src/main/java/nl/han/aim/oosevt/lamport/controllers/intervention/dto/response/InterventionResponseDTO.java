@@ -21,10 +21,10 @@ public class InterventionResponseDTO {
         return name;
     }
 
-    public InterventionResponseDTO fromData(Intervention intervention) {
-        this.id = intervention.getId();
-        this.name = intervention.getName();
-
-        return this;
+    public static InterventionResponseDTO fromData(Intervention intervention) {
+        return new InterventionResponseDTO(
+                intervention.getId(),
+                intervention.getName()
+        );
     }
 }

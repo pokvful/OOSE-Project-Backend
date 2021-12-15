@@ -32,8 +32,8 @@ public class UserServiceImplTest {
     private final int roleId = 1;
     private final String roleName = "Beheerder";
     private final String email = "b.barends@student.han.nl";
-    private String password = "SomePassword";
-    private String hash = "SomeHash"; 
+    private final String password = "SomePassword";
+    private final String hash = "SomeHash";
 
     private Role mockRole;
     private User mockUser;
@@ -52,7 +52,7 @@ public class UserServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        mockRole = new Role(roleId, roleName);
+        mockRole = new Role(roleId, roleName, new ArrayList<>());
         mockUser = new User(userId, username, email, password, mockRole);
 
         userDAOFixture = Mockito.mock(UserDAO.class);
@@ -64,7 +64,7 @@ public class UserServiceImplTest {
         mockCreateUserRequestDTO = Mockito.spy(
                 new CreateUserRequestDTO(username, email, password, roleId));
 
-        mockRoleResponseDTO = new RoleResponseDTO(roleId, roleName);
+        mockRoleResponseDTO = new RoleResponseDTO(roleId, roleName, new ArrayList<>());
         mockUserResponseDTO =
                 new UserResponseDTO(userId, username, email, mockRoleResponseDTO);
         mockUsers = new ArrayList<>();

@@ -1,8 +1,9 @@
 package nl.han.aim.oosevt.lamport.data.dao.user;
 
-import nl.han.aim.oosevt.lamport.data.entity.Role;
+import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -16,7 +17,14 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 @Component
 public class UserDAOImpl implements UserDAO {
 
-    private final static Logger LOGGER = Logger.getLogger(UserDAOImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class.getName());
+
+    private final RoleDAO roleDAO;
+
+    @Autowired
+    public UserDAOImpl(RoleDAO roleDAO) {
+        this.roleDAO = roleDAO;
+    }
 
     @Override
     public List<User> getUsers() {
@@ -31,14 +39,13 @@ public class UserDAOImpl implements UserDAO {
                         resultSet.getString("username"),
                         resultSet.getString("email"),
                         resultSet.getString("password"),
-                        new Role(
-                                resultSet.getInt("role_id"),
-                                resultSet.getString("role_name"))));
+                        roleDAO.getRoleById(resultSet.getInt("role_id"))
+                ));
             }
             return getUsers;
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getUsers::A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -57,13 +64,12 @@ public class UserDAOImpl implements UserDAO {
                             resultSet.getString("username"),
                             resultSet.getString("email"),
                             resultSet.getString("password"),
-                            new Role(
-                                    resultSet.getInt("role_id"),
-                                    resultSet.getString("role_name")));
+                            roleDAO.getRoleById(resultSet.getInt("role_id"))
+                    );
                 }
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getUserById::A database error occurred!", e);
         }
         return null;
     }
@@ -82,13 +88,12 @@ public class UserDAOImpl implements UserDAO {
                             resultSet.getString("username"),
                             resultSet.getString("email"),
                             resultSet.getString("password"),
-                            new Role(
-                                    resultSet.getInt("role_id"),
-                                    resultSet.getString("role_name")));
+                            roleDAO.getRoleById(resultSet.getInt("role_id"))
+                    );
                 }
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getUserByUsername::A database error occurred!", e);
         }
         return null;
     }
@@ -106,7 +111,7 @@ public class UserDAOImpl implements UserDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateUser::A database error occurred!", e);
         }
     }
 
@@ -120,7 +125,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setInt(4, roleId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createUser::A database error occurred!", e);
         }
     }
 
@@ -131,7 +136,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "deleteUser::A database error occurred!", e);
         }
     }
 }

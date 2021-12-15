@@ -5,7 +5,6 @@ import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
-import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
-    private HashProvider hashProvider;
+    private final HashProvider hashProvider;
 
     @Autowired
     public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, HashProvider hashProvider) {
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
         return userDAO
                 .getUsers()
                 .stream()
-                .map(x -> new UserResponseDTO().fromData(x))
+                .map(UserResponseDTO::fromData)
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException();
         }
 
-        return new UserResponseDTO().fromData(user);
+        return UserResponseDTO.fromData(user);
     }
 
     @Override

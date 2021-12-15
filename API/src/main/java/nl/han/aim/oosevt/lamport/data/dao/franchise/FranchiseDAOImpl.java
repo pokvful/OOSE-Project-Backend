@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 @Component
 public class FranchiseDAOImpl implements FranchiseDAO {
-    private final static Logger LOGGER = Logger.getLogger(FranchiseDAOImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FranchiseDAOImpl.class.getName());
 
     @Override
     public void createFranchise(String name) {
@@ -21,7 +21,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
             statement.setString(1, name);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createFranchise::A database error occurred!", e);
         }
     }
 
@@ -39,7 +39,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getFranchiseById::A database error occurred!", e);
         }
         return null;
     }
@@ -59,7 +59,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
             return foundFranchises;
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getFranchises::A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -72,7 +72,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
             statement.setString(2, name);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateFranchise::A database error occurred!", e);
         }
     }
 
@@ -83,7 +83,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
             statement.setInt(1, franchiseId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "deleteFranchise::A database error occurred!", e);
         }
     }
 }

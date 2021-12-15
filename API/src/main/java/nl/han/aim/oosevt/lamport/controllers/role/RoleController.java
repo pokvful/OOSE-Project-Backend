@@ -1,14 +1,12 @@
 package nl.han.aim.oosevt.lamport.controllers.role;
 
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
+import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.services.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,10 +22,15 @@ public class RoleController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<RoleResponseDTO>> getUsers() {
+    public ResponseEntity<List<RoleResponseDTO>> getRoles() {
         return new ResponseEntity<>(
                 roleService.getRoles(),
                 HttpStatus.OK
         );
+    }
+
+    @PutMapping()
+    public void updateRole(@RequestBody UpdateRoleRequestDTO updateRoleRequestDTO) {
+        roleService.updateRole(updateRoleRequestDTO);
     }
 }

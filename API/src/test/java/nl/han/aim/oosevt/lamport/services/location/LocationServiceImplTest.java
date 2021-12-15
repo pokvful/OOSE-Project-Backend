@@ -130,12 +130,12 @@ public class LocationServiceImplTest {
         mockFranchise = new Franchise(franchiseId, franchiseName);
         mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions);
 
-        areaResponseDTO = new AreaResponseDTO().fromData(mockArea);
-        franchiseResponseDTO = new FranchiseResponseDTO().fromData(mockFranchise);
+        areaResponseDTO = AreaResponseDTO.fromData(mockArea);
+        franchiseResponseDTO = FranchiseResponseDTO.fromData(mockFranchise);
 
         interventionResponseDTOs = linkedInterventions
                 .stream()
-                .map(intervention -> new InterventionResponseDTO().fromData(intervention))
+                .map(InterventionResponseDTO::fromData)
                 .collect(Collectors.toList());
 
         locationResponseDTO = new LocationResponseDTO(id, name, longitude, latitude, radius, areaResponseDTO, franchiseResponseDTO, delay, interventionResponseDTOs);
