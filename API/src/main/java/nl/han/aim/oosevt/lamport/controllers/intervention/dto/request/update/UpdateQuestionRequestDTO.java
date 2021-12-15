@@ -3,6 +3,8 @@ package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.AnswerRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.QuestionRequestDTO;
 
+import java.util.List;
+
 public class UpdateQuestionRequestDTO extends QuestionRequestDTO {
     private int id;
 
@@ -11,7 +13,7 @@ public class UpdateQuestionRequestDTO extends QuestionRequestDTO {
 
     }
 
-    public UpdateQuestionRequestDTO(int id, String name, String question, AnswerRequestDTO answer) {
+    public UpdateQuestionRequestDTO(int id, String name, String question, List<AnswerRequestDTO> answer) {
         super(name, answer, question);
         this.id = id;
     }

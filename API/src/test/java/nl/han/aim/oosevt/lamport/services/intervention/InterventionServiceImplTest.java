@@ -3,8 +3,8 @@ package nl.han.aim.oosevt.lamport.services.intervention;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.AnswerRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.QuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.data.entity.Command;
@@ -64,16 +64,18 @@ public class InterventionServiceImplTest {
     final String questionName = "questionName";
     final String questionText = "questionText";
 
-    AnswerRequestDTO answerRequestDTO;
+    List<AnswerRequestDTO> answerRequestDTO;
+
     CreateQuestionRequestDTO createQuestionRequestDTO;
+    UpdateQuestionRequestDTO updateQuestionRequestDTO;
 
     @BeforeEach
     public void setup() {
         mockInterventionDAO = Mockito.mock(InterventionDAO.class);
 
-        answerA = new Answer(answerAAnswer);
-        answerB = new Answer(answerBAnswer);
-        answerC = new Answer(answerCAnswer);
+        answerA = new Answer(1, answerAAnswer);
+        answerB = new Answer(2, answerBAnswer);
+        answerC = new Answer(3, answerCAnswer);
 
         answers = new ArrayList<>();
 
@@ -94,15 +96,17 @@ public class InterventionServiceImplTest {
 
         sut = new InterventionServiceImpl(mockInterventionDAO);
 
-        createCommandRequestDTO = Mockito.spy(
-                new CreateCommandRequestDTO(commandName, commandText));
+        createCommandRequestDTO = Mockito.spy(new CreateCommandRequestDTO(commandName, commandText));
+
+        answerRequestDTO = new ArrayList<>();
+
+        answerRequestDTO.add(new AnswerRequestDTO("antwoord"));
+
+        updateQuestionRequestDTO = Mockito.spy(new UpdateQuestionRequestDTO(questionId, questionName, questionText, answerRequestDTO));
 
         command = new Command(commandId, commandName, commandText);
 
-        answerRequestDTO = new AnswerRequestDTO("answerToQuestion");
-
-        createQuestionRequestDTO = Mockito.spy(
-                new CreateQuestionRequestDTO(questionName, answerRequestDTO, questionText));
+        createQuestionRequestDTO = Mockito.spy(new CreateQuestionRequestDTO(questionName, answerRequestDTO, questionText));
     }
 
     @Test
@@ -150,10 +154,7 @@ public class InterventionServiceImplTest {
         sut.createCommand(new CreateCommandRequestDTO(commandName, commandText));
 
         // Assert
-        Mockito.verify(mockInterventionDAO).createCommand(
-                commandName,
-                commandText
-        );
+        Mockito.verify(mockInterventionDAO).createCommand(commandName, commandText);
     }
 
     @Test
@@ -177,10 +178,30 @@ public class InterventionServiceImplTest {
         sut.createQuestion(new CreateQuestionRequestDTO(questionName, answerRequestDTO, questionText));
 
         // Assert
-        Mockito.verify(mockInterventionDAO).createQuestion(
-                questionName,
-                questionText,
-                answerRequestDTO
-        );
+        Mockito.verify(mockInterventionDAO).createQuestion(questionName, questionText, answers);
+    }
+
+    @Test
+    public void updateQuestionHappy() {
+        // Arrange
+        Mockito.when(mockInterventionDAO.getInterventionById(interventionIdB)).thenReturn(interventionB);
+
+        // Act
+        sut.updateQuestion(updateQuestionRequestDTO);
+
+        // Assert
+        Mockito.verify(mockInterventionDAO).updateQuestion(questionId, questionName, questionText, answers);
+    }
+
+    @Test
+    public void updateQuestionNonExistent() {
+        // Arrange
+        Mockito.when(mockInterventionDAO.getInterventionById(questionId)).thenReturn(null);
+
+        // Act
+        Executable act = () -> sut.updateQuestion(updateQuestionRequestDTO);
+
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, act);
     }
 }

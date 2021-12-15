@@ -56,6 +56,7 @@ public class InterventionController {
     @PutMapping("/question")
     public void updateQuestion(@RequestBody UpdateQuestionRequestDTO question) {
         interventionService.updateQuestion(question);
+    }
 
     @PostMapping("/question")
     public void createQuestion(@RequestBody CreateQuestionRequestDTO createQuestionRequestDTO) {
