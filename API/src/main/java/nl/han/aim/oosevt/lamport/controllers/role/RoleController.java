@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.role;
 
+import nl.han.aim.oosevt.lamport.controllers.role.dto.CreateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.services.role.RoleService;
@@ -32,5 +33,10 @@ public class RoleController {
     @PutMapping()
     public void updateRole(@RequestBody UpdateRoleRequestDTO updateRoleRequestDTO) {
         roleService.updateRole(updateRoleRequestDTO);
+    }
+
+    @PostMapping()
+    public void createRole(@RequestBody CreateRoleRequestDTO createRoleRequestDTO) {
+        roleService.createRole(createRoleRequestDTO);
     }
 }

@@ -91,7 +91,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                 answers.forEach(x -> {
                     try (PreparedStatement statement1 = connection.prepareStatement("CALL updateAnswer(?, ?)")) {
                         statement1.setInt(1, resultSet.getInt("question_id"));
-                        statement1.setString(2, x.getAnswer());
+                        statement1.setString(2, x.getAnswerText());
                         statement.executeUpdate();
 
                     } catch (SQLException e) {
@@ -116,7 +116,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                 answers.forEach(x -> {
                     try (PreparedStatement statement1 = connection.prepareStatement("CALL createAnswer(?, ?)")) {
                         statement1.setInt(1, resultSet.getInt("question_id"));
-                        statement1.setString(2, x.getAnswer());
+                        statement1.setString(2, x.getAnswerText());
                         statement.executeUpdate();
 
                     } catch (SQLException e) {
