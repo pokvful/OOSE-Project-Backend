@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 @Component
 public class AreaDAOImpl implements AreaDAO {
-    private final static Logger LOGGER = Logger.getLogger(AreaDAOImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AreaDAOImpl.class.getName());
 
     @Override
     public void createArea(String name, double longitude, double latitude, int radius) {
@@ -24,7 +24,7 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setInt(4, radius);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createArea::A database error occurred!", e);
         }
     }
 
@@ -46,7 +46,7 @@ public class AreaDAOImpl implements AreaDAO {
             return foundAreas;
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getAreas::A database error occurred!", e);
         }
         return new ArrayList<>();
     }
@@ -68,7 +68,7 @@ public class AreaDAOImpl implements AreaDAO {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getAreaById::A database error occurred!", e);
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setInt(5, radius);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateArea::A database error occurred!", e);
         }
     }
 
@@ -95,7 +95,7 @@ public class AreaDAOImpl implements AreaDAO {
             statement.setInt(1, areaId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "deleteArea::A database error occurred!", e);
         }
     }
 }

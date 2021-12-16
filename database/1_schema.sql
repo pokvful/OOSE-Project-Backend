@@ -5,6 +5,12 @@ create table if not exists role (
     role_name VARCHAR(255) NOT NULL
 );
 
+create table if not exists role_permissions (
+    role_id INT(6) UNSIGNED PRIMARY KEY,
+    permission VARCHAR(50) NOT NULL PRIMARY KEY,
+    FOREIGN KEY (role_id) REFERENCES role(role_id)
+);
+
 create table if not exists users (
     user_id INT(6) UNSIGNED auto_increment PRIMARY KEY,
     username VARCHAR(100) NOT NULL,

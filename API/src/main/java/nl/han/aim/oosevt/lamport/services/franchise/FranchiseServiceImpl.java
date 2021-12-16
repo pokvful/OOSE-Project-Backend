@@ -55,7 +55,7 @@ public class FranchiseServiceImpl implements FranchiseService {
             throw new NotFoundException();
         }
 
-        return new FranchiseResponseDTO().fromData(franchise);
+        return FranchiseResponseDTO.fromData(franchise);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class FranchiseServiceImpl implements FranchiseService {
         return franchiseDAO
                 .getFranchises()
                 .stream()
-                .map(x -> new FranchiseResponseDTO().fromData(x))
+                .map(FranchiseResponseDTO::fromData)
                 .collect(Collectors.toList());
     }
 }

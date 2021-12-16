@@ -20,10 +20,10 @@ import java.util.logging.Logger;
 
 public class AuthRequestFilter implements HandlerInterceptor {
 
-    private final static Logger LOGGER = Logger.getLogger(AuthRequestFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthRequestFilter.class.getName());
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
 
@@ -71,6 +71,7 @@ public class AuthRequestFilter implements HandlerInterceptor {
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(Level.SEVERE, "UnsupportedEncodingException", e);
         } catch(SignatureVerificationException ignored) {
+            LOGGER.log(Level.SEVERE, "SignatureVerificationException");
             throw new UnauthorizedException();
         }
 

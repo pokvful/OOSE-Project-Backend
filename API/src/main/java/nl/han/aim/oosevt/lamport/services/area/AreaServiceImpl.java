@@ -56,13 +56,13 @@ public class AreaServiceImpl implements AreaService {
             throw new NotFoundException();
         }
 
-        return new AreaResponseDTO().fromData(area);
+        return AreaResponseDTO.fromData(area);
     }
 
     @Override
     public List<AreaResponseDTO> getAreas() {
 
-        return this.areaDAO.getAreas().stream().map(areaEntity -> new AreaResponseDTO().fromData(areaEntity))
+        return this.areaDAO.getAreas().stream().map(AreaResponseDTO::fromData)
                 .collect(Collectors.toList());
     }
 }

@@ -15,27 +15,24 @@ END //
 CREATE PROCEDURE getUserById(
     IN param_user_id INT
 ) BEGIN
-    SELECT user_id, username, password, email, users.role_id, role_name
+    SELECT user_id, username, password, email, users.role_id
     FROM users
-    LEFT OUTER JOIN role ON users.role_id = role.role_id
     WHERE users.user_id = param_user_id;
 END //
 
 CREATE PROCEDURE getUserByUsername(
     IN param_user_name VARCHAR(200)
 ) BEGIN
-    SELECT user_id, username, password, email, users.role_id, role_name
+    SELECT user_id, username, password, email, users.role_id
     FROM users
-    LEFT OUTER JOIN role ON users.role_id = role.role_id
     WHERE users.username = param_user_name;
 END //
 
 
 CREATE PROCEDURE getUsers()
 BEGIN
-    SELECT user_id, username, password, email, users.role_id, role_name
-    FROM users
-    LEFT OUTER JOIN role ON users.role_id = role.role_id;
+    SELECT user_id, username, password, email, users.role_id
+    FROM users;
 END //
 
 CREATE PROCEDURE updateUser(
@@ -67,6 +64,35 @@ BEGIN
     SELECT role_id, role_name
     FROM role
     WHERE role_id = param_id;
+END //
+
+CREATE PROCEDURE getPermissionsByRoleId(
+    IN param_id INT
+)
+BEGIN
+    SELECT permission 
+    FROM role_permissions 
+    WHERE role_id = param_id;
+END //
+
+CREATE PROCEDURE updateRole(
+    IN param_id INT,
+    IN param_name VARCHAR(200),
+    IN param_allowed_permissions VARCHAR(2000))
+BEGIN
+    DELETE FROM role_permissions WHERE role_id = param_id;
+
+    UPDATE role SET role_name = param_name WHERE role_id = param_id;
+
+    IF param_allowed_permissions != "" THEN
+        CREATE TEMPORARY TABLE converted_values (permission VARCHAR(50));
+        SET @sqlvar = CONCAT("INSERT INTO converted_values (permission) VALUES ('", REPLACE(param_allowed_permissions, ",", "'),('"),"');");
+        PREPARE insert_statement FROM @sqlvar;
+        EXECUTE insert_statement;
+
+        INSERT INTO role_permissions (role_id, permission) SELECT param_id, permission FROM converted_values;
+        DROP TEMPORARY TABLE converted_values;
+    END IF;
 END //
 
 CREATE PROCEDURE createArea(

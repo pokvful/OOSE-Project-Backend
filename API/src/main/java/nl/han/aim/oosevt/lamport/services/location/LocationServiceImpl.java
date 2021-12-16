@@ -97,13 +97,13 @@ public class LocationServiceImpl implements LocationService {
             throw new NotFoundException();
         }
 
-        return new LocationResponseDTO().fromData(location);
+        return LocationResponseDTO.fromData(location);
     }
 
     @Override
     public List<LocationResponseDTO> getLocations() {
         return locationDAO.getLocations().stream()
-                .map(locationEntity -> new LocationResponseDTO().fromData(locationEntity))
+                .map(LocationResponseDTO::fromData)
                 .collect(Collectors.toList());
     }
 }
