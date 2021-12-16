@@ -99,6 +99,7 @@ CREATE PROCEDURE createRole(
     IN param_name VARCHAR(200),
     IN param_allowed_permissions VARCHAR(2000))
 BEGIN
+    DECLARE param_role_id INT DEFAULT 0;
     INSERT INTO role(role_name) VALUES (param_name);
 
     SET param_role_id = LAST_INSERT_ID();
