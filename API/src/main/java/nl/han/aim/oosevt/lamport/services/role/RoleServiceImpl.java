@@ -14,6 +14,12 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl implements RoleService {
     private final RoleDAO roleDAO;
 
+    private void assertValidRole(int id) {
+        if (this.roleDAO.getRoleById(id) == null) {
+            throw new NotFoundException();
+        }
+    }
+
     @Autowired
     public RoleServiceImpl(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
@@ -39,5 +45,11 @@ public class RoleServiceImpl implements RoleService {
                 updateRoleRequestDTO.getName(),
                 updateRoleRequestDTO.getAllowedPermissions()
         );
+    }
+
+    @Override
+    public void deleteRole(int id) {
+        assertValidRole(id);
+        this.roleDAO.deleteRole(id);
     }
 }

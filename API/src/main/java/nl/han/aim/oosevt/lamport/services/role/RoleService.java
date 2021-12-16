@@ -8,4 +8,5 @@ import java.util.List;
 public interface RoleService {
     List<RoleResponseDTO> getRoles();
     void updateRole(UpdateRoleRequestDTO updateRoleRequestDTO);
+    void deleteRole(int id);
 }

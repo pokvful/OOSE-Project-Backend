@@ -29,6 +29,9 @@ public class RoleController {
         );
     }
 
+    @DeleteMapping("{id}")
+    public void deleteRole(@PathVariable("id") int id) {roleService.deleteRole(id);}
+
     @PutMapping()
     public void updateRole(@RequestBody UpdateRoleRequestDTO updateRoleRequestDTO) {
         roleService.updateRole(updateRoleRequestDTO);

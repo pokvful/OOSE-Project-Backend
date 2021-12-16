@@ -92,4 +92,17 @@ public class RoleDAOImpl implements RoleDAO {
             LOGGER.log(Level.SEVERE, "updateRole::A database error occurred!", e);
         }
     }
+
+    @Override
+    public void deleteRole(int roleId) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL deleteRole(?)")) {
+            statement.setInt(1, roleId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "deleteRole::A database error occured!", e);
+        }
+
+
+    }
 }
