@@ -96,9 +96,9 @@ public class LocationServiceImplTest {
                 new UpdateLocationRequestDTO(id, name, delay, longitude, latitude, radius, areaId, franchiseId, linkedInterventionIds)
         );
 
-        answerA = new Answer(answerAAnswer);
-        answerB = new Answer(answerBAnswer);
-        answerC = new Answer(answerCAnswer);
+        answerA = new Answer(1, answerAAnswer);
+        answerB = new Answer(2, answerBAnswer);
+        answerC = new Answer(3, answerCAnswer);
 
         answers = new ArrayList<>();
 

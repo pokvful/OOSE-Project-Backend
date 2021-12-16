@@ -1,15 +1,14 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
-import nl.han.aim.oosevt.lamport.shared.RequestDTO;
-
-public class AnswerRequestDTO extends RequestDTO {
-    private int id;
+public class AnswerResponseDTO {
     private String answer;
+    private int id;
 
-    public AnswerRequestDTO() {
+    public AnswerResponseDTO() {
     }
 
-    public AnswerRequestDTO(String answer) {
+    public AnswerResponseDTO(int id, String answer) {
+        this.id = id;
         this.answer = answer;
     }
 
@@ -29,7 +28,6 @@ public class AnswerRequestDTO extends RequestDTO {
         this.id = id;
     }
 
-    @Override
     protected void validateDTO() {
 
     }
