@@ -35,7 +35,7 @@ public class AuthRequestFilter implements HandlerInterceptor {
 
             Permission annotation = handlerMethod.getMethodAnnotation(Permission.class);
 
-            final String requiredPermission = annotation.permission();
+            final String requiredPermission = annotation.permission().name();
             final String jwtToken = request.getHeader("Authorization");
 
             //If the token is not in the header the user doesn't have a token
