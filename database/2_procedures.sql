@@ -95,37 +95,20 @@ BEGIN
     UPDATE area SET area_name = param_name WHERE area_id = param_id;
 END //
 
-CREATE PROCEDURE getCommands()
+CREATE PROCEDURE getInterventions()
 BEGIN
-    SELECT intervention.intervention_id, intervention_name, command
+    SELECT
+        intervention.intervention_id,
+        intervention_name,
+        intervention.intervention_type,
+        intervention_name,
+        command.command,
+        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
+        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question_name
     FROM intervention
+    LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
     LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
-    WHERE intervention.intervention_type = 'command';
-END //
-
-CREATE PROCEDURE getQuestions()
-BEGIN
-    SELECT intervention.intervention_id, intervention_name, question, question.question_id 
-	FROM (
-	    SELECT intervention_id
-	    FROM question
-	    GROUP BY intervention_id
-	    HAVING COUNT(intervention_id) = 1
-	) AS questions
-	LEFT OUTER JOIN intervention ON questions.intervention_id = intervention.intervention_id
-	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id;
-END //
-
-CREATE PROCEDURE getQuestionnaires()
-BEGIN
-	SELECT intervention.intervention_id, intervention_name 
-	FROM (
-	    SELECT question_in_intervention.intervention_id
-	    FROM question_in_intervention
-	    GROUP BY question_in_intervention.intervention_id
-	    HAVING COUNT(question_in_intervention.intervention_id) > 1
-	) AS questions
-	LEFT OUTER JOIN intervention ON questions.intervention_id = intervention.intervention_id;
+    GROUP BY intervention_id;
 END //
 
 CREATE PROCEDURE getAnswersByQuestionId(

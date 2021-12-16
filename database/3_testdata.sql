@@ -19,6 +19,7 @@ INSERT INTO intervention(intervention_name, intervention_type) VALUES ("Vragenli
 INSERT INTO intervention(intervention_name, intervention_type) VALUES ("Saladebar", 'questionnaire');
 INSERT INTO intervention(intervention_name, intervention_type) VALUES ("Opdrukken", 'command');
 INSERT INTO intervention(intervention_name, intervention_type) VALUES ("Kerk bekijken", 'question');
+INSERT INTO intervention(intervention_name, intervention_type) VALUES ("Volkoren brood", 'command');
 
 INSERT INTO franchise_intervention(intervention_id, franchise_id) VALUES (1, 1);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (1, "Mcdonalds Molenstraat", 1, 1);
@@ -34,7 +35,7 @@ INSERT INTO question (question, intervention_id) VALUES ("vraag b", 1);
 INSERT INTO question (question, intervention_id) VALUES ("vraag c", 1);
 
 INSERT INTO command (command, intervention_id) VALUES ("Welkom op kantoor!", 2);
-INSERT INTO command (command, intervention_id) VALUES ("Welkom bij de Subway, kiest u voor een volkoren broodje?", 3);
+INSERT INTO command (command, intervention_id) VALUES ("Welkom bij de Subway, kiest u voor een volkoren broodje?", 5);
 
 INSERT INTO answer (answer, question_id) VALUES ("antwoord a1", 2);
 INSERT INTO answer (answer, question_id) VALUES ("antwoord a2", 2);
