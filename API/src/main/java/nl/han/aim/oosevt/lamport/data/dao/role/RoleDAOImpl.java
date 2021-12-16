@@ -122,5 +122,15 @@ public class RoleDAOImpl implements RoleDAO {
             LOGGER.log(Level.SEVERE, "getUsersByRoleId::A database error occurred!", e);
         }
         return users;
+    public void createRole(String name, List<String> allowedPermissions) {
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL createRole(?, ?)")) {
+            statement.setString(1, name);
+            statement.setString(2, String.join(",", allowedPermissions));
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "createRole::A database error occurred!", e);
+        }
     }
 }

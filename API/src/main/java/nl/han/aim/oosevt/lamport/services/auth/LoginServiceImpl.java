@@ -14,12 +14,15 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class LoginServiceImpl implements LoginService {
 
     private final UserDAO userDAO;
     private final HashProvider hashProvider;
+    private static final Logger LOGGER = Logger.getLogger(LoginServiceImpl.class.getName());
 
     @Autowired
     public LoginServiceImpl(UserDAO userDAO, HashProvider hashProvider) {
@@ -52,7 +55,7 @@ public class LoginServiceImpl implements LoginService {
                     .sign(Algorithm.HMAC256(System.getenv("JWT_SECRET"))));
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "UnsupportedEncodingException", e);
         }
         return null;
     }

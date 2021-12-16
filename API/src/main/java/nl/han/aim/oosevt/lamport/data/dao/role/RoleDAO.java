@@ -10,4 +10,5 @@ public interface RoleDAO {
     void updateRole(int id, String name, List<String> allowedPermissions);
     void deleteRole(int id);
     int getUsersByRoleId(int roleId);
+    void createRole(String name, List<String> allowedPermissions);
 }

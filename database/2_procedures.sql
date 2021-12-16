@@ -102,6 +102,26 @@ BEGIN
     END IF;
 END //
 
+CREATE PROCEDURE createRole(
+    IN param_name VARCHAR(200),
+    IN param_allowed_permissions VARCHAR(2000))
+BEGIN
+    DECLARE param_role_id INT DEFAULT 0;
+    INSERT INTO role(role_name) VALUES (param_name);
+
+    SET param_role_id = LAST_INSERT_ID();
+
+    IF param_allowed_permissions != "" THEN
+        CREATE TEMPORARY TABLE converted_values (permission VARCHAR(50));
+        SET @sqlvar = CONCAT("INSERT INTO converted_values (permission) VALUES ('", REPLACE(param_allowed_permissions, ",", "'),('"),"');");
+        PREPARE insert_statement FROM @sqlvar;
+        EXECUTE insert_statement;
+
+        INSERT INTO role_permissions (role_id, permission) SELECT param_role_id, permission FROM converted_values;
+        DROP TEMPORARY TABLE converted_values;
+    END IF;
+END //
+
 CREATE PROCEDURE createArea(
     IN param_name VARCHAR(255),
     IN param_longitude DECIMAL(9,6),
@@ -291,6 +311,11 @@ BEGIN
     SELECT franchise_id, franchise_name
     FROM franchise;
 END //
+
+CREATE PROCEDURE getUsersByRoleId(
+    IN param_id INT
+) BEGIN
+    SELECT * from role_permissions WHERE param_id = role_id;
 
 CREATE PROCEDURE deleteFranchise(
     IN param_id INT

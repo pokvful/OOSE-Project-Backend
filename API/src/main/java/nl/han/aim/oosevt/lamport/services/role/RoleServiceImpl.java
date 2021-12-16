@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.services.role;
 
+import nl.han.aim.oosevt.lamport.controllers.role.dto.CreateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
@@ -58,5 +59,15 @@ public class RoleServiceImpl implements RoleService {
         }
 
         this.roleDAO.deleteRole(id);
+    public void createRole(CreateRoleRequestDTO createRoleRequestDTO) {
+        roleDAO.createRole(
+                createRoleRequestDTO.getName(),
+                createRoleRequestDTO.getAllowedPermissions()
+        );
+    }
+
+    @Override
+    public RoleResponseDTO getRoleById(int id) {
+        return RoleResponseDTO.fromData(roleDAO.getRoleById(id));
     }
 }
