@@ -60,7 +60,7 @@ create table if not exists command (
     command_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     command VARCHAR(100),
     intervention_id INT(6) UNSIGNED NOT NULL UNIQUE,
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists franchise (
@@ -97,27 +97,15 @@ create table if not exists location_intervention (
 create table if not exists question (
     question_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     question varchar(255),
-    type varchar(100),
     intervention_id INT(6) UNSIGNED,
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
-);
-
-create table if not exists question_in_intervention (
-    question_id INT(6) UNSIGNED,
-    FOREIGN KEY (question_id) REFERENCES question(question_id)
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists answer (
     answer_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    answer VARCHAR(255),
-    question_id INT(6) UNSIGNED,
-    FOREIGN KEY (question_id) REFERENCES question(question_id)
-);
-
-create table if not exists answers (
-    answer_id INT(6) UNSIGNED,
-    answer VARCHAR(255),
-    FOREIGN KEY (answer_id) REFERENCES answer(answer_id)
+    answer VARCHAR(255) NOT NULL,
+    question_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
 );
 
 create table if not exists followup_question (

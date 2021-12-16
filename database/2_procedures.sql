@@ -101,14 +101,67 @@ BEGIN
         intervention.intervention_id,
         intervention_name,
         intervention.intervention_type,
-        intervention_name,
         command.command,
         CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
-        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question_name
+        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
     FROM intervention
     LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
     LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
     GROUP BY intervention_id;
+END //
+
+CREATE PROCEDURE updateCommand (
+    IN param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_command VARCHAR(255)
+) BEGIN
+    UPDATE intervention
+    LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
+    SET intervention_name = param_name,
+        command = param_command
+    WHERE intervention.intervention_id = param_id;
+END //
+
+CREATE PROCEDURE updateQuestion (
+    IN param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_question VARCHAR(255)
+) BEGIN
+	UPDATE intervention
+	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
+	SET intervention_name = param_name,
+		question.question = param_question
+	WHERE intervention.intervention_id = param_id;
+END //
+
+CREATE PROCEDURE updateQuestionnaire (
+    IN param_id INT,
+    IN param_name VARCHAR(255)
+) BEGIN
+	UPDATE intervention
+	SET intervention_name = param_name
+	WHERE intervention_id = param_id;
+	
+	DELETE FROM question
+	WHERE intervention_id = param_id;
+END //
+
+CREATE PROCEDURE addQuestionToQuestionnaire (
+    IN param_intervention_id INT,
+    IN param_question VARCHAR(255)
+) BEGIN
+	INSERT INTO question (intervention_id, question)
+	VALUES (param_intervention_id, param_question);
+
+	SELECT LAST_INSERT_ID() AS question_id;
+END //
+
+CREATE PROCEDURE addAnswerToQuestion (
+    IN param_question_id INT,
+    IN param_answer VARCHAR(255)
+) BEGIN
+	INSERT INTO answer (question_id, answer)
+	VALUES (param_question_id, param_answer);
 END //
 
 CREATE PROCEDURE getAnswersByQuestionId(
