@@ -3,6 +3,7 @@ package nl.han.aim.oosevt.lamport.controllers.intervention;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.services.intervention.InterventionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,11 @@ public class InterventionController {
     @PostMapping("/command")
     public void createCommand(@RequestBody CreateCommandRequestDTO createCommandRequestDTO) {
         interventionService.createCommand(createCommandRequestDTO);
+    }
+
+    @PutMapping("/question")
+    public void updateQuestion(@RequestBody UpdateQuestionRequestDTO question) {
+        interventionService.updateQuestion(question);
     }
 
     @PostMapping("/question")

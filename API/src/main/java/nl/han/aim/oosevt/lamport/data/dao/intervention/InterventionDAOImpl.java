@@ -1,6 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.AnswerRequestDTO;
+import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
@@ -56,8 +56,7 @@ public class InterventionDAOImpl implements InterventionDAO {
     @Override
     public void updateCommand(int id, String name, String command) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")
-        ) {
+             PreparedStatement statement = connection.prepareStatement("CALL updateCommand(?, ?, ?)")) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, command);
@@ -74,20 +73,59 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setString(2, command);
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createCommand::A database error occurred!", e);
         }
     }
 
     @Override
-    public void createQuestion(String name, String question, AnswerRequestDTO answer) {
+    public void updateQuestion(int id, String name, String question, List<Answer> answers) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?)")) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, question);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return;
+                }
+                answers.forEach(x -> {
+                    try (PreparedStatement statement1 = connection.prepareStatement("CALL updateAnswer(?, ?)")) {
+                        statement1.setInt(1, resultSet.getInt("question_id"));
+                        statement1.setString(2, x.getAnswer());
+                        statement.executeUpdate();
+
+                    } catch (SQLException e) {
+                        LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+                    }
+                });
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
+    }
+
+    public void createQuestion(String name, String question, List<Answer> answers) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, question);
-            statement.setString(3, answer.getAnswer());
-            statement.executeUpdate();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return;
+                }
+                answers.forEach(x -> {
+                    try (PreparedStatement statement1 = connection.prepareStatement("CALL createAnswer(?, ?)")) {
+                        statement1.setInt(1, resultSet.getInt("question_id"));
+                        statement1.setString(2, x.getAnswer());
+                        statement.executeUpdate();
+
+                    } catch (SQLException e) {
+                        LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
+                    }
+                });
+            }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
         }
     }
 
