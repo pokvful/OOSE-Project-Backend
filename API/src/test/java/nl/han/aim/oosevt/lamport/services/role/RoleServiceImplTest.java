@@ -4,7 +4,6 @@ import nl.han.aim.oosevt.lamport.data.dao.franchise.FranchiseDAO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
-import nl.han.aim.oosevt.lamport.services.franchise.FranchiseServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

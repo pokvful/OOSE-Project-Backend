@@ -3,6 +3,8 @@ package nl.han.aim.oosevt.lamport.services.role;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
+import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
+import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,6 +52,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void deleteRole(int id) {
         assertValidRole(id);
+
+        if(roleDAO.getUsersByRoleId(id) > 0) {
+            throw new InvalidDTOException();
+        }
+
         this.roleDAO.deleteRole(id);
     }
 }

@@ -103,6 +103,24 @@ public class RoleDAOImpl implements RoleDAO {
             LOGGER.log(Level.SEVERE, "deleteRole::A database error occured!", e);
         }
 
+    }
 
+    @Override
+    public int getUsersByRoleId(int roleId) {
+        var users = 0;
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getUsersByRoleId(?)")) {
+
+            statement.setInt(1, roleId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    users += 1;
+                }
+                return users;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getUsersByRoleId::A database error occurred!", e);
+        }
+        return users;
     }
 }

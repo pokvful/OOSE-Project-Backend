@@ -75,6 +75,13 @@ BEGIN
     WHERE role_id = param_id;
 END //
 
+
+CREATE PROCEDURE deleteRole(
+    IN param_id INT)
+BEGIN
+    DELETE FROM role_permissions WHERE role_id = param_id;
+END //
+
 CREATE PROCEDURE updateRole(
     IN param_id INT,
     IN param_name VARCHAR(200),
