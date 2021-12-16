@@ -99,7 +99,7 @@ CREATE PROCEDURE getInterventions()
 BEGIN
     SELECT
         intervention.intervention_id,
-        intervention_name,
+        intervention.intervention_name,
         intervention.intervention_type,
         command.command,
         CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
@@ -117,8 +117,8 @@ CREATE PROCEDURE updateCommand (
 ) BEGIN
     UPDATE intervention
     LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
-    SET intervention_name = param_name,
-        command = param_command
+    SET intervention.intervention_name = param_name,
+        command.command = param_command
     WHERE intervention.intervention_id = param_id;
 END //
 
@@ -129,7 +129,7 @@ CREATE PROCEDURE updateQuestion (
 ) BEGIN
 	UPDATE intervention
 	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
-	SET intervention_name = param_name,
+	SET intervention.intervention_name = param_name,
 		question.question = param_question
 	WHERE intervention.intervention_id = param_id;
 END //
@@ -176,10 +176,8 @@ CREATE PROCEDURE getQuestionsByQuestionnaireInterventionId(
     IN param_intervention_id INT
 ) BEGIN
     SELECT question, question_id
-	FROM question_in_intervention
-	LEFT OUTER JOIN intervention ON question_in_intervention.intervention_id = intervention.intervention_id
-	LEFT OUTER JOIN question ON question_in_intervention.question_id = question.question_id
-	WHERE question_in_intervention.intervention_id = param_intervention_id;
+    FROM question
+    WHERE intervention_id = param_intervention_id;
 END //
 
 CREATE PROCEDURE deleteArea(
@@ -360,7 +358,7 @@ CREATE PROCEDURE updateFranchise(
     IN param_name VARCHAR(255)
 ) BEGIN
     UPDATE franchise
-        SET franchise_name = param_name
+    SET franchise_name = param_name
     WHERE franchise_id = param_id;
 END //
 
