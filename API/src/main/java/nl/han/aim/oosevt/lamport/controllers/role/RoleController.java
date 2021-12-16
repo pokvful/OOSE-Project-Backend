@@ -30,6 +30,14 @@ public class RoleController {
         );
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<RoleResponseDTO> getRoleById(@PathVariable("id") int id) {
+        return new ResponseEntity<>(
+                roleService.getRoleById(id),
+                HttpStatus.OK
+        );
+    }
+
     @PutMapping()
     public void updateRole(@RequestBody UpdateRoleRequestDTO updateRoleRequestDTO) {
         roleService.updateRole(updateRoleRequestDTO);

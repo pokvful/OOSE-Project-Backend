@@ -49,4 +49,9 @@ public class RoleServiceImpl implements RoleService {
                 createRoleRequestDTO.getAllowedPermissions()
         );
     }
+
+    @Override
+    public RoleResponseDTO getRoleById(int id) {
+        return RoleResponseDTO.fromData(roleDAO.getRoleById(id));
+    }
 }

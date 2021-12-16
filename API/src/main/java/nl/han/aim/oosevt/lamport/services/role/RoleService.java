@@ -10,4 +10,5 @@ public interface RoleService {
     List<RoleResponseDTO> getRoles();
     void updateRole(UpdateRoleRequestDTO updateRoleRequestDTO);
     void createRole(CreateRoleRequestDTO createRoleRequestDTO);
+    RoleResponseDTO getRoleById(int id);
 }
