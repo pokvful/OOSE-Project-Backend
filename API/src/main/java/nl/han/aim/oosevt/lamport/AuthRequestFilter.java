@@ -70,8 +70,8 @@ public class AuthRequestFilter implements HandlerInterceptor {
                     .verify(token);
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(Level.SEVERE, "UnsupportedEncodingException", e);
-        } catch(SignatureVerificationException ignored) {
-            LOGGER.log(Level.SEVERE, "SignatureVerificationException");
+        } catch(SignatureVerificationException e) {
+            LOGGER.log(Level.SEVERE, "SignatureVerificationException", e);
             throw new UnauthorizedException();
         }
 
