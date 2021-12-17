@@ -1,6 +1,5 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 
-import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Question;
 
 import java.util.List;

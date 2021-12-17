@@ -1,7 +1,7 @@
 package nl.han.aim.oosevt.lamport.services.user;
 
-import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;

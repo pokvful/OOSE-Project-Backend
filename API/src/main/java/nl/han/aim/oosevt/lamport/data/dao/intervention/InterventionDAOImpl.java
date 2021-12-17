@@ -32,6 +32,27 @@ public class InterventionDAOImpl implements InterventionDAO {
         }
     }
 
+    private void setQuestionsForQuestionnaire(int questionnaireId, List<Question> questions, Connection connection) {
+        for (Question question : questions) {
+            String questionText = question.getQuestionText();
+            List<Answer> answers = question.getAnswers();
+
+            try (PreparedStatement statement = connection.prepareStatement("CALL addQuestionToQuestionnaire(?, ?)")) {
+                statement.setInt(1, questionnaireId);
+                statement.setString(2, questionText);
+
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+
+                int questionId = resultSet.getInt("question_id");
+
+                setAnswersForQuestion(questionId, answers, connection);
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            }
+        }
+    }
+
     private List<Answer> getAnswersByQuestionId(int questionId, Connection connection) {
         try (PreparedStatement statement = connection.prepareStatement("CALL getAnswersByQuestionId(?)")) {
             statement.setInt(1, questionId);
@@ -233,6 +254,28 @@ public class InterventionDAOImpl implements InterventionDAO {
         }
 
         return new ArrayList<>();
+    }
+
+    @Override
+    public void updateQuestionnaire(Questionnaire questionnaire) {
+        int id = questionnaire.getId();
+        String name = questionnaire.getName();
+
+        List<Question> questions = questionnaire.getQuestions();
+
+        try (
+            Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL updateQuestionnaire(?, ?)")
+        ) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+
+            statement.executeUpdate();
+
+            setQuestionsForQuestionnaire(id, questions, connection);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
     }
 
     @Override

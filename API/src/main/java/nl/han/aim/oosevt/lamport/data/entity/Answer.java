@@ -16,4 +16,5 @@ public class Answer {
     public String getAnswerText() {
         return answerText;
     }
+
 }

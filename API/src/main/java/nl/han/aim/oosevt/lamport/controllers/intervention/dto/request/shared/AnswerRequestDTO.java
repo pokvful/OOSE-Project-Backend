@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
+import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class AnswerRequestDTO extends RequestDTO {
@@ -32,5 +33,9 @@ public class AnswerRequestDTO extends RequestDTO {
     @Override
     protected void validateDTO() {
 
+    }
+
+    public Answer toData() {
+        return new Answer(id, answer);
     }
 }

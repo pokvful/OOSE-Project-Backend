@@ -1,10 +1,11 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention;
 
-import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionnaireRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionnaireRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.services.intervention.InterventionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,5 +61,15 @@ public class InterventionController {
     @PostMapping("/question")
     public void createQuestion(@RequestBody CreateQuestionRequestDTO createQuestionRequestDTO) {
         interventionService.createQuestion(createQuestionRequestDTO);
+    }
+
+    @PutMapping("/questionnaire")
+    public void updateQuestionnaire(@RequestBody UpdateQuestionnaireRequestDTO questionnaire) {
+        interventionService.updateQuestionnaire(questionnaire);
+    }
+
+    @PostMapping("/questionnaire")
+    public void createQuestionnaire(@RequestBody CreateQuestionnaireRequestDTO createQuestionnaireRequestDTO) {
+        interventionService.createQuestionnaire(createQuestionnaireRequestDTO);
     }
 }

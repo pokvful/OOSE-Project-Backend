@@ -1,7 +1,5 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.QuestionRequestDTO;
-import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Questionnaire;
 
 import java.util.List;

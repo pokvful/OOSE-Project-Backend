@@ -1,10 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 
-import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.data.entity.Command;
-import nl.han.aim.oosevt.lamport.data.entity.Intervention;
-
-import java.util.function.Function;
 
 public class CommandResponseDTO extends InterventionResponseDTO {
     private String command;
