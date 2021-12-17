@@ -522,12 +522,4 @@ CREATE PROCEDURE deleteUser(
     DELETE FROM users WHERE user_id = param_id;
 END //
 
-CREATE PROCEDURE createCommand(
-    IN param_name VARCHAR(255),
-    IN param_text VARCHAR(255)
-) BEGIN
-   INSERT INTO command(name, command)
-        VALUES(param_name, param_text);
-END //
-
 DELIMITER ;
