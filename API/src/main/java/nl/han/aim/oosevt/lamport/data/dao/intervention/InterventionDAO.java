@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared.Ans
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 
+import java.util.Arrays;
 import java.util.List;
 
 public interface InterventionDAO {
@@ -18,4 +19,6 @@ public interface InterventionDAO {
     void updateQuestion(int id, String name, String question, List<Answer> answers);
 
     void createQuestion(String name, String question, List<Answer> answers);
+
+    List<Intervention> getInterventions();
 }

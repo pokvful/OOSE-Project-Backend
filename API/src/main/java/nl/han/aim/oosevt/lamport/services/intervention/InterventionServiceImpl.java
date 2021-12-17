@@ -1,15 +1,18 @@
 package nl.han.aim.oosevt.lamport.services.intervention;
 
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -74,5 +77,14 @@ public class InterventionServiceImpl implements InterventionService {
                         .stream()
                         .map(x -> new Answer(x.getId(), x.getAnswer()))
                         .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<InterventionResponseDTO> getInterventions() {
+        return interventionDAO
+                .getInterventions()
+                .stream()
+                .map(InterventionResponseDTO::fromData)
+                .collect(Collectors.toList());
     }
 }

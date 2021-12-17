@@ -28,24 +28,14 @@ public class InterventionController {
     @GetMapping("")
     public ResponseEntity<List<InterventionResponseDTO>> getInterventions() {
         return new ResponseEntity<>(
-                getMockInterventions(),
-                HttpStatus.OK);
+            interventionService.getInterventions(),
+            HttpStatus.OK
+        );
     }
 
     @PutMapping()
     public void updateIntervention(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
         interventionService.updateCommand(updateCommandRequestDTO);
-    }
-
-    private List<InterventionResponseDTO> getMockInterventions() {
-        final ArrayList<InterventionResponseDTO> interventionResponseDTOS = new ArrayList<>();
-
-        interventionResponseDTOS.add(new InterventionResponseDTO(1, "Saladebar"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(2, "Hardlopen"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(3, "Opdrukken"));
-        interventionResponseDTOS.add(new InterventionResponseDTO(4, "Kerk bekijken"));
-
-        return interventionResponseDTOS;
     }
 
     @PostMapping("/command")
