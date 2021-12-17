@@ -181,4 +181,11 @@ public class InterventionServiceImpl implements InterventionService {
 
         return interventionResponseDTO;
     }
+
+    @Override
+    public void deleteIntervention(int id) {
+        assertInterventionExists(id);
+
+        interventionDAO.deleteIntervention(id);
+    }
 }

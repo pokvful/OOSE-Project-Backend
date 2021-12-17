@@ -17,4 +17,5 @@ public interface InterventionDAO {
     List<Intervention> getInterventions();
     void updateQuestionnaire(Questionnaire questionnaire);
     void createQuestionnaire(String name, List<Question> questions);
+    void deleteIntervention(int id);
 }

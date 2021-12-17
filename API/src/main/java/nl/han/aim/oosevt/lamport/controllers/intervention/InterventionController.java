@@ -72,4 +72,9 @@ public class InterventionController {
     public void createQuestionnaire(@RequestBody CreateQuestionnaireRequestDTO createQuestionnaireRequestDTO) {
         interventionService.createQuestionnaire(createQuestionnaireRequestDTO);
     }
+
+    @DeleteMapping("{id}")
+    public void deleteIntervention(@PathVariable("id") int id) {
+        interventionService.deleteIntervention(id);
+    }
 }

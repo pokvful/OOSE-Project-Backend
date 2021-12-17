@@ -299,6 +299,20 @@ public class InterventionDAOImpl implements InterventionDAO {
     }
 
     @Override
+    public void deleteIntervention(int id) {
+        try (
+                Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL deleteIntervention(?)")
+        ) {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
+    }
+
+    @Override
     public Intervention getInterventionById(int id) {
         try (
              Connection connection = DriverManager.getConnection(connectionString());

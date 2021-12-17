@@ -19,4 +19,5 @@ public interface InterventionService {
     void createQuestionnaire(CreateQuestionnaireRequestDTO createQuestionnaireRequestDTO);
     List<InterventionResponseDTO> getInterventions();
     InterventionResponseDTO getInterventionById(int id);
+    void deleteIntervention(int id);
 }
