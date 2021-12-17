@@ -21,12 +21,6 @@ create table if not exists users (
     FOREIGN KEY (role_id) REFERENCES role(role_id)
 );
 
-create table if not exists token (
-    token varchar(255),
-    user_id INT(6) UNSIGNED,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
 create table if not exists geofence (
     geofence_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     longitude DOUBLE NOT NULL,
@@ -34,10 +28,16 @@ create table if not exists geofence (
     radius INT(6)
 );
 
+create table if not exists intervention (
+    intervention_id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    intervention_name VARCHAR(255) NOT NULL,
+    intervention_type ENUM('command', 'question', 'questionnaire')
+);
+
 create table if not exists area (
     area_id INT(6) UNSIGNED AUTO_INCREMENT,
     area_name VARCHAR(100) NOT NULL,
-    geofence_id INT(6) UNSIGNED,
+    geofence_id INT(6) UNSIGNED NOT NULL,
     PRIMARY KEY (area_id),
     FOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id)
 );
@@ -65,7 +65,9 @@ create table if not exists breadcrumb (
 
 create table if not exists command (
     command_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    command VARCHAR(100)
+    command VARCHAR(100),
+    intervention_id INT(6) UNSIGNED NOT NULL UNIQUE,
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists franchise (
@@ -73,23 +75,11 @@ create table if not exists franchise (
     franchise_name VARCHAR(100)
 );
 
-create table if not exists intervention(
-    intervention_id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    intervention_name VARCHAR(100)
-);
-
 create table if not exists franchise_intervention (
-    intervention_id INT(6) UNSIGNED,
-    franchise_id INT(6) UNSIGNED,
-    FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id),
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
-);
-
-create table if not exists command_in_intervention (
-    command_id INT(6) UNSIGNED,
-    intervention_id INT(6) UNSIGNED,
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id),
-    FOREIGN KEY (command_id) REFERENCES command(command_id)
+    intervention_id INT(6) UNSIGNED NOT NULL,
+    franchise_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id) ON DELETE CASCADE,
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists location (
@@ -105,30 +95,24 @@ create table if not exists location (
 );
 
 create table if not exists location_intervention (
-    intervention_id INT(6) UNSIGNED,
-    location_id INT(6) UNSIGNED,
-    FOREIGN KEY (location_id) REFERENCES location(location_id),
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
+    intervention_id INT(6) UNSIGNED NOT NULL,
+    location_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (location_id) REFERENCES location(location_id) ON DELETE CASCADE,
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists question (
     question_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    question varchar(100),
-    type varchar(25),
-    question_text varchar(100)
+    question varchar(255) NOT NULL,
+    intervention_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists answer (
     answer_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    answer VARCHAR(255),
-    question_id INT(6) UNSIGNED,
-    FOREIGN KEY (question_id) REFERENCES question(question_id)
-);
-
-create table if not exists answers (
-    answer_id INT(6) UNSIGNED,
-    answer VARCHAR(255),
-    FOREIGN KEY (answer_id) REFERENCES answer(answer_id)
+    answer VARCHAR(255) NOT NULL,
+    question_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES question(question_id) ON DELETE CASCADE
 );
 
 create table if not exists followup_question (
@@ -165,13 +149,6 @@ create table if not exists reaction_answer (
     question_id INT(6) UNSIGNED,
     answer_id INT(6) UNSIGNED,
     FOREIGN KEY (answer_id) REFERENCES answer(answer_id)
-);
-
-create table if not exists question_in_intervention (
-    intervention_id INT(6) UNSIGNED,
-    question_id INT(6) UNSIGNED,
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id),
-    FOREIGN KEY (question_id) REFERENCES question(question_id)
 );
 
 create table if not exists action (
