@@ -8,6 +8,7 @@ import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.Upd
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
+import nl.han.aim.oosevt.lamport.data.entity.Intervention;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -86,5 +87,18 @@ public class InterventionServiceImpl implements InterventionService {
                 .stream()
                 .map(InterventionResponseDTO::fromData)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public InterventionResponseDTO getInterventionById(int id) {
+        Intervention intervention = interventionDAO.getInterventionById(id);
+
+        if (intervention == null) {
+            throw new NotFoundException();
+        }
+
+        InterventionResponseDTO interventionResponseDTO = InterventionResponseDTO.fromData(intervention);
+
+        return interventionResponseDTO;
     }
 }

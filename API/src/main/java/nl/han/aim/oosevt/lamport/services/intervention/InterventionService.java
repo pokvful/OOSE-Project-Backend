@@ -11,12 +11,9 @@ import java.util.List;
 
 public interface InterventionService {
     void updateCommand(UpdateCommandRequestDTO updateCommandRequestDTO);
-
     void createCommand(CreateCommandRequestDTO createCommandRequestDTO);
-
     void updateQuestion(UpdateQuestionRequestDTO updateQuestionRequestDTO);
-
     void createQuestion(CreateQuestionRequestDTO createQuestionRequestDTO);
-
     List<InterventionResponseDTO> getInterventions();
+    InterventionResponseDTO getInterventionById(int id);
 }

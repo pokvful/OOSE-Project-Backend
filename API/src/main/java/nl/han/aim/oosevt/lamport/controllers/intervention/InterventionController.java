@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention;
 
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateCommandRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.create.CreateQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateCommandRequestDTO;
@@ -33,8 +34,17 @@ public class InterventionController {
         );
     }
 
-    @PutMapping()
-    public void updateIntervention(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
+
+    @GetMapping("{id}")
+    public ResponseEntity<InterventionResponseDTO> getIntervention(@PathVariable("id") int id) {
+        return new ResponseEntity<>(
+                interventionService.getInterventionById(id),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/command")
+    public void updateCommand(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
         interventionService.updateCommand(updateCommandRequestDTO);
     }
 

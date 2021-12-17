@@ -237,6 +237,21 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     @Override
     public Intervention getInterventionById(int id) {
-        return new Command(1, "mock intervention from InterventionDAOImpl", "ga naar saladebami");
+        try (
+             Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getInterventionById(?)")
+        ) {
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return interventionFromResultSet(resultSet, connection);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+        }
+
+        return null;
     }
 }
