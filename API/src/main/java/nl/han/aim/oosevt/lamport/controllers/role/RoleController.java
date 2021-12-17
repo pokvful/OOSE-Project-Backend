@@ -1,6 +1,7 @@
 package nl.han.aim.oosevt.lamport.controllers.role;
 
 import nl.han.aim.oosevt.lamport.controllers.role.dto.CreateRoleRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.role.dto.PermissionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.services.role.RoleService;
@@ -26,6 +27,14 @@ public class RoleController {
     public ResponseEntity<List<RoleResponseDTO>> getRoles() {
         return new ResponseEntity<>(
                 roleService.getRoles(),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("permissions")
+    public ResponseEntity<List<PermissionResponseDTO>> getPermissions() {
+        return new ResponseEntity<>(
+                roleService.getPermissions(),
                 HttpStatus.OK
         );
     }
