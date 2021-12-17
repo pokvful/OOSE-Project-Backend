@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,16 +25,17 @@ public class RoleServiceImplTest {
 
     private RoleServiceImpl sut;
 
-    private FranchiseDAO franchiseDAOFixture;
-
     private RoleDAO roleDAOFixture;
 
     @BeforeEach
     public void setup() {
 
-        franchiseDAOFixture = Mockito.mock(FranchiseDAO.class);
+        roleDAOFixture = Mockito.mock(RoleDAO.class);
+
 
         sut = new RoleServiceImpl(roleDAOFixture);
+
+        allowedPermissions = new ArrayList<>();
 
         allowedPermissions.add("OnderzoekersRechten");
 

@@ -108,7 +108,7 @@ public class RoleDAOImpl implements RoleDAO {
     @Override
     public int getUserCountByRoleId(int roleId) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getUsersCountByRoleId(?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL getUserCountByRoleId   (?)")) {
 
             statement.setInt(1, roleId);
             try (ResultSet resultSet = statement.executeQuery()) {
