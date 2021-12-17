@@ -48,8 +48,6 @@ INSERT INTO geofence (latitude, longitude, radius) VALUES(51.9691868, 5.6653948,
 INSERT INTO area(area_name, geofence_id) VALUES ("Wageningen", 2);
 INSERT INTO franchise(franchise_name) VALUES ("Gaia_building (office)");
 INSERT INTO franchise(franchise_name) VALUES ("Subway");
-INSERT INTO franchise_intervention(franchise_id) VALUES (2);
-INSERT INTO franchise_intervention(franchise_id) VALUES (3);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.987491838000039, 5.666409706000024, 100);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.983383490000051, 5.664095127000053, 100);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (2, "Gaia_building", 2, 3);
@@ -59,7 +57,6 @@ INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.092876, 5.104480, 3500);
 INSERT INTO area(area_name, geofence_id) VALUES ("Utrecht", 5);
 INSERT INTO franchise (franchise_name) VALUES ("HP2 Kantoor");
-INSERT INTO franchise_intervention(franchise_id) VALUES (4);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0672984, 5.1088383, 100);
 INSERT INTO location (franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway Utrecht", 3, 6);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0709499, 5.1100019, 100);

@@ -30,7 +30,7 @@ create table if not exists intervention (
 create table if not exists area (
     area_id INT(6) UNSIGNED AUTO_INCREMENT,
     area_name VARCHAR(100) NOT NULL,
-    geofence_id INT(6) UNSIGNED,
+    geofence_id INT(6) UNSIGNED NOT NULL,
     PRIMARY KEY (area_id),
     FOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id)
 );
@@ -69,10 +69,10 @@ create table if not exists franchise (
 );
 
 create table if not exists franchise_intervention (
-    intervention_id INT(6) UNSIGNED,
-    franchise_id INT(6) UNSIGNED,
-    FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id),
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
+    intervention_id INT(6) UNSIGNED NOT NULL,
+    franchise_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id) ON DELETE CASCADE,
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists location (
@@ -88,16 +88,16 @@ create table if not exists location (
 );
 
 create table if not exists location_intervention (
-    intervention_id INT(6) UNSIGNED,
-    location_id INT(6) UNSIGNED,
-    FOREIGN KEY (location_id) REFERENCES location(location_id),
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id)
+    intervention_id INT(6) UNSIGNED NOT NULL,
+    location_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (location_id) REFERENCES location(location_id) ON DELETE CASCADE,
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists question (
     question_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    question varchar(255),
-    intervention_id INT(6) UNSIGNED,
+    question varchar(255) NOT NULL,
+    intervention_id INT(6) UNSIGNED NOT NULL,
     FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 

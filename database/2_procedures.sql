@@ -110,6 +110,34 @@ BEGIN
     GROUP BY intervention_id;
 END //
 
+CREATE PROCEDURE getInterventionById (
+    IN param_id INT
+) BEGIN
+	SELECT
+	    intervention.intervention_id,
+	    intervention.intervention_name,
+	    intervention.intervention_type,
+	    command.command,
+	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
+	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
+	FROM intervention
+	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
+	LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
+	GROUP BY intervention_id
+	HAVING intervention_id = param_id;
+END //
+
+CREATE PROCEDURE createCommand (
+    IN param_name VARCHAR(255),
+    IN param_command VARCHAR(255)
+) BEGIN
+	INSERT INTO intervention (intervention_type, intervention_name)
+	VALUES ('command', param_name);
+	
+	INSERT INTO command (intervention_id, command)
+	VALUES (LAST_INSERT_ID(), param_command);
+END //
+
 CREATE PROCEDURE updateCommand (
     IN param_id INT,
     IN param_name VARCHAR(255),
@@ -120,6 +148,19 @@ CREATE PROCEDURE updateCommand (
     SET intervention.intervention_name = param_name,
         command.command = param_command
     WHERE intervention.intervention_id = param_id;
+END //
+
+CREATE PROCEDURE createQuestion (
+    IN param_name VARCHAR(255),
+    IN param_question VARCHAR(255)
+) BEGIN
+	INSERT INTO intervention (intervention_type, intervention_name)
+	VALUES ('question', param_name);
+		
+	INSERT INTO question (intervention_id, question)
+	VALUES (LAST_INSERT_ID(), param_question);
+	
+	SELECT LAST_INSERT_ID() AS question_id;
 END //
 
 CREATE PROCEDURE updateQuestion (
@@ -134,6 +175,15 @@ CREATE PROCEDURE updateQuestion (
 	WHERE intervention.intervention_id = param_id;
 END //
 
+CREATE PROCEDURE createQuestionnaire (
+    IN param_name VARCHAR(255)
+) BEGIN
+	INSERT INTO intervention (intervention_type, intervention_name)
+	VALUES ('questionnaire', param_name);
+	
+	SELECT LAST_INSERT_ID() AS intervention_id;
+END //
+
 CREATE PROCEDURE updateQuestionnaire (
     IN param_id INT,
     IN param_name VARCHAR(255)
@@ -144,6 +194,13 @@ CREATE PROCEDURE updateQuestionnaire (
 	
 	DELETE FROM question
 	WHERE intervention_id = param_id;
+END //
+
+CREATE PROCEDURE deleteIntervention (
+    IN param_intervention_id INT
+) BEGIN
+    DELETE FROM intervention 
+	WHERE intervention_id = param_intervention_id;
 END //
 
 CREATE PROCEDURE addQuestionToQuestionnaire (
