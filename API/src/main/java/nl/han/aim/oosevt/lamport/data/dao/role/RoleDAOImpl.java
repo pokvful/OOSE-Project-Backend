@@ -106,22 +106,24 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public int getUsersByRoleId(int roleId) {
-        var users = 0;
+    public int getUserCountByRoleId(int roleId) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL getUsersCountByRoleId(?)")) {
 
             statement.setInt(1, roleId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    users += 1;
+                if(resultSet.next()) {
+                    return resultSet.getInt("count");
                 }
-                return users;
+                return 0;
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "getUsersByRoleId::A database error occurred!", e);
         }
-        return users;
+        return 0;
+    }
+
+    @Override
     public void createRole(String name, List<String> allowedPermissions) {
         try (Connection connection = DriverManager.getConnection(connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL createRole(?, ?)")) {

@@ -54,11 +54,14 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(int id) {
         assertValidRole(id);
 
-        if(roleDAO.getUsersByRoleId(id) > 0) {
+        if (roleDAO.getUserCountByRoleId(id) > 0) {
             throw new InvalidDTOException();
         }
 
         this.roleDAO.deleteRole(id);
+    }
+
+    @Override
     public void createRole(CreateRoleRequestDTO createRoleRequestDTO) {
         roleDAO.createRole(
                 createRoleRequestDTO.getName(),

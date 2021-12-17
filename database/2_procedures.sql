@@ -312,10 +312,11 @@ BEGIN
     FROM franchise;
 END //
 
-CREATE PROCEDURE getUsersCountByRoleId(
+CREATE PROCEDURE getUserCountByRoleId(
     IN param_id INT
 ) BEGIN
     SELECT COUNT(*) AS count FROM users WHERE role_id = param_id;
+END //
 
 CREATE PROCEDURE deleteFranchise(
     IN param_id INT
