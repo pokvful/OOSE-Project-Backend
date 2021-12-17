@@ -48,7 +48,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
             return new Question(
                     questionId,
-                    resultSet.getString("intervention_name"),
+                    "",
                     resultSet.getString("question"),
                     answers
             );
@@ -87,18 +87,19 @@ public class InterventionDAOImpl implements InterventionDAO {
             switch (type) {
                 case "command":
                     return new Command(
-                            resultSet.getInt("intervention_id"),
-                            resultSet.getString("intervention_name"),
-                            resultSet.getString("command"));
+                        resultSet.getInt("intervention_id"),
+                        resultSet.getString("intervention_name"),
+                        resultSet.getString("command")
+                    );
                 case "question":
                     int questionId = resultSet.getInt("intervention_id");
                     List<Answer> answers = getAnswersByQuestionId(questionId, connection);
 
                     return new Question(
-                            questionId,
-                            resultSet.getString("intervention_name"),
-                            resultSet.getString("question"),
-                            answers
+                        questionId,
+                        resultSet.getString("intervention_name"),
+                        resultSet.getString("question"),
+                        answers
                     );
                 case "questionnaire":
                     int interventionId = resultSet.getInt("intervention_id");
@@ -174,7 +175,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                     return;
                 }
                 answers.forEach(x -> {
-                    try (PreparedStatement statement1 = connection.prepareStatement("CALL updateAnswer(?, ?)")) {
+                    try (PreparedStatement statement1 = connection.prepareStatement("CALL addAnswerToQuestion(?, ?)")) {
                         statement1.setInt(1, resultSet.getInt("question_id"));
                         statement1.setString(2, x.getAnswerText());
                         statement.executeUpdate();
@@ -191,7 +192,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     public void createQuestion(String name, String question, List<Answer> answers) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, question);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -199,7 +200,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                     return;
                 }
                 answers.forEach(x -> {
-                    try (PreparedStatement statement1 = connection.prepareStatement("CALL createAnswer(?, ?)")) {
+                    try (PreparedStatement statement1 = connection.prepareStatement("CALL addAnswerToQuestion(?, ?)")) {
                         statement1.setInt(1, resultSet.getInt("question_id"));
                         statement1.setString(2, x.getAnswerText());
                         statement.executeUpdate();
