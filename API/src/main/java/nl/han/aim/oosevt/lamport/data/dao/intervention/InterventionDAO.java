@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
+import nl.han.aim.oosevt.lamport.data.entity.Question;
 import nl.han.aim.oosevt.lamport.data.entity.Questionnaire;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface InterventionDAO {
     void createQuestion(String name, String question, List<Answer> answers);
     List<Intervention> getInterventions();
     void updateQuestionnaire(Questionnaire questionnaire);
+    void createQuestionnaire(String name, List<Question> questions);
 }

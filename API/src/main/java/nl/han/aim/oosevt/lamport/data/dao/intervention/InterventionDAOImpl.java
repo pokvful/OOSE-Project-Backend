@@ -1,5 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
+import com.mysql.cj.protocol.Resultset;
 import nl.han.aim.oosevt.lamport.data.entity.*;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 import org.springframework.stereotype.Component;
@@ -273,6 +274,25 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.executeUpdate();
 
             setQuestionsForQuestionnaire(id, questions, connection);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
+    }
+
+    @Override
+    public void createQuestionnaire(String name, List<Question> questions) {
+        try (
+                Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL createQuestionnaire(?)")
+        ) {
+            statement.setString(1, name);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                int questionnaireId = resultSet.getInt("intervention_id");
+
+                setQuestionsForQuestionnaire(questionnaireId, questions, connection);
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
         }
