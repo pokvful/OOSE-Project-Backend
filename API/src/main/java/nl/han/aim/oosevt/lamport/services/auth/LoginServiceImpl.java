@@ -43,8 +43,10 @@ public class LoginServiceImpl implements LoginService {
         }
 
         try {
-            final String[] permissions = new String[1];
-            permissions[0] = "Test";
+            final String[] permissions = user
+                    .getRole()
+                    .getAllowedPermissions()
+                    .toArray(new String[0]);
             return new LoginResponseDTO(JWT
                     .create()
                     .withIssuer("JITAI")

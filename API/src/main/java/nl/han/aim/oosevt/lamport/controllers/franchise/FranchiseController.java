@@ -4,6 +4,8 @@ import nl.han.aim.oosevt.lamport.controllers.franchise.dto.CreateFranchiseReques
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.FranchiseResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.franchise.dto.UpdateFranchiseRequestDTO;
 import nl.han.aim.oosevt.lamport.services.franchise.FranchiseService;
+import nl.han.aim.oosevt.lamport.shared.Permission;
+import nl.han.aim.oosevt.lamport.shared.Permissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class FranchiseController {
     }
 
     @GetMapping("")
+    @Permission(permission = Permissions.GET_FRANCHISES)
     public ResponseEntity<List<FranchiseResponseDTO>> getFranchises() {
         return new ResponseEntity<>(
                 franchiseService.getFranchises(),
@@ -31,6 +34,7 @@ public class FranchiseController {
     }
 
     @GetMapping("{id}")
+    @Permission(permission = Permissions.GET_FRANCHISES)
     public ResponseEntity<FranchiseResponseDTO> getFranchise(@PathVariable("id") int id) {
         return new ResponseEntity<>(
                 franchiseService.getFranchiseById(id),
@@ -39,16 +43,19 @@ public class FranchiseController {
     }
 
     @DeleteMapping("{id}")
+    @Permission(permission = Permissions.DELETE_FRANCHISES)
     public void deleteFranchise(@PathVariable("id") int id) {
         franchiseService.deleteFranchise(id);
     }
 
     @PutMapping()
+    @Permission(permission = Permissions.UPDATE_FRANCHISES)
     public void updateFranchise(@RequestBody UpdateFranchiseRequestDTO updateFranchiseRequestDTO) {
         franchiseService.updateFranchise(updateFranchiseRequestDTO);
     }
 
     @PostMapping()
+    @Permission(permission = Permissions.CREATE_FRANCHISES)
     public void createFranchise(@RequestBody CreateFranchiseRequestDTO createFranchiseRequestDTO) {
         franchiseService.createFranchise(createFranchiseRequestDTO);
     }

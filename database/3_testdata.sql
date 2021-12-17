@@ -3,12 +3,18 @@ use lbc;
 
 INSERT INTO role (role_name)
 VALUES 
-    ("beheerder"),
-    ("gebruiker");
+    ("Beheerder"),
+    ("Gebruiker");
+
+INSERT INTO role_permission(role_id, permission) VALUES
+(1, "CREATE_ROLES"),
+(1, "UPDATE_ROLES"),
+(1, "GET_ROLES"),
+(1, "DELETE_ROLES");
 
 INSERT INTO users (username, password, email, role_id) VALUES ("ivan", "hashhashhash", "ivan@hp2.nl", 1);
 INSERT INTO users (username, password, email, role_id) VALUES ("wur", "password", "info@wur.nl", 1);
-INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", "bart@han.nl", 2);
+INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", "bart@han.nl", 1);
 INSERT INTO users (username, password, email, role_id) VALUES ("Tim", "hashhashhashtim", "tim@han.nl", 2);
 
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.8425, 5.85278, 600);
