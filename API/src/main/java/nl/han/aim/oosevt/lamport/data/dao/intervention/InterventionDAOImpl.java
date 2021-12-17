@@ -106,7 +106,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     public void createQuestion(String name, String question, List<Answer> answers) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, question);
             try (ResultSet resultSet = statement.executeQuery()) {
