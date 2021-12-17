@@ -17,6 +17,21 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     private static final Logger LOGGER = Logger.getLogger(InterventionDAOImpl.class.getName());
 
+    private void setAnswersForQuestion(int questionId, List<Answer> answers, Connection connection) {
+        for (Answer answer : answers) {
+            String answerText = answer.getAnswerText();
+
+            try (PreparedStatement statement = connection.prepareStatement("CALL addAnswerToQuestion(?, ?)")) {
+                statement.setInt(1, questionId);
+                statement.setString(2, answerText);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            }
+        }
+    }
+
     private List<Answer> getAnswersByQuestionId(int questionId, Connection connection) {
         try (PreparedStatement statement = connection.prepareStatement("CALL getAnswersByQuestionId(?)")) {
             statement.setInt(1, questionId);
@@ -165,50 +180,34 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     @Override
     public void updateQuestion(int id, String name, String question, List<Answer> answers) {
-        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?)")) {
+        try (
+            Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?)")
+        ) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, question);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return;
-                }
-                answers.forEach(x -> {
-                    try (PreparedStatement statement1 = connection.prepareStatement("CALL addAnswerToQuestion(?, ?)")) {
-                        statement1.setInt(1, resultSet.getInt("question_id"));
-                        statement1.setString(2, x.getAnswerText());
-                        statement.executeUpdate();
 
-                    } catch (SQLException e) {
-                        LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
-                    }
-                });
-            }
+            statement.executeUpdate();
+
+            setAnswersForQuestion(id, answers, connection);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
         }
     }
 
     public void createQuestion(String name, String question, List<Answer> answers) {
-        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?)")) {
+        try (
+            Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?)")
+        ) {
             statement.setString(1, name);
             statement.setString(2, question);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return;
-                }
-                answers.forEach(x -> {
-                    try (PreparedStatement statement1 = connection.prepareStatement("CALL addAnswerToQuestion(?, ?)")) {
-                        statement1.setInt(1, resultSet.getInt("question_id"));
-                        statement1.setString(2, x.getAnswerText());
-                        statement.executeUpdate();
 
-                    } catch (SQLException e) {
-                        LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
-                    }
-                });
+            try (ResultSet resultSet = statement.executeQuery()) {
+                int questionId = resultSet.getInt("question_id");
+
+                setAnswersForQuestion(questionId, answers, connection);
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);

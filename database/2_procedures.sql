@@ -219,6 +219,10 @@ CREATE PROCEDURE updateQuestion (
 	SET intervention.intervention_name = param_name,
 		question.question = param_question
 	WHERE intervention.intervention_id = param_id;
+
+    DELETE
+    FROM answer 
+    WHERE question_id = param_id;
 END //
 
 CREATE PROCEDURE createQuestionnaire (
@@ -520,14 +524,6 @@ CREATE PROCEDURE deleteUser(
     IN param_id INT
 ) BEGIN
     DELETE FROM users WHERE user_id = param_id;
-END //
-
-CREATE PROCEDURE createCommand(
-    IN param_name VARCHAR(255),
-    IN param_text VARCHAR(255)
-) BEGIN
-   INSERT INTO command(name, command)
-        VALUES(param_name, param_text);
 END //
 
 DELIMITER ;
