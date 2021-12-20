@@ -71,7 +71,7 @@ CREATE PROCEDURE getPermissionsByRoleId(
 )
 BEGIN
     SELECT permission 
-    FROM role_permissions 
+    FROM role_permission 
     WHERE role_id = param_id;
 END //
 
@@ -80,7 +80,7 @@ CREATE PROCEDURE updateRole(
     IN param_name VARCHAR(200),
     IN param_allowed_permissions VARCHAR(2000))
 BEGIN
-    DELETE FROM role_permissions WHERE role_id = param_id;
+    DELETE FROM role_permission WHERE role_id = param_id;
 
     UPDATE role SET role_name = param_name WHERE role_id = param_id;
 
@@ -90,7 +90,7 @@ BEGIN
         PREPARE insert_statement FROM @sqlvar;
         EXECUTE insert_statement;
 
-        INSERT INTO role_permissions (role_id, permission) SELECT param_id, permission FROM converted_values;
+        INSERT INTO role_permission (role_id, permission) SELECT param_id, permission FROM converted_values;
         DROP TEMPORARY TABLE converted_values;
     END IF;
 END //
@@ -110,7 +110,7 @@ BEGIN
         PREPARE insert_statement FROM @sqlvar;
         EXECUTE insert_statement;
 
-        INSERT INTO role_permissions (role_id, permission) SELECT param_role_id, permission FROM converted_values;
+        INSERT INTO role_permission (role_id, permission) SELECT param_role_id, permission FROM converted_values;
         DROP TEMPORARY TABLE converted_values;
     END IF;
 END //

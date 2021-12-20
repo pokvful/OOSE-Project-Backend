@@ -8,6 +8,8 @@ import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.Upd
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.update.UpdateQuestionnaireRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.intervention.dto.response.InterventionResponseDTO;
 import nl.han.aim.oosevt.lamport.services.intervention.InterventionService;
+import nl.han.aim.oosevt.lamport.shared.Permission;
+import nl.han.aim.oosevt.lamport.shared.Permissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ public class InterventionController {
     }
 
     @GetMapping("")
+    @Permission(permission = Permissions.GET_INTERVENTIONS)
     public ResponseEntity<List<InterventionResponseDTO>> getInterventions() {
         return new ResponseEntity<>(
             interventionService.getInterventions(),
@@ -34,7 +37,12 @@ public class InterventionController {
         );
     }
 
-
+    @PutMapping()
+    @Permission(permission = Permissions.UPDATE_INTERVENTIONS)
+    public void updateIntervention(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
+        interventionService.updateCommand(updateCommandRequestDTO);
+    }
+    
     @GetMapping("{id}")
     public ResponseEntity<InterventionResponseDTO> getIntervention(@PathVariable("id") int id) {
         return new ResponseEntity<>(
@@ -49,16 +57,19 @@ public class InterventionController {
     }
 
     @PostMapping("/command")
+    @Permission(permission = Permissions.CREATE_INTERVENTIONS)
     public void createCommand(@RequestBody CreateCommandRequestDTO createCommandRequestDTO) {
         interventionService.createCommand(createCommandRequestDTO);
     }
 
     @PutMapping("/question")
+    @Permission(permission = Permissions.UPDATE_INTERVENTIONS)
     public void updateQuestion(@RequestBody UpdateQuestionRequestDTO question) {
         interventionService.updateQuestion(question);
     }
 
     @PostMapping("/question")
+    @Permission(permission = Permissions.CREATE_INTERVENTIONS)
     public void createQuestion(@RequestBody CreateQuestionRequestDTO createQuestionRequestDTO) {
         interventionService.createQuestion(createQuestionRequestDTO);
     }
