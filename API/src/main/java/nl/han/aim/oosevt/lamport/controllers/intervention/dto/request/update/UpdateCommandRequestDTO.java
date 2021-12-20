@@ -19,9 +19,4 @@ public class UpdateCommandRequestDTO extends CommandRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    protected void validateDTO() {
-
-    }
 }

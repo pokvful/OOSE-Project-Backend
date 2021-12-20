@@ -25,10 +25,5 @@ public class GoalRequestDTO extends RequestDTO {
         if (name.isEmpty()) {
             addError("name", "Naam kan niet leeg zijn");
         }
-        validateSpecificDTO();
-    }
-
-    public void validateSpecificDTO() {
-
     }
 }

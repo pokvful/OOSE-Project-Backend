@@ -9,4 +9,7 @@ public class CreateQuestionnaireRequestDTO extends QuestionnaireRequestDTO {
     public CreateQuestionnaireRequestDTO(String name, List<QuestionRequestDTO> questions) {
         super(name, questions);
     }
+
+    public CreateQuestionnaireRequestDTO() {
+    }
 }

@@ -148,14 +148,10 @@ public class InterventionServiceImplTest {
         interventions = new ArrayList<>();
 
         interventions.add(interventionA);
-//        interventions.add(interventionB);
-//        interventions.add(interventionC);
 
         interventionDTOS = new ArrayList<>();
 
         interventionDTOS.add(commandResponseDTO);
-//        interventionDTOS.add(new QuestionResponseDTO(interventionIdB, interventionNameB, questionResponseDTO, interventionQuestionB));
-//        interventionDTOS.add(new QuestionnaireResponseDTO(interventionIdC, interventionNameC, ));
     }
 
     @Test

@@ -19,15 +19,4 @@ public class UpdateUserRequestDTO extends UserRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    protected void validateDTO() {
-        super.validateDTO();
-        if (id == 0) {
-            addError("id", "Id mag niet leeg zijn!");
-        }
-    }
-
-    protected void validateSpecificDTO() {
-    }
 }

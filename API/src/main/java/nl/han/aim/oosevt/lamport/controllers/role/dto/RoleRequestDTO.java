@@ -33,6 +33,8 @@ public class RoleRequestDTO extends RequestDTO {
 
     @Override
     protected void validateDTO() {
-        //todo implement
+        if(name == null || name.isEmpty()) {
+            addError("name", "Naam mag niet leeg zijn");
+        }
     }
 }
