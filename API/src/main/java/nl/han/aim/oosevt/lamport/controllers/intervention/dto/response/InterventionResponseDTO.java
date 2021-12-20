@@ -1,12 +1,13 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 
+import nl.han.aim.oosevt.lamport.data.entity.Command;
 import nl.han.aim.oosevt.lamport.data.entity.Intervention;
+import nl.han.aim.oosevt.lamport.data.entity.Question;
+import nl.han.aim.oosevt.lamport.data.entity.Questionnaire;
 
-public class InterventionResponseDTO {
+public abstract class InterventionResponseDTO {
     private int id;
     private String name;
-
-    public InterventionResponseDTO() {}
 
     public InterventionResponseDTO(int id, String name) {
         this.id = id;
@@ -22,9 +23,18 @@ public class InterventionResponseDTO {
     }
 
     public static InterventionResponseDTO fromData(Intervention intervention) {
-        return new InterventionResponseDTO(
-                intervention.getId(),
-                intervention.getName()
-        );
+        if (intervention instanceof Command) {
+            return CommandResponseDTO.fromData((Command) intervention);
+        }
+
+        if (intervention instanceof Question) {
+            return QuestionResponseDTO.fromData((Question) intervention);
+        }
+
+        if (intervention instanceof Questionnaire) {
+            return QuestionnaireResponseDTO.fromData((Questionnaire) intervention);
+        }
+
+        return null;
     }
 }

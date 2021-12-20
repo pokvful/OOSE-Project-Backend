@@ -1,24 +1,25 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
+import nl.han.aim.oosevt.lamport.data.entity.Answer;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class AnswerRequestDTO extends RequestDTO {
     private int id;
-    private String answer;
+    private String answerText;
 
     public AnswerRequestDTO() {
     }
 
-    public AnswerRequestDTO(String answer) {
-        this.answer = answer;
+    public AnswerRequestDTO(String answerText) {
+        this.answerText = answerText;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getAnswerText() {
+        return answerText;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 
     public int getId() {
@@ -32,5 +33,9 @@ public class AnswerRequestDTO extends RequestDTO {
     @Override
     protected void validateDTO() {
 
+    }
+
+    public Answer toData() {
+        return new Answer(id, answerText);
     }
 }
