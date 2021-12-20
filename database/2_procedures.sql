@@ -235,9 +235,14 @@ CREATE PROCEDURE updateQuestion (
 		question.question = param_question
 	WHERE intervention.intervention_id = param_id;
 
-    DELETE
-    FROM answer 
-    WHERE question_id = param_id;
+    DELETE answer
+    FROM answer
+    LEFT OUTER JOIN question ON question.question_id = answer.question_id
+    WHERE question.intervention_id = param_id;
+    
+    SELECT question_id 
+    FROM question
+    WHERE question.intervention_id = param_id;
 END //
 
 CREATE PROCEDURE createQuestionnaire (
