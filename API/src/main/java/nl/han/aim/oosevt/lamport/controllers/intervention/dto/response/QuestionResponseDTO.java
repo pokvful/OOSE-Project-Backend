@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class QuestionResponseDTO extends InterventionResponseDTO {
     private List<AnswerResponseDTO> answers;
     private String question;
+    private final String type = "vraag";
 
     public QuestionResponseDTO(int id, String name, List<AnswerResponseDTO> answers, String question) {
         super(id, name);
@@ -21,6 +22,10 @@ public class QuestionResponseDTO extends InterventionResponseDTO {
 
     public String getQuestion() {
         return question;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public static QuestionResponseDTO fromData(Question question) {

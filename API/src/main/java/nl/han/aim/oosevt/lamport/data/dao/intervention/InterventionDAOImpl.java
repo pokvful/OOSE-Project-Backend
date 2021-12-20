@@ -1,6 +1,5 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
-import com.mysql.cj.protocol.Resultset;
 import nl.han.aim.oosevt.lamport.data.entity.*;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 import org.springframework.stereotype.Component;
@@ -63,7 +62,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
                 while (resultSet.next()) {
                     answers.add(new Answer(
-                        0,
+                        resultSet.getInt("answer_id"),
                         resultSet.getString("answer")
                     ));
                 }
@@ -225,9 +224,11 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setString(2, question);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                int questionId = resultSet.getInt("question_id");
+                if(resultSet.next()) {
+                    int questionId = resultSet.getInt("question_id");
 
-                setAnswersForQuestion(questionId, answers, connection);
+                    setAnswersForQuestion(questionId, answers, connection);
+                }
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
