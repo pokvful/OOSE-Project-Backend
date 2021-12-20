@@ -84,8 +84,6 @@ INSERT INTO franchise_intervention(intervention_id, franchise_id) VALUES (1, 1);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (1, "Mcdonalds Molenstraat", 1, 1);
 INSERT INTO location_intervention(location_id, intervention_id) VALUES (1,1);
 
-INSERT INTO command(command, intervention_id) VALUES ("eet een salade", 4);
-
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.9691868, 5.6653948, 2350);
 INSERT INTO area(area_name, geofence_id) VALUES ("Wageningen", 2);
 INSERT INTO franchise(franchise_name) VALUES ("Gaia_building (office)");
