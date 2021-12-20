@@ -75,6 +75,14 @@ BEGIN
     WHERE role_id = param_id;
 END //
 
+
+CREATE PROCEDURE deleteRole(
+    IN param_id INT)
+BEGIN
+    DELETE FROM role_permissions WHERE role_id = param_id;
+    DELETE FROM role WHERE role_id = param_id;
+END //
+
 CREATE PROCEDURE updateRole(
     IN param_id INT,
     IN param_name VARCHAR(200),
@@ -461,6 +469,12 @@ CREATE PROCEDURE getFranchises()
 BEGIN
     SELECT franchise_id, franchise_name
     FROM franchise;
+END //
+
+CREATE PROCEDURE getUserCountByRoleId(
+    IN param_id INT
+) BEGIN
+    SELECT COUNT(*) AS count FROM users WHERE role_id = param_id;
 END //
 
 CREATE PROCEDURE deleteFranchise(

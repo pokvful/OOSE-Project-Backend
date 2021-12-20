@@ -5,6 +5,8 @@ import nl.han.aim.oosevt.lamport.controllers.role.dto.PermissionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Role;
+import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import nl.han.aim.oosevt.lamport.shared.Permissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,12 @@ import java.util.stream.Collectors;
 @Component
 public class RoleServiceImpl implements RoleService {
     private final RoleDAO roleDAO;
+
+    private void assertValidRole(int id) {
+        if (this.roleDAO.getRoleById(id) == null) {
+            throw new NotFoundException();
+        }
+    }
 
     @Autowired
     public RoleServiceImpl(RoleDAO roleDAO) {
@@ -42,6 +50,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void updateRole(UpdateRoleRequestDTO updateRoleRequestDTO) {
+        updateRoleRequestDTO.validate();
         if (roleDAO.getRoleById(updateRoleRequestDTO.getId()) == null) {
             throw new NotFoundException();
         }
@@ -54,15 +63,31 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public void deleteRole(int id) {
+        assertValidRole(id);
+
+        if (roleDAO.getUserCountByRoleId(id) > 0) {
+            throw new InvalidDTOException();
+        }
+
+        this.roleDAO.deleteRole(id);
+    }
+
+    @Override
     public void createRole(CreateRoleRequestDTO createRoleRequestDTO) {
+        createRoleRequestDTO.validate();
         roleDAO.createRole(
                 createRoleRequestDTO.getName(),
                 createRoleRequestDTO.getAllowedPermissions()
         );
     }
 
-    @Override
     public RoleResponseDTO getRoleById(int id) {
-        return RoleResponseDTO.fromData(roleDAO.getRoleById(id));
+        final Role role = this.roleDAO.getRoleById(id);
+        if (role == null) {
+            throw new NotFoundException();
+        }
+
+        return RoleResponseDTO.fromData(role);
     }
 }

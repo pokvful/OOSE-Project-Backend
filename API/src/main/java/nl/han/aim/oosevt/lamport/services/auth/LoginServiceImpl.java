@@ -54,11 +54,15 @@ public class LoginServiceImpl implements LoginService {
                     .withExpiresAt(new Date(new Date().toInstant().plus(2, ChronoUnit.DAYS).toEpochMilli()))
                     .withClaim("name", loginRequestDTO.getUsername())
                     .withArrayClaim("permissions", permissions)
-                    .sign(Algorithm.HMAC256(System.getenv("JWT_SECRET"))));
+                    .sign(Algorithm.HMAC256(getJWTSecret())));
 
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(Level.SEVERE, "UnsupportedEncodingException", e);
         }
         return null;
+    }
+
+    public String getJWTSecret() {
+        return System.getenv("JWT_SECRET");
     }
 }
