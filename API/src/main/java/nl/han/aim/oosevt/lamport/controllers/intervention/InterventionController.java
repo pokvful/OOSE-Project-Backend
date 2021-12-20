@@ -32,8 +32,8 @@ public class InterventionController {
     @Permission(permission = Permissions.GET_INTERVENTIONS)
     public ResponseEntity<List<InterventionResponseDTO>> getInterventions() {
         return new ResponseEntity<>(
-            interventionService.getInterventions(),
-            HttpStatus.OK
+                interventionService.getInterventions(),
+                HttpStatus.OK
         );
     }
 

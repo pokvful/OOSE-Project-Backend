@@ -5,21 +5,21 @@ import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 
 public class AnswerRequestDTO extends RequestDTO {
     private int id;
-    private String answer;
+    private String answerText;
 
     public AnswerRequestDTO() {
     }
 
-    public AnswerRequestDTO(String answer) {
-        this.answer = answer;
+    public AnswerRequestDTO(String answerText) {
+        this.answerText = answerText;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getAnswerText() {
+        return answerText;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 
     public int getId() {
@@ -36,6 +36,6 @@ public class AnswerRequestDTO extends RequestDTO {
     }
 
     public Answer toData() {
-        return new Answer(id, answer);
+        return new Answer(id, answerText);
     }
 }

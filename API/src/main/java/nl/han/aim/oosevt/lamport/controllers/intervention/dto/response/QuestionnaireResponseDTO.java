@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class QuestionnaireResponseDTO extends InterventionResponseDTO {
     private List<QuestionResponseDTO> questions;
+    private final String type = "vragenlijst";
 
     public QuestionnaireResponseDTO(int id, String name, List<QuestionResponseDTO> questions) {
         super(id, name);
@@ -15,6 +16,10 @@ public class QuestionnaireResponseDTO extends InterventionResponseDTO {
 
     public List<QuestionResponseDTO> getQuestions() {
         return questions;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public static QuestionnaireResponseDTO fromData(Questionnaire questionnaire) {

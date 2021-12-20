@@ -43,7 +43,7 @@ public class InterventionServiceImpl implements InterventionService {
 
         for (AnswerRequestDTO answerDTO : answerDTOS) {
             int answerId = answerDTO.getId();
-            String answerText = answerDTO.getAnswer();
+            String answerText = answerDTO.getAnswerText();
 
             Answer answer = new Answer(answerId, answerText);
 
@@ -104,7 +104,7 @@ public class InterventionServiceImpl implements InterventionService {
                 updateQuestionRequestDTO
                         .getAnswers()
                         .stream()
-                        .map(x -> new Answer(x.getId(), x.getAnswer()))
+                        .map(x -> new Answer(x.getId(), x.getAnswerText()))
                         .collect(Collectors.toList()));
     }
 
@@ -116,7 +116,7 @@ public class InterventionServiceImpl implements InterventionService {
                 createQuestionRequestDTO
                         .getAnswers()
                         .stream()
-                        .map(x -> new Answer(x.getId(), x.getAnswer()))
+                        .map(x -> new Answer(x.getId(), x.getAnswerText()))
                         .collect(Collectors.toList()));
     }
 
@@ -140,7 +140,7 @@ public class InterventionServiceImpl implements InterventionService {
                                     .stream()
                                     .map(answer -> new Answer(
                                             answer.getId(),
-                                            answer.getAnswer()
+                                            answer.getAnswerText()
                                     ))
                                     .collect(Collectors.toList())
                             ))
@@ -179,9 +179,7 @@ public class InterventionServiceImpl implements InterventionService {
             throw new NotFoundException();
         }
 
-        InterventionResponseDTO interventionResponseDTO = InterventionResponseDTO.fromData(intervention);
-
-        return interventionResponseDTO;
+        return InterventionResponseDTO.fromData(intervention);
     }
 
     @Override

@@ -274,7 +274,7 @@ END //
 CREATE PROCEDURE getAnswersByQuestionId(
     IN param_question_id INT
 ) BEGIN
-	SELECT answer
+	SELECT answer,answer_id
 	FROM answer
 	WHERE answer.question_id = param_question_id;
 END //
