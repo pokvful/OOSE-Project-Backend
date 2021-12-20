@@ -124,6 +124,8 @@ public class InterventionServiceImpl implements InterventionService {
     public void updateQuestionnaire(UpdateQuestionnaireRequestDTO updateQuestionnaireRequestDTO) {
         updateQuestionnaireRequestDTO.validate();
 
+        assertInterventionExists(updateQuestionnaireRequestDTO.getId());
+
         interventionDAO.updateQuestionnaire(new Questionnaire(
                 updateQuestionnaireRequestDTO.getId(),
                 updateQuestionnaireRequestDTO.getName(),
