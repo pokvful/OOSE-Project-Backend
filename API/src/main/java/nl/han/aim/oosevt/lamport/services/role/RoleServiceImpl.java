@@ -5,7 +5,7 @@ import nl.han.aim.oosevt.lamport.controllers.role.dto.PermissionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
-import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import nl.han.aim.oosevt.lamport.shared.Permissions;
@@ -50,6 +50,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void updateRole(UpdateRoleRequestDTO updateRoleRequestDTO) {
+        updateRoleRequestDTO.validate();
         if (roleDAO.getRoleById(updateRoleRequestDTO.getId()) == null) {
             throw new NotFoundException();
         }
@@ -74,14 +75,19 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void createRole(CreateRoleRequestDTO createRoleRequestDTO) {
+        createRoleRequestDTO.validate();
         roleDAO.createRole(
                 createRoleRequestDTO.getName(),
                 createRoleRequestDTO.getAllowedPermissions()
         );
     }
 
-    @Override
     public RoleResponseDTO getRoleById(int id) {
-        return RoleResponseDTO.fromData(roleDAO.getRoleById(id));
+        final Role role = this.roleDAO.getRoleById(id);
+        if (role == null) {
+            throw new NotFoundException();
+        }
+
+        return RoleResponseDTO.fromData(role);
     }
 }
