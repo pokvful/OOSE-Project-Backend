@@ -4,6 +4,8 @@ import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.services.goal.GoalService;
+import nl.han.aim.oosevt.lamport.shared.Permission;
+import nl.han.aim.oosevt.lamport.shared.Permissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class GoalController {
     }
 
     @GetMapping("")
+    @Permission(permission = Permissions.GET_GOALS)
     public ResponseEntity<List<GoalResponseDTO>> getGoals() {
         return new ResponseEntity<>(
                 goalService.getGoals(),
@@ -31,6 +34,7 @@ public class GoalController {
     }
 
     @GetMapping("{id}")
+    @Permission(permission = Permissions.GET_GOALS)
     public ResponseEntity<GoalResponseDTO> getGoal(@PathVariable("id") int id) {
         return new ResponseEntity<>(
                 goalService.getGoal(id),
@@ -39,16 +43,19 @@ public class GoalController {
     }
 
     @PutMapping()
+    @Permission(permission = Permissions.UPDATE_GOALS)
     public void updateGoal(@RequestBody UpdateGoalRequestDTO updateGoalRequestDTO) {
         goalService.updateGoal(updateGoalRequestDTO);
     }
 
     @PostMapping()
+    @Permission(permission = Permissions.CREATE_GOALS)
     public void createGoal(@RequestBody CreateGoalRequestDTO createGoalRequestDTO) {
         goalService.createGoal(createGoalRequestDTO);
     }
 
     @DeleteMapping("{id}")
+    @Permission(permission = Permissions.DELETE_GOALS)
     public void deleteGoal(@PathVariable("id") int id) {
         goalService.deleteGoal(id);
     }
