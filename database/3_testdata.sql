@@ -3,131 +3,107 @@ use lbc;
 
 INSERT INTO role (role_name)
 VALUES 
-    ("beheerder"),
-    ("gebruiker");
+    ("Beheerder"),
+    ("Gebruiker");
+
+INSERT INTO role_permission(role_id, permission) VALUES
+(1, "CREATE_ROLES"),
+(1, "UPDATE_ROLES"),
+(1, "GET_ROLES"),
+(1, "DELETE_ROLES");
 
 INSERT INTO users (username, password, email, role_id) VALUES ("ivan", "hashhashhash", "ivan@hp2.nl", 1);
 INSERT INTO users (username, password, email, role_id) VALUES ("wur", "password", "info@wur.nl", 1);
-INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", "bart@han.nl", 2);
+INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", "bart@han.nl", 1);
 INSERT INTO users (username, password, email, role_id) VALUES ("Tim", "hashhashhashtim", "tim@han.nl", 2);
 
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.8425, 5.85278, 600);
 INSERT INTO area(area_name, geofence_id) VALUES ("Nijmegen", 1);
 INSERT INTO franchise(franchise_name) VALUES ("McDonalds");
-INSERT INTO intervention(intervention_name) VALUES ("Saladebar");
-INSERT INTO intervention(intervention_name) VALUES ("Hardlopen");
-INSERT INTO intervention(intervention_name) VALUES ("Opdrukken");
-INSERT INTO intervention(intervention_name) VALUES ("Kerk bekijken");
+
+CALL createCommand("Volkoren brood", "Welkom bij de Subway, kiest u voor een volkoren broodje?");
+CALL createCommand("Salade", "Koop een salade");
+CALL createCommand("Fruitteler", "Koop een zak appels");
+
+CALL createQuestion("Kerk", "Hoe hoog is de kerktoren?");
+    SET @question_id = LAST_INSERT_ID();
+    CALL addAnswerToQuestion(@question_id, "100 meter");
+    CALL addAnswerToQuestion(@question_id, "30 meter");
+    CALL addAnswerToQuestion(@question_id, "55 meter");
+
+CALL createQuestion("Bami", "Wat zit in een bamischijf?");
+    SET @question_id = LAST_INSERT_ID();
+    CALL addAnswerToQuestion(@question_id, "Rijst");
+    CALL addAnswerToQuestion(@question_id, "Bami");
+    CALL addAnswerToQuestion(@question_id, "Beide");
+
+CALL createQuestion("Water", "Wat is water?");
+    SET @question_id = LAST_INSERT_ID();
+    CALL addAnswerToQuestion(@question_id, "letterlijk water");
+    CALL addAnswerToQuestion(@question_id, "olie");
+    CALL addAnswerToQuestion(@question_id, "De wetenschap is daar nog niet over uit");
+
+
+CALL createQuestionnaire("Wiskunde quiz");
+    SET @questionnaire_id = LAST_INSERT_ID();
+    CALL addQuestionToQuestionnaire(@questionnaire_id, "5 x 5");
+        SET @question_id = LAST_INSERT_ID();
+        CALL addAnswerToQuestion(@question_id, "12");
+        CALL addAnswerToQuestion(@question_id, "25");
+        CALL addAnswerToQuestion(@question_id, "14");
+    CALL addQuestionToQuestionnaire(@questionnaire_id, "100 / 40");
+        SET @question_id = LAST_INSERT_ID();
+        CALL addAnswerToQuestion(@question_id, "13");
+        CALL addAnswerToQuestion(@question_id, "14 1/2");
+        CALL addAnswerToQuestion(@question_id, "2 1/2");
+    CALL addQuestionToQuestionnaire(@questionnaire_id, "Is 313 een priemgetal");
+        SET @question_id = LAST_INSERT_ID();
+        CALL addAnswerToQuestion(@question_id, "Ja");
+        CALL addAnswerToQuestion(@question_id, "Nee");
+
+CALL createQuestionnaire("Konijnen");
+    SET @questionnaire_id = LAST_INSERT_ID();
+    CALL addQuestionToQuestionnaire(@questionnaire_id, "Wat is het belangrijkste voedsel voor een konijn?");
+        SET @question_id = LAST_INSERT_ID();
+        CALL addAnswerToQuestion(@question_id, "Hooi");
+        CALL addAnswerToQuestion(@question_id, "Voer");
+        CALL addAnswerToQuestion(@question_id, "Blaadjes");
+    CALL addQuestionToQuestionnaire(@questionnaire_id, "Wie denkt de baas te zijn in de relatie konijn-eigenaar?");
+        SET @question_id = LAST_INSERT_ID();
+        CALL addAnswerToQuestion(@question_id, "Het konijn");
+        CALL addAnswerToQuestion(@question_id, "De eigenaar");
+        CALL addAnswerToQuestion(@question_id, "Beide");
+    CALL addQuestionToQuestionnaire(@questionnaire_id, "Welk konijn heeft een eigen strip in de Donald Duck?");
+        SET @question_id = LAST_INSERT_ID();
+        CALL addAnswerToQuestion(@question_id, "Lodewyck");
+        CALL addAnswerToQuestion(@question_id, "Sammy");
+        CALL addAnswerToQuestion(@question_id, "Broer konijn");
+
+
 INSERT INTO franchise_intervention(intervention_id, franchise_id) VALUES (1, 1);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (1, "Mcdonalds Molenstraat", 1, 1);
-INSERT INTO command(command) VALUES ("Koop Big Mac");
-INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (1,1);
 INSERT INTO location_intervention(location_id, intervention_id) VALUES (1,1);
 
-INSERT INTO question (type, question_text, question) VALUES ("question", "Is de kerk groot?", "Is de kerk groot?");
-INSERT INTO answer (answer, question_id) VALUES ("Ja", 1);
-INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (1, 1);
-
-INSERT INTO question (type, question_text, question) VALUES ("questionnaire", "vraag a", "vraag a");
-INSERT INTO question (type, question_text, question) VALUES ("questionnaire", "vraag b", "vraag b");
-INSERT INTO question (type, question_text, question) VALUES ("questionnaire", "vraag c", "vraag c");
-
-INSERT INTO answer (answer, question_id) VALUES ("antwoord a1", 2);
-INSERT INTO answer (answer, question_id) VALUES ("antwoord a2", 2);
-INSERT INTO answer (answer, question_id) VALUES ("antwoord a3", 2);
-INSERT INTO answer (answer, question_id) VALUES ("antwoord b", 3);
-INSERT INTO answer (answer, question_id) VALUES ("antwoord c", 4);
-
-
-INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (2, 2);
-INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (2, 3);
-INSERT INTO question_in_intervention(intervention_id, question_id) VALUES (2, 4);
-
-
-
--- WU
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.9691868, 5.6653948, 2350);
 INSERT INTO area(area_name, geofence_id) VALUES ("Wageningen", 2);
 INSERT INTO franchise(franchise_name) VALUES ("Gaia_building (office)");
 INSERT INTO franchise(franchise_name) VALUES ("Subway");
-INSERT INTO franchise_intervention(franchise_id) VALUES (2);
-INSERT INTO franchise_intervention(franchise_id) VALUES (3);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.987491838000039, 5.666409706000024, 100);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(51.983383490000051, 5.664095127000053, 100);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (2, "Gaia_building", 2, 3);
 INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway", 2, 4);
 
-INSERT INTO command(command) VALUES ("Welkom op kantoor!");
-INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (2,2);
-INSERT INTO command(command) VALUES ("Welkom bij de Subway, kiest u voor een volkoren broodje?");
-INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (3,3);
-
 
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.092876, 5.104480, 3500);
 INSERT INTO area(area_name, geofence_id) VALUES ("Utrecht", 5);
-INSERT INTO franchise(franchise_name) VALUES ("HP2 Kantoor");
-INSERT INTO franchise_intervention(franchise_id) VALUES (4);
+INSERT INTO franchise (franchise_name) VALUES ("HP2 Kantoor");
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0672984, 5.1088383, 100);
-INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway Utrecht", 3, 6);
+INSERT INTO location (franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway Utrecht", 3, 6);
 INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0709499, 5.1100019, 100);
-INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (4, "HP2 Kantoor", 3, 7);
+INSERT INTO location (franchise_id, location_name, area_id, geofence_id) VALUES (4, "HP2 Kantoor", 3, 7);
 
-INSERT INTO command_in_intervention(command_id, intervention_id) VALUES (2,4);
-
-INSERT INTO answers (answer_id, answer) VALUES (1, "Is de kerk groot?");
 
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, null, "");
 
 INSERT INTO goal(goal_name) VALUES ("Afvallen");
 INSERT INTO goal(goal_name) VALUES ("Geld Besparen");
-
-
-
-
-
--- SELECT * FROM answer;
-
--- select * from area;
--- select * from franchise;
--- select * from geofence;
--- select * from intervention;
--- select * from token
--- select * from question
--- select * from answer
-
-
--- SELECT area.area_id, area.area_name, area.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `area` INNER JOIN `geofence` ON area.geofence_id=geofence.geofence_id;
-
-
--- WITH cats AS (SELECT franchise.franchise_id AS franchise_id FROM franchise WHERE franchise.franchise_id IN (SELECT location.franchise_id FROM location WHERE location.location_id=1)),
--- ints AS (SELECT intervention.intervention_id FROM intervention WHERE intervention.franchise_id IN (SELECT * FROM cats)),
--- qii as (SELECT ints.intervention_id, question_in_intervention.question_id FROM question_in_intervention INNER JOIN ints ON question_in_intervention.intervention_id=ints.intervention_id),
--- questions as (SELECT question.question_id, question.question, question.type, qii.intervention_id FROM question INNER JOIN qii ON question.question_id=qii.question_id)
--- SELECT * FROM ints LEFT OUTER JOIN questions LEFT OUTER JOIN range_question ON questions.question_id=range_question.question_id ON ints.intervention_id=questions.intervention_id;
-
-
-
--- SELECT location.location_id, location.area_id,  location.location_name, geofence.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `location` INNER JOIN geofence
---                      ON location.geofence_id=geofence.geofence_id 
---                      WHERE location.area_id=2;
-                     
-                     
--- WITH answers AS (SELECT * FROM answer_to_question WHERE answer_to_question.question_id=1 ),
--- completeanswers AS (SELECT answers.* FROM answers INNER JOIN answer ON answers.answer_id=answer.answer_id)
---                      SELECT * FROM completeanswers 
---                      LEFT OUTER JOIN followup_question
---                      ON completeanswers.answer_id=followup_question.original_answer_id
---                      LEFT OUTER JOIN choice_answer
---                      ON choice_answer.answer_id=completeanswers.answer_id
---                      LEFT OUTER JOIN range_answer
---                      ON range_answer.answer_id=completeanswers.answer_id
---                      LEFT OUTER JOIN sensitivity_action
---                      ON sensitivity_action.question_id=completeanswers.question_id
---                      LEFT OUTER JOIN action
---                      ON action.action_id=sensitivity_action.action_id;
-                     
--- SELECT area.area_id, area.area_name, area.geofence_id, geofence.longitude, geofence.latitude, geofence.radius FROM `area`
--- 		INNER JOIN `geofence` ON area.geofence_id=geofence.geofence_id
-        
-        
---         select * from geofence

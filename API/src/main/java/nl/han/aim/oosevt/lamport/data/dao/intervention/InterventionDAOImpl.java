@@ -1,8 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.intervention;
 
-import nl.han.aim.oosevt.lamport.data.entity.Answer;
-import nl.han.aim.oosevt.lamport.data.entity.Command;
-import nl.han.aim.oosevt.lamport.data.entity.Intervention;
+import nl.han.aim.oosevt.lamport.data.entity.*;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +17,136 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     private static final Logger LOGGER = Logger.getLogger(InterventionDAOImpl.class.getName());
 
-    private Intervention interventionFromResultSet(ResultSet resultSet) {
+    private void setAnswersForQuestion(int questionId, List<Answer> answers, Connection connection) {
+        for (Answer answer : answers) {
+            String answerText = answer.getAnswerText();
+
+            try (PreparedStatement statement = connection.prepareStatement("CALL addAnswerToQuestion(?, ?)")) {
+                statement.setInt(1, questionId);
+                statement.setString(2, answerText);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            }
+        }
+    }
+
+    private void setQuestionsForQuestionnaire(int questionnaireId, List<Question> questions, Connection connection) {
+        for (Question question : questions) {
+            String questionText = question.getQuestionText();
+            List<Answer> answers = question.getAnswers();
+
+            try (PreparedStatement statement = connection.prepareStatement("CALL addQuestionToQuestionnaire(?, ?)")) {
+                statement.setInt(1, questionnaireId);
+                statement.setString(2, questionText);
+
+                ResultSet resultSet = statement.executeQuery();
+                resultSet.next();
+
+                int questionId = resultSet.getInt("question_id");
+
+                setAnswersForQuestion(questionId, answers, connection);
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            }
+        }
+    }
+
+    private List<Answer> getAnswersByQuestionId(int questionId, Connection connection) {
+        try (PreparedStatement statement = connection.prepareStatement("CALL getAnswersByQuestionId(?)")) {
+            statement.setInt(1, questionId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Answer> answers = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    answers.add(new Answer(
+                        resultSet.getInt("answer_id"),
+                        resultSet.getString("answer")
+                    ));
+                }
+
+                return answers;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+        }
+
+        return new ArrayList<>();
+    }
+
+    private Question getQuestionFromResultSet(ResultSet resultSet, Connection connection) {
         try {
-            return new Command(
-                    resultSet.getInt("intervention_id"),
-                    resultSet.getString("intervention_name"),
-                    resultSet.getString("command"));
+            int questionId = resultSet.getInt("question_id");
+            List<Answer> answers = getAnswersByQuestionId(questionId, connection);
+
+            return new Question(
+                    questionId,
+                    "",
+                    resultSet.getString("question"),
+                    answers
+            );
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+        }
+
+        return null;
+    }
+
+    private List<Question> getQuestionsByQuestionnaireId(int interventionId, Connection connection) {
+        try (PreparedStatement statement = connection.prepareStatement("CALL getQuestionsByQuestionnaireInterventionId(?)")) {
+            statement.setInt(1, interventionId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Question> questions = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    questions.add(getQuestionFromResultSet(resultSet, connection));
+                }
+
+                return questions;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+        }
+
+        return new ArrayList<>();
+    }
+
+    private Intervention interventionFromResultSet(ResultSet resultSet, Connection connection) {
+        try {
+            String type = resultSet.getString("intervention_type");
+            switch (type) {
+                case "command":
+                    return new Command(
+                        resultSet.getInt("intervention_id"),
+                        resultSet.getString("intervention_name"),
+                        resultSet.getString("command")
+                    );
+                case "question":
+                    int questionId = resultSet.getInt("question_id");
+                    List<Answer> answers = getAnswersByQuestionId(questionId, connection);
+
+                    return new Question(
+                            resultSet.getInt("intervention_id"),
+                        resultSet.getString("intervention_name"),
+                        resultSet.getString("question"),
+                        answers
+                    );
+                case "questionnaire":
+                    int interventionId = resultSet.getInt("intervention_id");
+
+                    return new Questionnaire(
+                            interventionId,
+                            resultSet.getString("intervention_name"),
+                            getQuestionsByQuestionnaireId(interventionId, connection)
+                    );
+            }
+
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "interventionFromResultSet::A database error occurred!", e);
         }
@@ -40,7 +162,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<Intervention> foundInterventions = new ArrayList<>();
                 while (resultSet.next()) {
-                    foundInterventions.add(interventionFromResultSet(resultSet));
+                    foundInterventions.add(interventionFromResultSet(resultSet, connection));
                 }
 
                 return foundInterventions;
@@ -79,26 +201,17 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     @Override
     public void updateQuestion(int id, String name, String question, List<Answer> answers) {
-        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?)")) {
+        try (
+            Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL updateQuestion(?, ?, ?)")
+        ) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, question);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return;
-                }
-                answers.forEach(x -> {
-                    try (PreparedStatement statement1 = connection.prepareStatement("CALL updateAnswer(?, ?)")) {
-                        statement1.setInt(1, resultSet.getInt("question_id"));
-                        statement1.setString(2, x.getAnswerText());
-                        statement.executeUpdate();
 
-                    } catch (SQLException e) {
-                        LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
-                    }
-                });
-            }
+            statement.executeUpdate();
+
+            setAnswersForQuestion(id, answers, connection);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
         }
@@ -106,23 +219,16 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     public void createQuestion(String name, String question, List<Answer> answers) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createQuestion(?, ?)")) {
             statement.setString(1, name);
             statement.setString(2, question);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return;
-                }
-                answers.forEach(x -> {
-                    try (PreparedStatement statement1 = connection.prepareStatement("CALL createAnswer(?, ?)")) {
-                        statement1.setInt(1, resultSet.getInt("question_id"));
-                        statement1.setString(2, x.getAnswerText());
-                        statement.executeUpdate();
 
-                    } catch (SQLException e) {
-                        LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
-                    }
-                });
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) {
+                    int questionId = resultSet.getInt("question_id");
+
+                    setAnswersForQuestion(questionId, answers, connection);
+                }
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "createQuestion::A database error occurred!", e);
@@ -130,7 +236,98 @@ public class InterventionDAOImpl implements InterventionDAO {
     }
 
     @Override
+    public List<Intervention> getInterventions() {
+        try (Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getInterventions()")) {
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<Intervention> foundInterventions = new ArrayList<>();
+                while (resultSet.next()) {
+                    foundInterventions.add(interventionFromResultSet(resultSet, connection));
+                }
+
+                return foundInterventions;
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+        }
+
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void updateQuestionnaire(Questionnaire questionnaire) {
+        int id = questionnaire.getId();
+        String name = questionnaire.getName();
+
+        List<Question> questions = questionnaire.getQuestions();
+
+        try (
+            Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL updateQuestionnaire(?, ?)")
+        ) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+
+            statement.executeUpdate();
+
+            setQuestionsForQuestionnaire(id, questions, connection);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
+    }
+
+    @Override
+    public void createQuestionnaire(String name, List<Question> questions) {
+        try (
+                Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL createQuestionnaire(?)")
+        ) {
+            statement.setString(1, name);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                int questionnaireId = resultSet.getInt("intervention_id");
+
+                setQuestionsForQuestionnaire(questionnaireId, questions, connection);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
+    }
+
+    @Override
+    public void deleteIntervention(int id) {
+        try (
+                Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+                PreparedStatement statement = connection.prepareStatement("CALL deleteIntervention(?)")
+        ) {
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+        }
+    }
+
+    @Override
     public Intervention getInterventionById(int id) {
-        return new Command(1, "mock intervention from InterventionDAOImpl", "ga naar saladebami");
+        try (
+             Connection connection = DriverManager.getConnection(connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getInterventionById(?)")
+        ) {
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return interventionFromResultSet(resultSet, connection);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+        }
+
+        return null;
     }
 }

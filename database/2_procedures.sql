@@ -71,7 +71,7 @@ CREATE PROCEDURE getPermissionsByRoleId(
 )
 BEGIN
     SELECT permission 
-    FROM role_permissions 
+    FROM role_permission 
     WHERE role_id = param_id;
 END //
 
@@ -87,7 +87,7 @@ CREATE PROCEDURE updateRole(
     IN param_name VARCHAR(200),
     IN param_allowed_permissions VARCHAR(2000))
 BEGIN
-    DELETE FROM role_permissions WHERE role_id = param_id;
+    DELETE FROM role_permission WHERE role_id = param_id;
 
     UPDATE role SET role_name = param_name WHERE role_id = param_id;
 
@@ -97,7 +97,7 @@ BEGIN
         PREPARE insert_statement FROM @sqlvar;
         EXECUTE insert_statement;
 
-        INSERT INTO role_permissions (role_id, permission) SELECT param_id, permission FROM converted_values;
+        INSERT INTO role_permission (role_id, permission) SELECT param_id, permission FROM converted_values;
         DROP TEMPORARY TABLE converted_values;
     END IF;
 END //
@@ -117,7 +117,7 @@ BEGIN
         PREPARE insert_statement FROM @sqlvar;
         EXECUTE insert_statement;
 
-        INSERT INTO role_permissions (role_id, permission) SELECT param_role_id, permission FROM converted_values;
+        INSERT INTO role_permission (role_id, permission) SELECT param_role_id, permission FROM converted_values;
         DROP TEMPORARY TABLE converted_values;
     END IF;
 END //
@@ -146,6 +146,152 @@ CREATE PROCEDURE updateArea(
 BEGIN
     UPDATE geofence SET longitude = param_longitude, latitude = param_latitude, radius = param_radius WHERE geofence_id = (SELECT geofence_id FROM area WHERE area_id = param_id);
     UPDATE area SET area_name = param_name WHERE area_id = param_id;
+END //
+
+CREATE PROCEDURE getInterventions()
+BEGIN
+    SELECT
+        intervention.intervention_id,
+        intervention.intervention_name,
+        intervention.intervention_type,
+        command.command,
+        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
+        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
+    FROM intervention
+    LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
+    LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
+    GROUP BY intervention_id;
+END //
+
+CREATE PROCEDURE getInterventionById (
+    IN param_id INT
+) BEGIN
+	SELECT
+	    intervention.intervention_id,
+	    intervention.intervention_name,
+	    intervention.intervention_type,
+	    command.command,
+	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
+	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
+	FROM intervention
+	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
+	LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
+	GROUP BY intervention_id
+	HAVING intervention_id = param_id;
+END //
+
+CREATE PROCEDURE createCommand (
+    IN param_name VARCHAR(255),
+    IN param_command VARCHAR(255)
+) BEGIN
+	INSERT INTO intervention (intervention_type, intervention_name)
+	VALUES ('command', param_name);
+	
+	INSERT INTO command (intervention_id, command)
+	VALUES (LAST_INSERT_ID(), param_command);
+END //
+
+CREATE PROCEDURE updateCommand (
+    IN param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_command VARCHAR(255)
+) BEGIN
+    UPDATE intervention
+    LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
+    SET intervention.intervention_name = param_name,
+        command.command = param_command
+    WHERE intervention.intervention_id = param_id;
+END //
+
+CREATE PROCEDURE createQuestion (
+    IN param_name VARCHAR(255),
+    IN param_question VARCHAR(255)
+) BEGIN
+	INSERT INTO intervention (intervention_type, intervention_name)
+	VALUES ('question', param_name);
+		
+	INSERT INTO question (intervention_id, question)
+	VALUES (LAST_INSERT_ID(), param_question);
+	
+	SELECT LAST_INSERT_ID() AS question_id;
+END //
+
+CREATE PROCEDURE updateQuestion (
+    IN param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_question VARCHAR(255)
+) BEGIN
+	UPDATE intervention
+	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
+	SET intervention.intervention_name = param_name,
+		question.question = param_question
+	WHERE intervention.intervention_id = param_id;
+
+    DELETE
+    FROM answer 
+    WHERE question_id = param_id;
+END //
+
+CREATE PROCEDURE createQuestionnaire (
+    IN param_name VARCHAR(255)
+) BEGIN
+	INSERT INTO intervention (intervention_type, intervention_name)
+	VALUES ('questionnaire', param_name);
+	
+	SELECT LAST_INSERT_ID() AS intervention_id;
+END //
+
+CREATE PROCEDURE updateQuestionnaire (
+    IN param_id INT,
+    IN param_name VARCHAR(255)
+) BEGIN
+	UPDATE intervention
+	SET intervention_name = param_name
+	WHERE intervention_id = param_id;
+	
+	DELETE FROM question
+	WHERE intervention_id = param_id;
+END //
+
+CREATE PROCEDURE deleteIntervention (
+    IN param_intervention_id INT
+) BEGIN
+    DELETE FROM intervention 
+	WHERE intervention_id = param_intervention_id;
+END //
+
+CREATE PROCEDURE addQuestionToQuestionnaire (
+    IN param_intervention_id INT,
+    IN param_question VARCHAR(255)
+) BEGIN
+	INSERT INTO question (intervention_id, question)
+	VALUES (param_intervention_id, param_question);
+
+	SELECT LAST_INSERT_ID() AS question_id;
+END //
+
+CREATE PROCEDURE addAnswerToQuestion (
+    IN param_question_id INT,
+    IN param_answer VARCHAR(255)
+) BEGIN
+	INSERT INTO answer (question_id, answer)
+	VALUES (param_question_id, param_answer);
+END //
+
+CREATE PROCEDURE getAnswersByQuestionId(
+    IN param_question_id INT
+) BEGIN
+	SELECT answer,answer_id
+	FROM answer
+	WHERE answer.question_id = param_question_id;
+END //
+
+CREATE PROCEDURE getQuestionsByQuestionnaireInterventionId(
+    IN param_intervention_id INT
+) BEGIN
+    SELECT question, question_id
+    FROM question
+    WHERE intervention_id = param_intervention_id;
 END //
 
 CREATE PROCEDURE deleteArea(
@@ -215,6 +361,18 @@ CREATE PROCEDURE getLocationById(
     LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
     LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
     WHERE location_id = id;
+END //
+
+CREATE PROCEDURE updateCommand(
+    IN param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_command VARCHAR(255)
+) BEGIN
+    UPDATE command_in_intervention
+    LEFT OUTER JOIN intervention ON command_in_intervention.intervention_id = intervention.intervention_id
+    LEFT OUTER JOIN command ON command_in_intervention.command_id = command.command_id
+    SET intervention.intervention_name = param_name, command.command = param_command
+    WHERE intervention.intervention_id = param_id;
 END //
 
 CREATE PROCEDURE getCommandsByLocationId(
@@ -332,7 +490,7 @@ CREATE PROCEDURE updateFranchise(
     IN param_name VARCHAR(255)
 ) BEGIN
     UPDATE franchise
-        SET franchise_name = param_name
+    SET franchise_name = param_name
     WHERE franchise_id = param_id;
 END //
 
@@ -391,14 +549,6 @@ CREATE PROCEDURE deleteUser(
     IN param_id INT
 ) BEGIN
     DELETE FROM users WHERE user_id = param_id;
-END //
-
-CREATE PROCEDURE createCommand(
-    IN param_name VARCHAR(255),
-    IN param_text VARCHAR(255)
-) BEGIN
-   INSERT INTO command(name, command)
-        VALUES(param_name, param_text);
 END //
 
 DELIMITER ;

@@ -2,9 +2,9 @@ package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
 import java.util.List;
 
-public abstract class QuestionRequestDTO extends InterventionRequestDTO {
-    private List<AnswerRequestDTO> answers;
-    private String question;
+public class QuestionRequestDTO extends InterventionRequestDTO {
+    protected List<AnswerRequestDTO> answers;
+    protected String question;
 
     public QuestionRequestDTO() {}
 
@@ -28,5 +28,10 @@ public abstract class QuestionRequestDTO extends InterventionRequestDTO {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    @Override
+    protected void validateDTO() {
+
     }
 }

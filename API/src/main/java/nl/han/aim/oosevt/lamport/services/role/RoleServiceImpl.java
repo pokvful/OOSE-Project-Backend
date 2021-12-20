@@ -1,15 +1,18 @@
 package nl.han.aim.oosevt.lamport.services.role;
 
 import nl.han.aim.oosevt.lamport.controllers.role.dto.CreateRoleRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.role.dto.PermissionResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.UpdateRoleRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
+import nl.han.aim.oosevt.lamport.shared.Permissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,14 @@ public class RoleServiceImpl implements RoleService {
                 .getRoles()
                 .stream()
                 .map(RoleResponseDTO::fromData)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PermissionResponseDTO> getPermissions() {
+        return Arrays
+                .stream(Permissions.values())
+                .map(PermissionResponseDTO::fromEnum)
                 .collect(Collectors.toList());
     }
 
