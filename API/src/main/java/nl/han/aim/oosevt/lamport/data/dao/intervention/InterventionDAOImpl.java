@@ -41,12 +41,13 @@ public class InterventionDAOImpl implements InterventionDAO {
                 statement.setInt(1, questionnaireId);
                 statement.setString(2, questionText);
 
-                ResultSet resultSet = statement.executeQuery();
-                resultSet.next();
+                try(ResultSet resultSet = statement.executeQuery()) {
+                    if(resultSet.next()) {
+                        int questionId = resultSet.getInt("question_id");
 
-                int questionId = resultSet.getInt("question_id");
-
-                setAnswersForQuestion(questionId, answers, connection);
+                        setAnswersForQuestion(questionId, answers, connection);
+                    }
+                }
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
             }
@@ -211,12 +212,13 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setString(2, name);
             statement.setString(3, question);
 
-            ResultSet resultSet = statement.executeQuery();
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) {
+                    int questionId = resultSet.getInt("question_id");
 
-            resultSet.next();
-            int questionId = resultSet.getInt("question_id");
-
-            setAnswersForQuestion(questionId, answers, connection);
+                    setAnswersForQuestion(questionId, answers, connection);
+                }
+            }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
         }
