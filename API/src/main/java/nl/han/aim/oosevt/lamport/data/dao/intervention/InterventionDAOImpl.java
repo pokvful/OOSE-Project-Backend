@@ -156,7 +156,7 @@ public class InterventionDAOImpl implements InterventionDAO {
     @Override
     public List<Intervention> getInterventionsByLocationId(int locationId) {
         try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getCommandsByLocationId(?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL getInterventionsByLocationId(?)")) {
             statement.setInt(1, locationId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
