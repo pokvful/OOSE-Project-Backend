@@ -356,6 +356,18 @@ CREATE PROCEDURE getLocationById(
     WHERE location_id = id;
 END //
 
+CREATE PROCEDURE updateCommand(
+    IN param_id INT,
+    IN param_name VARCHAR(255),
+    IN param_command VARCHAR(255)
+) BEGIN
+    UPDATE command_in_intervention
+    LEFT OUTER JOIN intervention ON command_in_intervention.intervention_id = intervention.intervention_id
+    LEFT OUTER JOIN command ON command_in_intervention.command_id = command.command_id
+    SET intervention.intervention_name = param_name, command.command = param_command
+    WHERE intervention.intervention_id = param_id;
+END //
+
 CREATE PROCEDURE getCommandsByLocationId(
     IN param_location_id INT
 )
