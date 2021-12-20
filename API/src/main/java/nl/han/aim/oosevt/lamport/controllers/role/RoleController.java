@@ -34,6 +34,11 @@ public class RoleController {
         );
     }
 
+    @DeleteMapping("{id}")
+    public void deleteRole(@PathVariable("id") int id) {
+        roleService.deleteRole(id);
+    }
+    
     @GetMapping("permissions")
     @Permission(permission = Permissions.GET_ROLES)
     public ResponseEntity<List<PermissionResponseDTO>> getPermissions() {

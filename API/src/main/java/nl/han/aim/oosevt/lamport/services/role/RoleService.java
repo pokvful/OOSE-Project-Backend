@@ -11,6 +11,7 @@ public interface RoleService {
     List<RoleResponseDTO> getRoles();
     List<PermissionResponseDTO> getPermissions();
     void updateRole(UpdateRoleRequestDTO updateRoleRequestDTO);
+    void deleteRole(int id);
     void createRole(CreateRoleRequestDTO createRoleRequestDTO);
     RoleResponseDTO getRoleById(int id);
 }

@@ -90,6 +90,14 @@ BEGIN
     WHERE role_id = param_id;
 END //
 
+
+CREATE PROCEDURE deleteRole(
+    IN param_id INT)
+BEGIN
+    DELETE FROM role_permissions WHERE role_id = param_id;
+    DELETE FROM role WHERE role_id = param_id;
+END //
+
 CREATE PROCEDURE updateRole(
     IN param_id INT,
     IN param_name VARCHAR(200),
@@ -363,6 +371,18 @@ CREATE PROCEDURE getLocationById(
     WHERE location_id = id;
 END //
 
+CREATE PROCEDURE getCommandsByLocationId(
+    IN param_location_id INT
+)
+BEGIN
+    SELECT intervention.intervention_id, intervention_name, command
+    FROM command_in_intervention
+    LEFT OUTER JOIN intervention ON command_in_intervention.intervention_id = intervention.intervention_id
+    LEFT OUTER JOIN command ON command_in_intervention.command_id = command.command_id
+    LEFT OUTER JOIN location_intervention ON location_intervention.intervention_id = intervention.intervention_id
+    WHERE location_intervention.location_id = param_location_id;
+END //
+
 CREATE PROCEDURE getLocations()
 BEGIN
     SELECT 
@@ -444,6 +464,12 @@ CREATE PROCEDURE getFranchises()
 BEGIN
     SELECT franchise_id, franchise_name
     FROM franchise;
+END //
+
+CREATE PROCEDURE getUserCountByRoleId(
+    IN param_id INT
+) BEGIN
+    SELECT COUNT(*) AS count FROM users WHERE role_id = param_id;
 END //
 
 CREATE PROCEDURE deleteFranchise(

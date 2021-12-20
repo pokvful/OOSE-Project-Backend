@@ -8,5 +8,7 @@ public interface RoleDAO {
     List<Role> getRoles();
     Role getRoleById(int id);
     void updateRole(int id, String name, List<String> allowedPermissions);
+    void deleteRole(int id);
+    int getUserCountByRoleId(int roleId);
     void createRole(String name, List<String> allowedPermissions);
 }
