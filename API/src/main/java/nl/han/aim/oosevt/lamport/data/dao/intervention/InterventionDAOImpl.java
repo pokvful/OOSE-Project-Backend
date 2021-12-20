@@ -129,7 +129,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                         resultSet.getString("command")
                     );
                 case "question":
-                    int questionId = resultSet.getInt("intervention_id");
+                    int questionId = resultSet.getInt("question_id");
                     List<Answer> answers = getAnswersByQuestionId(questionId, connection);
 
                     return new Question(
