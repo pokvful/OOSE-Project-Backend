@@ -42,7 +42,7 @@ public class InterventionController {
     public void updateIntervention(@RequestBody UpdateCommandRequestDTO updateCommandRequestDTO) {
         interventionService.updateCommand(updateCommandRequestDTO);
     }
-    
+
     @GetMapping("{id}")
     public ResponseEntity<InterventionResponseDTO> getIntervention(@PathVariable("id") int id) {
         return new ResponseEntity<>(
