@@ -9,17 +9,16 @@ public class DatabaseProperties {
     private static final Logger LOGGER = Logger.getLogger(DatabaseProperties.class.getName());
     private static String connectionString;
 
-    public DatabaseProperties() {
+    public static void init() {
         final Properties properties = new Properties();
         try {
-            properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
+            properties.load(DatabaseProperties.class.getClassLoader().getResourceAsStream("database.properties"));
             Class.forName(properties.getProperty("driver"));
             connectionString = properties.getProperty("connectionString");
         } catch (IOException | ClassNotFoundException e) {
             LOGGER.log(Level.SEVERE, "Cant access property file database.properties", e);
         }
     }
-
 
     public static String connectionString() {
         return connectionString;

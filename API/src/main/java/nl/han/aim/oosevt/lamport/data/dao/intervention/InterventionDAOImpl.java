@@ -182,6 +182,8 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, command);
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "A database error occurred!", e);
         }

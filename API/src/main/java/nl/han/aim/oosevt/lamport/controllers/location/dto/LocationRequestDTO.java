@@ -118,9 +118,5 @@ public abstract class LocationRequestDTO extends RequestDTO {
         if (areaId == 0) {
             addError("areaId", "AreaId mag niet leeg zijn!");
         }
-        validateSpecificDto();
-    }
-
-    protected void validateSpecificDto() {
     }
 }

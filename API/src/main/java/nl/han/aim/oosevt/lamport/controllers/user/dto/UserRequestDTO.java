@@ -67,9 +67,5 @@ public class UserRequestDTO extends RequestDTO {
         if (getRoleId() == 0) {
             addError("role", "Rol mag niet leeg zijn!");
         }
-        validateSpecificDTO();
-    }
-
-    protected void validateSpecificDTO() {
     }
 }

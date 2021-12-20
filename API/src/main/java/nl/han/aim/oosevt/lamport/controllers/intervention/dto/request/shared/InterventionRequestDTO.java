@@ -18,4 +18,7 @@ public abstract class InterventionRequestDTO extends RequestDTO {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    protected abstract void validateDTO();
 }

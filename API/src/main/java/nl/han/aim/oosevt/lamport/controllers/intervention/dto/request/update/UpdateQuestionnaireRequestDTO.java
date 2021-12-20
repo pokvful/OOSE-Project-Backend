@@ -25,7 +25,8 @@ public class UpdateQuestionnaireRequestDTO extends QuestionnaireRequestDTO {
 
     @Override
     protected void validateDTO() {
-        super.validateDTO();
-
+        if(name == null || name.isEmpty()) {
+            addError("name", "Naam mag niet leeg zijn!");
+        }
     }
 }

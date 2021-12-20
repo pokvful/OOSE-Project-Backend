@@ -20,9 +20,10 @@ public class QuestionnaireRequestDTO extends InterventionRequestDTO {
         this.questions = questions;
     }
 
-
     @Override
     protected void validateDTO() {
-
+        if(name == null || name.isEmpty()) {
+            addError("name", "Naam mag niet leeg zijn!");
+        }
     }
 }

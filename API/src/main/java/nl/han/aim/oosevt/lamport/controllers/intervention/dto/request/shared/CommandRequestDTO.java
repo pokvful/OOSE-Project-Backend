@@ -1,7 +1,7 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
 public abstract class CommandRequestDTO extends InterventionRequestDTO {
-    private String command;
+    private String commandText;
 
     public CommandRequestDTO() {
         super();
@@ -9,14 +9,24 @@ public abstract class CommandRequestDTO extends InterventionRequestDTO {
 
     public CommandRequestDTO(String name, String command) {
         super(name);
-        this.command = command;
+        this.commandText = command;
     }
 
-    public String getCommand() {
-        return command;
+    public String getCommandText() {
+        return commandText;
     }
 
-    public void setCommand(String command) {
-        this.command = command;
+    public void setCommandText(String commandText) {
+        this.commandText = commandText;
+    }
+
+    @Override
+    protected void validateDTO() {
+        if(name == null || name.isEmpty()) {
+            addError("name", "Naam mag niet leeg zijn!");
+        }
+        if(commandText == null || commandText.isEmpty()) {
+            addError("commandText", "Commando mag niet leeg zijn!");
+        }
     }
 }

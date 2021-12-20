@@ -78,7 +78,7 @@ public class InterventionServiceImpl implements InterventionService {
 
         final int id = updateCommandRequestDTO.getId();
         final String name = updateCommandRequestDTO.getName();
-        final String command = updateCommandRequestDTO.getCommand();
+        final String command = updateCommandRequestDTO.getCommandText();
 
         assertInterventionExists(id);
 
@@ -88,7 +88,7 @@ public class InterventionServiceImpl implements InterventionService {
     @Override
     public void createCommand(CreateCommandRequestDTO createCommandRequestDTO) {
         createCommandRequestDTO.validate();
-        interventionDAO.createCommand(createCommandRequestDTO.getName(), createCommandRequestDTO.getCommand());
+        interventionDAO.createCommand(createCommandRequestDTO.getName(), createCommandRequestDTO.getCommandText());
     }
 
     @Override

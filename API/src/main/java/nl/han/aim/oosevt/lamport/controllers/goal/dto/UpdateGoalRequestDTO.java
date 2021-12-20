@@ -18,11 +18,4 @@ public class UpdateGoalRequestDTO extends GoalRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    public void validateSpecificDTO() {
-        if (id == 0) {
-            addError("id", "Id kan niet leeg zijn");
-        }
-    }
 }
