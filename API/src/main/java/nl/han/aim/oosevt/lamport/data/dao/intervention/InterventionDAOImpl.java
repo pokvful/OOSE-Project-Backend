@@ -209,9 +209,12 @@ public class InterventionDAOImpl implements InterventionDAO {
             statement.setString(2, name);
             statement.setString(3, question);
 
-            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
 
-            setAnswersForQuestion(id, answers, connection);
+            resultSet.next();
+            int questionId = resultSet.getInt("question_id");
+
+            setAnswersForQuestion(questionId, answers, connection);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
         }
