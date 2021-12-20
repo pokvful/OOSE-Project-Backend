@@ -2,6 +2,21 @@ USE lbc
 
 DELIMITER //
 
+CREATE VIEW interventionView
+AS (
+	SELECT
+	    intervention.intervention_id,
+	    intervention.intervention_name,
+	    intervention.intervention_type,
+	    command.command,
+	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
+	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
+	FROM intervention
+	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
+	LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
+	GROUP BY intervention_id
+) //
+
 CREATE PROCEDURE getAreas()
 BEGIN
 	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id;
@@ -151,34 +166,26 @@ END //
 
 CREATE PROCEDURE getInterventions()
 BEGIN
-    SELECT
-        intervention.intervention_id,
-        intervention.intervention_name,
-        intervention.intervention_type,
-        command.command,
-        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
-        CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
-    FROM intervention
-    LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
-    LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
-    GROUP BY intervention_id;
+	SELECT *
+    FROM interventionView;
 END //
 
 CREATE PROCEDURE getInterventionById (
     IN param_id INT
 ) BEGIN
-	SELECT
-	    intervention.intervention_id,
-	    intervention.intervention_name,
-	    intervention.intervention_type,
-	    command.command,
-	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question_id) ELSE NULL END AS question_id,
-	    CASE WHEN COUNT(question.question_id) = 1 THEN MIN(question.question) ELSE NULL END AS question
-	FROM intervention
-	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
-	LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
-	GROUP BY intervention_id
-	HAVING intervention_id = param_id;
+	SELECT *
+    FROM interventionView
+	WHERE intervention_id = param_id;
+END //
+
+CREATE PROCEDURE getInterventionsByLocationId(
+    IN param_location_id INT
+)
+BEGIN
+    SELECT *
+    FROM interventionView
+    LEFT OUTER JOIN location_intervention ON location_intervention.intervention_id = interventionView.intervention_id
+    WHERE location_intervention.location_id = param_location_id;
 END //
 
 CREATE PROCEDURE createCommand (
@@ -362,18 +369,6 @@ CREATE PROCEDURE getLocationById(
     LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
     LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
     WHERE location_id = id;
-END //
-
-CREATE PROCEDURE updateCommand(
-    IN param_id INT,
-    IN param_name VARCHAR(255),
-    IN param_command VARCHAR(255)
-) BEGIN
-    UPDATE command_in_intervention
-    LEFT OUTER JOIN intervention ON command_in_intervention.intervention_id = intervention.intervention_id
-    LEFT OUTER JOIN command ON command_in_intervention.command_id = command.command_id
-    SET intervention.intervention_name = param_name, command.command = param_command
-    WHERE intervention.intervention_id = param_id;
 END //
 
 CREATE PROCEDURE getCommandsByLocationId(
