@@ -1,24 +1,12 @@
 use lbc;
 
-INSERT INTO role (role_name)
-VALUES 
-    ("Beheerder"),
-    ("Gebruiker");
+CALL createRole("Gebruiker", "GET_AREAS,GET_FRANCHISES,GET_GOALS,GET_INTERVENTIONS,GET_LOCATIONS,GET_ROLES,GET_USERS");
+CALL createRole("Beheerder", "GET_AREAS,UPDATE_AREAS,CREATE_AREAS,DELETE_AREAS,GET_FRANCHISES,UPDATE_FRANCHISES,CREATE_FRANCHISES,DELETE_FRANCHISES,GET_GOALS,UPDATE_GOALS,CREATE_GOALS,DELETE_GOALS,GET_INTERVENTIONS,UPDATE_INTERVENTIONS,CREATE_INTERVENTIONS,DELETE_INTERVENTIONS,GET_LOCATIONS,UPDATE_LOCATIONS,CREATE_LOCATIONS,DELETE_LOCATIONS,GET_ROLES,UPDATE_ROLES,CREATE_ROLES,DELETE_ROLES,GET_USERS,UPDATE_USERS,CREATE_USERS,DELETE_USERS");
 
-INSERT INTO role_permission(role_id, permission) VALUES
-(1, "CREATE_ROLES"),
-(1, "UPDATE_ROLES"),
-(1, "GET_ROLES"),
-(1, "DELETE_ROLES");
-
-INSERT INTO users (username, password, email, role_id) VALUES ("ivan", "hashhashhash", "ivan@hp2.nl", 1);
-INSERT INTO users (username, password, email, role_id) VALUES ("wur", "password", "info@wur.nl", 1);
-INSERT INTO users (username, password, email, role_id) VALUES ("Bart", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", "bart@han.nl", 1);
-INSERT INTO users (username, password, email, role_id) VALUES ("Tim", "hashhashhashtim", "tim@han.nl", 2);
-
-INSERT INTO geofence (latitude, longitude, radius) VALUES(51.8425, 5.85278, 600);
-INSERT INTO area(area_name, geofence_id) VALUES ("Nijmegen", 1);
-INSERT INTO franchise(franchise_name) VALUES ("McDonalds");
+CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
+CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
+CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
+CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
 
 CALL createCommand("Volkoren brood", "Welkom bij de Subway, kiest u voor een volkoren broodje?");
 CALL createCommand("Salade", "Koop een salade");
@@ -41,7 +29,6 @@ CALL createQuestion("Water", "Wat is water?");
     CALL addAnswerToQuestion(@question_id, "letterlijk water");
     CALL addAnswerToQuestion(@question_id, "olie");
     CALL addAnswerToQuestion(@question_id, "De wetenschap is daar nog niet over uit");
-
 
 CALL createQuestionnaire("Wiskunde quiz");
     SET @questionnaire_id = LAST_INSERT_ID();
@@ -78,31 +65,21 @@ CALL createQuestionnaire("Konijnen");
         CALL addAnswerToQuestion(@question_id, "Sammy");
         CALL addAnswerToQuestion(@question_id, "Broer konijn");
 
+CALL createArea("Nijmegen", 5.85278, 51.8425, 600);
+CALL createArea("Wageningen", 5.6653948, 51.9691868, 2350);
+CALL createArea("Utrecht", 5.104480, 52.092876, 3500);
 
-INSERT INTO franchise_intervention(intervention_id, franchise_id) VALUES (1, 1);
-INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (1, "Mcdonalds Molenstraat", 1, 1);
-INSERT INTO location_intervention(location_id, intervention_id) VALUES (1,1);
+CALL createFranchise("McDonalds");
+CALL createFranchise("Gaia_building (office)");
+CALL createFranchise("Snumbwae");
+CALL createFranchise("HP2 Consulting");
 
-INSERT INTO geofence (latitude, longitude, radius) VALUES(51.9691868, 5.6653948, 2350);
-INSERT INTO area(area_name, geofence_id) VALUES ("Wageningen", 2);
-INSERT INTO franchise(franchise_name) VALUES ("Gaia_building (office)");
-INSERT INTO franchise(franchise_name) VALUES ("Subway");
-INSERT INTO geofence (latitude, longitude, radius) VALUES(51.987491838000039, 5.666409706000024, 100);
-INSERT INTO geofence (latitude, longitude, radius) VALUES(51.983383490000051, 5.664095127000053, 100);
-INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (2, "Gaia_building", 2, 3);
-INSERT INTO location(franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway", 2, 4);
-
-
-INSERT INTO geofence (latitude, longitude, radius) VALUES(52.092876, 5.104480, 3500);
-INSERT INTO area(area_name, geofence_id) VALUES ("Utrecht", 5);
-INSERT INTO franchise (franchise_name) VALUES ("HP2 Kantoor");
-INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0672984, 5.1088383, 100);
-INSERT INTO location (franchise_id, location_name, area_id, geofence_id) VALUES (3, "Subway Utrecht", 3, 6);
-INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0709499, 5.1100019, 100);
-INSERT INTO location (franchise_id, location_name, area_id, geofence_id) VALUES (4, "HP2 Kantoor", 3, 7);
-
-
+CALL createLocation("Mcdonalds Molenstraat", 5, 5.4323454, 51.987321321, 30, 1, 1, "2,4,5,7");
+CALL createLocation("Gaia_building", 5, 5.666409706000024, 51.987491838000039, 100, 1, 2, "3,5,6");
+CALL createLocation("Subway", 5, 5.664095127000053, 51.983383490000051, 100, 1, 3, "1,2,7,8");
+CALL createLocation("Subway Utrecht", 5, 5.1088383, 52.0672984, 100, 3, 3, "1,2,7,8");
+CALL createLocation("HP2 Kantoor", 10, 5.1100019, 52.0709499, 100, 3, 4, "4,5,6");
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 4, "");
 
-INSERT INTO goal(goal_name) VALUES ("Afvallen");
-INSERT INTO goal(goal_name) VALUES ("Geld Besparen");
+CALL createGoal("Afvallen");
+CALL createGoal("Geld Besparen");
