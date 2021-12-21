@@ -103,7 +103,7 @@ INSERT INTO geofence (latitude, longitude, radius) VALUES(52.0709499, 5.1100019,
 INSERT INTO location (franchise_id, location_name, area_id, geofence_id) VALUES (4, "HP2 Kantoor", 3, 7);
 
 
-CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, null, "");
+CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 4, "");
 
 INSERT INTO goal(goal_name) VALUES ("Afvallen");
 INSERT INTO goal(goal_name) VALUES ("Geld Besparen");

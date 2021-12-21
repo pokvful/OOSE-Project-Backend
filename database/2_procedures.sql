@@ -1,6 +1,28 @@
 USE lbc
 
-DELIMITER //
+CREATE VIEW locationView
+AS (
+    SELECT 
+        location_id, 
+        location_name, 
+        delay, 
+        location_geofence.longitude, 
+        location_geofence.latitude, 
+        location_geofence.radius, 
+        area.area_id AS area_id, 
+        area.area_name AS area_name, 
+        franchise.franchise_id AS franchise_id, 
+        franchise.franchise_name AS franchise_name, 
+        area_geofence.latitude AS area_latitude, 
+        area_geofence.longitude AS area_longitude, 
+        area_geofence.radius AS area_radius, 
+        (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
+    FROM location
+    LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
+    LEFT OUTER JOIN area ON location.area_id = area.area_id
+    LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
+    LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
+);
 
 CREATE VIEW interventionView
 AS (
@@ -15,85 +37,84 @@ AS (
 	LEFT OUTER JOIN question ON question.intervention_id = intervention.intervention_id
 	LEFT OUTER JOIN command ON command.intervention_id = intervention.intervention_id
 	GROUP BY intervention_id
-) //
+);
+
+CREATE VIEW areaView
+AS (
+    SELECT
+        a.area_name,
+        a.area_id,
+        g.longitude,
+        g.latitude,
+        g.radius
+    FROM area a
+    JOIN geofence g ON a.geofence_id = g.geofence_id
+);
+
+CREATE VIEW userView
+AS (
+    SELECT user_id, username, password, email, users.role_id
+    FROM users
+);
+
+CREATE VIEW roleView
+AS (
+    SELECT role_id, role_name
+    FROM role
+);
+
+CREATE VIEW franchiseView
+AS (
+    SELECT franchise_id, franchise_name
+    FROM franchise
+);
+
+CREATE VIEW goalView
+AS (
+    SELECT goal_id, goal_name
+    FROM goal
+);
+
+DELIMITER //
 
 CREATE PROCEDURE getAreas()
 BEGIN
-	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id;
+	SELECT *
+    FROM areaView;
 END //
 
 CREATE PROCEDURE getAreaById(IN param_id INT)
 BEGIN
-	SELECT a.area_name, a.area_id, g.longitude, g.latitude, g.radius FROM area a JOIN geofence g ON a.geofence_id = g.geofence_id WHERE a.area_id = param_id;
-END //
-
-CREATE PROCEDURE getUserById(
-    IN param_user_id INT
-) BEGIN
-    SELECT user_id, username, password, email, users.role_id
-    FROM users
-    WHERE users.user_id = param_user_id;
-END //
-
-CREATE PROCEDURE getUserByUsername(
-    IN param_user_name VARCHAR(200)
-) BEGIN
-    SELECT user_id, username, password, email, users.role_id
-    FROM users
-    WHERE users.username = param_user_name;
-END //
-
-
-CREATE PROCEDURE getUsers()
-BEGIN
-    SELECT user_id, username, password, email, users.role_id
-    FROM users;
-END //
-
-CREATE PROCEDURE updateUser(
-    IN param_id INT,
-    IN param_username VARCHAR(255),
-    IN param_password VARCHAR(255),
-    IN param_email VARCHAR(255),
-    IN param_role_id INT
-) BEGIN
-    UPDATE users
-    SET 
-        username = param_username,
-        password = param_password,
-        email = param_email,
-        role_id = param_role_id
-    WHERE user_id = param_id;
+	SELECT *
+    FROM areaView
+    WHERE area_id = param_id;
 END //
 
 CREATE PROCEDURE getRoles()
 BEGIN
-    SELECT role_id, role_name
-    FROM role;
+    SELECT *
+    FROM roleView;
 END //
 
-CREATE PROCEDURE getRoleById(
+CREATE PROCEDURE getRoleById (
     IN param_id INT
-)
-BEGIN
-    SELECT role_id, role_name
-    FROM role
+) BEGIN
+    SELECT *
+    FROM roleView
     WHERE role_id = param_id;
 END //
 
-CREATE PROCEDURE getPermissionsByRoleId(
+CREATE PROCEDURE getPermissionsByRoleId (
     IN param_id INT
-)
-BEGIN
+) BEGIN
     SELECT permission 
     FROM role_permission 
     WHERE role_id = param_id;
 END //
 
-
-CREATE PROCEDURE deleteRole(
-    IN param_id INT)
-BEGIN
+CREATE PROCEDURE deleteRole (
+    IN param_id INT
+) BEGIN
     DELETE FROM role_permissions WHERE role_id = param_id;
     DELETE FROM role WHERE role_id = param_id;
 END //
@@ -308,8 +329,8 @@ CREATE PROCEDURE getQuestionsByQuestionnaireInterventionId(
 END //
 
 CREATE PROCEDURE deleteArea(
-    IN param_id INT)
-BEGIN
+    IN param_id INT
+) BEGIN
     DELETE FROM location_intervention WHERE location_id IN (SELECT location_id FROM location WHERE area_id = param_id);
     DELETE FROM location WHERE area_id = param_id;
     DELETE FROM area WHERE area_id = param_id;
@@ -353,70 +374,22 @@ END //
 CREATE PROCEDURE getLocationById(
     IN id INT
 ) BEGIN
-    SELECT 
-        location_id, 
-        location_name, 
-        delay, 
-        location_geofence.longitude, 
-        location_geofence.latitude, 
-        location_geofence.radius, 
-        area.area_id AS area_id, 
-        area.area_name AS area_name, 
-        franchise.franchise_id AS franchise_id, 
-        franchise.franchise_name AS franchise_name, 
-        area_geofence.latitude AS area_latitude, 
-        area_geofence.longitude AS area_longitude, 
-        area_geofence.radius AS area_radius, 
-        (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
-    FROM location
-    LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
-    LEFT OUTER JOIN area ON location.area_id = area.area_id
-    LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
-    LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
+    SELECT *
+    FROM locationView
     WHERE location_id = id;
-END //
-
-CREATE PROCEDURE getCommandsByLocationId(
-    IN param_location_id INT
-)
-BEGIN
-    SELECT intervention.intervention_id, intervention_name, command
-    FROM command_in_intervention
-    LEFT OUTER JOIN intervention ON command_in_intervention.intervention_id = intervention.intervention_id
-    LEFT OUTER JOIN command ON command_in_intervention.command_id = command.command_id
-    LEFT OUTER JOIN location_intervention ON location_intervention.intervention_id = intervention.intervention_id
-    WHERE location_intervention.location_id = param_location_id;
 END //
 
 CREATE PROCEDURE getLocations()
 BEGIN
-    SELECT 
-    location_id, 
-    location_name, 
-    delay, 
-    location_geofence.longitude, 
-    location_geofence.latitude, 
-    location_geofence.radius, 
-    area.area_id AS area_id, 
-    area.area_name AS area_name, 
-    franchise.franchise_id AS franchise_id, 
-    franchise.franchise_name AS franchise_name, 
-    area_geofence.latitude AS area_latitude, 
-    area_geofence.longitude AS area_longitude, 
-    area_geofence.radius AS area_radius, 
-    (SELECT GROUP_CONCAT(intervention_id) FROM location_intervention WHERE location_intervention.location_id = location_id) AS linked_interventions
-    FROM location
-    LEFT OUTER JOIN geofence AS location_geofence ON location_geofence.geofence_id = location.geofence_id
-    LEFT OUTER JOIN area ON location.area_id = area.area_id
-        LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
-    LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id;
+    SELECT *
+    FROM locationView;
 END //
 
-CREATE PROCEDURE updateLocation(
-    in param_id INT,
+CREATE PROCEDURE updateLocation (
+    IN param_id INT,
     IN param_name VARCHAR(255),
     IN param_delay INT,
-    IN param_longitude DECIMAL(9,6),
+    IN param_longitude DECIMAL(9, 6),
     IN param_latitude DECIMAL(9, 6),
     IN param_radius INT,
     IN param_areaId INT,
@@ -460,21 +433,23 @@ END //
 CREATE PROCEDURE getFranchiseById(
     IN id INT
 ) BEGIN
-    SELECT franchise_id, franchise_name
-    FROM franchise
+    SELECT *
+    FROM franchiseView
     WHERE franchise_id = id;
 END //
 
 CREATE PROCEDURE getFranchises()
 BEGIN
-    SELECT franchise_id, franchise_name
-    FROM franchise;
+    SELECT *
+    FROM franchiseView;
 END //
 
 CREATE PROCEDURE getUserCountByRoleId(
     IN param_id INT
 ) BEGIN
-    SELECT COUNT(*) AS count FROM users WHERE role_id = param_id;
+    SELECT COUNT(*) AS count
+    FROM users
+    WHERE role_id = param_id;
 END //
 
 CREATE PROCEDURE deleteFranchise(
@@ -504,15 +479,15 @@ END //
 CREATE PROCEDURE getGoalById(
     IN param_id INT
 ) BEGIN
-    SELECT goal_id, goal_name
-    FROM goal
+    SELECT *
+    FROM goalView
     WHERE goal_id = param_id;
 END //
 
 CREATE PROCEDURE getGoals()
 BEGIN
-    SELECT goal_id, goal_name
-    FROM goal;
+    SELECT *
+    FROM goalView;
 END //
 
 CREATE PROCEDURE createGoal(
@@ -546,7 +521,45 @@ CREATE PROCEDURE createUser(
         VALUES(param_name, param_password, param_email, param_role_id);
 END //
 
-CREATE PROCEDURE deleteUser(
+CREATE PROCEDURE getUsers()
+BEGIN
+    SELECT *
+    FROM userView;
+END //
+
+CREATE PROCEDURE getUserById (
+    IN param_user_id INT
+) BEGIN
+    SELECT *
+    FROM userView
+    WHERE user_id = param_user_id;
+END //
+
+CREATE PROCEDURE getUserByUsername (
+    IN param_user_name VARCHAR(200)
+) BEGIN
+    SELECT *
+    FROM userView
+    WHERE username = param_user_name;
+END //
+
+CREATE PROCEDURE updateUser (
+    IN param_id INT,
+    IN param_username VARCHAR(255),
+    IN param_password VARCHAR(255),
+    IN param_email VARCHAR(255),
+    IN param_role_id INT
+) BEGIN
+    UPDATE users
+    SET 
+        username = param_username,
+        password = param_password,
+        email = param_email,
+        role_id = param_role_id
+    WHERE user_id = param_id;
+END //
+
+CREATE PROCEDURE deleteUser (
     IN param_id INT
 ) BEGIN
     DELETE FROM users WHERE user_id = param_id;
