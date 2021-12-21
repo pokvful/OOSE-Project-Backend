@@ -34,13 +34,7 @@ public class UserDAOImpl implements UserDAO {
 
             List<User> getUsers = new ArrayList<>();
             while (resultSet.next()) {
-                getUsers.add(new User(
-                        resultSet.getInt("user_id"),
-                        resultSet.getString("username"),
-                        resultSet.getString("email"),
-                        resultSet.getString("password"),
-                        roleDAO.getRoleById(resultSet.getInt("role_id"))
-                ));
+                getUsers.add(getUserFromResultSet(resultSet));
             }
             return getUsers;
 
@@ -59,13 +53,7 @@ public class UserDAOImpl implements UserDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new User(
-                            resultSet.getInt("user_id"),
-                            resultSet.getString("username"),
-                            resultSet.getString("email"),
-                            resultSet.getString("password"),
-                            roleDAO.getRoleById(resultSet.getInt("role_id"))
-                    );
+                    return getUserFromResultSet(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -83,13 +71,7 @@ public class UserDAOImpl implements UserDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new User(
-                            resultSet.getInt("user_id"),
-                            resultSet.getString("username"),
-                            resultSet.getString("email"),
-                            resultSet.getString("password"),
-                            roleDAO.getRoleById(resultSet.getInt("role_id"))
-                    );
+                    return getUserFromResultSet(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -138,5 +120,21 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "deleteUser::A database error occurred!", e);
         }
+    }
+
+    private User getUserFromResultSet(ResultSet resultSet) {
+        try {
+            return new User(
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("email"),
+                    resultSet.getString("password"),
+                    roleDAO.getRoleById(resultSet.getInt("role_id"))
+            );
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getUserFromResultSet::A database error occurred!", e);
+        }
+
+        return null;
     }
 }

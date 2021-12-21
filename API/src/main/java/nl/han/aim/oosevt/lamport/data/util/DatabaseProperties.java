@@ -9,6 +9,8 @@ public class DatabaseProperties {
     private static final Logger LOGGER = Logger.getLogger(DatabaseProperties.class.getName());
     private static String connectionString;
 
+    private DatabaseProperties() {}
+
     public static void init() {
         final Properties properties = new Properties();
         try {
