@@ -1,9 +1,12 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
+
 import java.util.List;
 
 public class QuestionRequestDTO extends InterventionRequestDTO {
     protected List<AnswerRequestDTO> answers;
+    @NotEmpty
     protected String question;
 
     public QuestionRequestDTO() {}
@@ -28,12 +31,5 @@ public class QuestionRequestDTO extends InterventionRequestDTO {
 
     public void setQuestion(String question) {
         this.question = question;
-    }
-
-    @Override
-    protected void validateDTO() {
-        if(question == null || question.isEmpty()) {
-            addError("questionText", "Vraagtekst mag niet leeg zijn!");
-        }
     }
 }

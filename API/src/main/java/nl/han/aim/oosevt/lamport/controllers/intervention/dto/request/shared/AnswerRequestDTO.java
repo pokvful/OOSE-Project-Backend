@@ -28,9 +28,4 @@ public class AnswerRequestDTO extends RequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    protected void validateDTO() {
-        throw new UnsupportedOperationException();
-    }
 }

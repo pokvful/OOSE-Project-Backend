@@ -1,6 +1,9 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
+
 public abstract class CommandRequestDTO extends InterventionRequestDTO {
+    @NotEmpty
     private String commandText;
 
     public CommandRequestDTO() {
@@ -18,15 +21,5 @@ public abstract class CommandRequestDTO extends InterventionRequestDTO {
 
     public void setCommandText(String commandText) {
         this.commandText = commandText;
-    }
-
-    @Override
-    protected void validateDTO() {
-        if(name == null || name.isEmpty()) {
-            addError("name", "Naam mag niet leeg zijn!");
-        }
-        if(commandText == null || commandText.isEmpty()) {
-            addError("commandText", "Commando mag niet leeg zijn!");
-        }
     }
 }
