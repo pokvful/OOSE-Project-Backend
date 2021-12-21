@@ -3,8 +3,6 @@ package nl.han.aim.oosevt.lamport.controllers.user.dto;
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
 
-import static java.util.Objects.isNull;
-
 public class UserRequestDTO extends RequestDTO {
     @NotEmpty
     private String username;
