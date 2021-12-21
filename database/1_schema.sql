@@ -28,6 +28,21 @@ create table if not exists geofence (
     radius INT(6)
 );
 
+-- -- DROP TABLE command;
+
+-- CREATE FUNCTION interventionType (
+--     intervention_id INT
+-- )
+-- RETURNS VARCHAR(255)
+-- AS
+-- BEGIN
+-- 	RETURN (
+--     	SELECT intervention_type
+--     	FROM intervention
+--     	WHERE intervention.intervention_id = command.intervention_id
+--     )
+-- END
+
 create table if not exists intervention (
     intervention_id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     intervention_name VARCHAR(255) NOT NULL,
@@ -67,15 +82,7 @@ create table if not exists command (
     command_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     command VARCHAR(100),
     intervention_id INT(6) UNSIGNED NOT NULL UNIQUE,
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE,
-    CONSTRAINT is_command CHECK(
-        (  
-            SELECT COUNT(*)
-            FROM intervention
-            WHERE intervention_id = intervention_id
-            AND intervention_type = 'command'
-        ) = 1
-    )
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
 );
 
 create table if not exists franchise (
