@@ -22,11 +22,4 @@ public class UpdateQuestionnaireRequestDTO extends QuestionnaireRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    protected void validateDTO() {
-        if(name == null || name.isEmpty()) {
-            addError("name", "Naam mag niet leeg zijn!");
-        }
-    }
 }

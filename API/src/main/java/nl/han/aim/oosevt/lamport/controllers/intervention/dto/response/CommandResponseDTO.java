@@ -3,8 +3,8 @@ package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 import nl.han.aim.oosevt.lamport.data.entity.Command;
 
 public class CommandResponseDTO extends InterventionResponseDTO {
-    private String commandText;
-    private final String type = "commando";
+    private final String commandText;
+    private static final String type = "commando";
 
     public CommandResponseDTO(int id, String name, String command) {
         super(id, name);

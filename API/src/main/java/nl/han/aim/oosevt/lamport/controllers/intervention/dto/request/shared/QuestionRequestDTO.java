@@ -32,6 +32,8 @@ public class QuestionRequestDTO extends InterventionRequestDTO {
 
     @Override
     protected void validateDTO() {
-
+        if(question == null || question.isEmpty()) {
+            addError("questionText", "Vraagtekst mag niet leeg zijn!");
+        }
     }
 }

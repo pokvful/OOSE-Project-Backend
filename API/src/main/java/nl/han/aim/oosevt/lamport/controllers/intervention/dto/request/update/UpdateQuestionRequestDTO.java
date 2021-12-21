@@ -8,11 +8,6 @@ import java.util.List;
 public class UpdateQuestionRequestDTO extends QuestionRequestDTO {
     private int id;
 
-    @Override
-    protected void validateDTO() {
-
-    }
-
     public UpdateQuestionRequestDTO(int id, String name, String question, List<AnswerRequestDTO> answers) {
         super(name, answers, question);
         this.id = id;
@@ -28,5 +23,4 @@ public class UpdateQuestionRequestDTO extends QuestionRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
 }

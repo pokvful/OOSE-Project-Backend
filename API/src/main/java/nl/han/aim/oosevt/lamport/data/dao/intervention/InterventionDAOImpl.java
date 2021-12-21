@@ -72,7 +72,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getAnswersByQuestionId::A database error occurred!", e);
         }
 
         return new ArrayList<>();
@@ -91,7 +91,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             );
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getQuestionFromResultSet::A database error occurred!", e);
         }
 
         return null;
@@ -112,7 +112,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getQuestionsByQuestionnaireId::A database error occurred!", e);
         }
 
         return new ArrayList<>();
@@ -120,34 +120,33 @@ public class InterventionDAOImpl implements InterventionDAO {
 
     private Intervention interventionFromResultSet(ResultSet resultSet, Connection connection) {
         try {
-            String type = resultSet.getString("intervention_type");
+            final String type = resultSet.getString("intervention_type");
+            final String interventionName = resultSet.getString("intervention_name");
+            final int interventionId = resultSet.getInt("intervention_id");
             switch (type) {
                 case "command":
                     return new Command(
                         resultSet.getInt("intervention_id"),
-                        resultSet.getString("intervention_name"),
+                            interventionName,
                         resultSet.getString("command")
                     );
                 case "question":
-                    int questionId = resultSet.getInt("question_id");
-                    List<Answer> answers = getAnswersByQuestionId(questionId, connection);
+                    final int questionId = resultSet.getInt("question_id");
+                    final List<Answer> answers = getAnswersByQuestionId(questionId, connection);
 
                     return new Question(
-                            resultSet.getInt("intervention_id"),
-                        resultSet.getString("intervention_name"),
+                            interventionId,
+                            interventionName,
                         resultSet.getString("question"),
                         answers
                     );
                 case "questionnaire":
-                    int interventionId = resultSet.getInt("intervention_id");
-
                     return new Questionnaire(
                             interventionId,
-                            resultSet.getString("intervention_name"),
+                            interventionName,
                             getQuestionsByQuestionnaireId(interventionId, connection)
                     );
             }
-
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "interventionFromResultSet::A database error occurred!", e);
         }
@@ -186,7 +185,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateCommand::A database error occurred!", e);
         }
     }
 
@@ -257,7 +256,7 @@ public class InterventionDAOImpl implements InterventionDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getInterventions::A database error occurred!", e);
         }
 
         return new ArrayList<>();
@@ -332,7 +331,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "getInterventionsByLocationId::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "getInterventionById::A database error occurred!", e);
         }
 
         return null;
