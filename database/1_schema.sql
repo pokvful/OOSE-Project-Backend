@@ -67,7 +67,15 @@ create table if not exists command (
     command_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     command VARCHAR(100),
     intervention_id INT(6) UNSIGNED NOT NULL UNIQUE,
-    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE
+    FOREIGN KEY (intervention_id) REFERENCES intervention(intervention_id) ON DELETE CASCADE,
+    CONSTRAINT is_command CHECK(
+        (  
+            SELECT COUNT(*)
+            FROM intervention
+            WHERE intervention_id = intervention_id
+            AND intervention_type = 'command'
+        ) = 1
+    )
 );
 
 create table if not exists franchise (
