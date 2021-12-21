@@ -18,11 +18,4 @@ public class UpdateAreaRequestDTO extends AreaRequestDTO {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    protected void validateSpecificDto() {
-        if(id == 0) {
-            addError("id", "Id mag niet leeg zijn");
-        }
-    }
 }

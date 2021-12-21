@@ -1,13 +1,19 @@
 package nl.han.aim.oosevt.lamport.controllers.user.dto;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
-
-import static java.util.Objects.isNull;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
 
 public class UserRequestDTO extends RequestDTO {
+    @NotEmpty
     private String username;
+
+    @NotEmpty
     private String email;
+
+    @NotEmpty
     private String password;
+
+    @NotEmpty
     private int roleId;
 
     public String getUsername() {
@@ -51,21 +57,5 @@ public class UserRequestDTO extends RequestDTO {
 
     public UserRequestDTO() {
 
-    }
-
-    @Override
-    protected void validateDTO() {
-        if (isNull(username) || username.isEmpty()) {
-            addError("username", "Gebruikersnaam mag niet leeg zijn!");
-        }
-        if (isNull(email) || email.isEmpty()) {
-            addError("email", "Email mag niet leeg zijn!");
-        }
-        if (isNull(password) || password.isEmpty()) {
-            addError("password", "Wachtwoord mag niet leeg zijn!");
-        }
-        if (getRoleId() == 0) {
-            addError("role", "Rol mag niet leeg zijn!");
-        }
     }
 }

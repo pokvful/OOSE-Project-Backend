@@ -1,17 +1,38 @@
 package nl.han.aim.oosevt.lamport.controllers.location.dto;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.MaxValue;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.MinValue;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
 
 import java.util.List;
 
 public abstract class LocationRequestDTO extends RequestDTO {
+    @NotEmpty
     private String name;
+
+    @NotEmpty
     private int delay;
+
+    @NotEmpty
+    @MinValue(value = -180)
+    @MaxValue(value = 180)
     private double longitude;
+
+    @NotEmpty
+    @MinValue(value = -90)
+    @MaxValue(value = 90)
     private double latitude;
+
+    @MinValue(value = 0)
+    @NotEmpty
     private int radius;
+
+    @NotEmpty
     private int areaId;
+
     private int franchiseId;
+
     private List<Integer> linkedInterventions;
 
     public LocationRequestDTO() {
@@ -90,33 +111,5 @@ public abstract class LocationRequestDTO extends RequestDTO {
 
     public void setFranchiseId(int franchiseId) {
         this.franchiseId = franchiseId;
-    }
-
-    @Override
-    protected void validateDTO() {
-        if (name.isEmpty()) {
-            addError("name", "Naam mag niet leeg zijn!");
-        }
-        if (delay == 0) {
-            addError("delay", "Delay mag niet leeg zijn!");
-        }
-        if (longitude == 0) {
-            addError("longitude", "Lengtegraad mag niet leeg zijn!");
-        }
-        if (longitude < -180 || longitude > 180) {
-            addError("longitude", "Dit is geen geldige lengtegraad");
-        }
-        if (latitude == 0) {
-            addError("latitude", "Breedtegraad mag niet leeg zijn!");
-        }
-        if (latitude < -90 || latitude > 90) {
-            addError("latitude", "Dit is geen geldige breedtegraad");
-        }
-        if (radius <= 0) {
-            addError("radius", "Straal mag niet kleiner zijn dan 0");
-        }
-        if (areaId == 0) {
-            addError("areaId", "AreaId mag niet leeg zijn!");
-        }
     }
 }
