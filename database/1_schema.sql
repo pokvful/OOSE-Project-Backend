@@ -28,20 +28,7 @@ create table if not exists geofence (
     radius INT(6)
 );
 
--- -- DROP TABLE command;
 
--- CREATE FUNCTION interventionType (
---     intervention_id INT
--- )
--- RETURNS VARCHAR(255)
--- AS
--- BEGIN
--- 	RETURN (
---     	SELECT intervention_type
---     	FROM intervention
---     	WHERE intervention.intervention_id = command.intervention_id
---     )
--- END
 
 create table if not exists intervention (
     intervention_id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
