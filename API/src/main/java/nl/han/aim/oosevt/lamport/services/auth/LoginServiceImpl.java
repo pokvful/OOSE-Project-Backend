@@ -6,6 +6,7 @@ import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.User;
+import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.UnauthorizedException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,15 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        loginRequestDTO.validate();
         final User user = userDAO.getUserByUsername(loginRequestDTO.getUsername());
 
         if(user == null) {
-            throw new UnauthorizedException();
+            throw new InvalidDTOException();
         }
 
         if(!hashProvider.matches(loginRequestDTO.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException();
+            throw new InvalidDTOException();
         }
 
         try {
