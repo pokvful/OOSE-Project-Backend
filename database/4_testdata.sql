@@ -3,10 +3,10 @@ use lbc;
 CALL createRole("Gebruiker", "GET_AREAS,GET_FRANCHISES,GET_GOALS,GET_INTERVENTIONS,GET_LOCATIONS,GET_ROLES,GET_USERS");
 CALL createRole("Beheerder", "GET_AREAS,UPDATE_AREAS,CREATE_AREAS,DELETE_AREAS,GET_FRANCHISES,UPDATE_FRANCHISES,CREATE_FRANCHISES,DELETE_FRANCHISES,GET_GOALS,UPDATE_GOALS,CREATE_GOALS,DELETE_GOALS,GET_INTERVENTIONS,UPDATE_INTERVENTIONS,CREATE_INTERVENTIONS,DELETE_INTERVENTIONS,GET_LOCATIONS,UPDATE_LOCATIONS,CREATE_LOCATIONS,DELETE_LOCATIONS,GET_ROLES,UPDATE_ROLES,CREATE_ROLES,DELETE_ROLES,GET_USERS,UPDATE_USERS,CREATE_USERS,DELETE_USERS");
 
-CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
-CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
-CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
-CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 1);
+CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
+CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
+CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
+CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
 
 CALL createCommand("Volkoren brood", "Welkom bij de Subway, kiest u voor een volkoren broodje?");
 CALL createCommand("Salade", "Koop een salade");
