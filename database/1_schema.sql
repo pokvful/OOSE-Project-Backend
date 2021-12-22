@@ -28,6 +28,8 @@ create table if not exists geofence (
     radius INT(6)
 );
 
+
+
 create table if not exists intervention (
     intervention_id INT(6) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     intervention_name VARCHAR(255) NOT NULL,
