@@ -84,14 +84,14 @@ create table if not exists franchise_intervention (
 
 create table if not exists location (
     location_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    franchise_id INT(6) UNSIGNED NULL,
-    area_id INT(6) UNSIGNED,
-    geofence_id INT(6) UNSIGNED,
-    location_name VARCHAR(100),
-    delay INT(6) UNSIGNED,
-    FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id),
-    FOREIGN KEY (area_id) REFERENCES area(area_id),
-    FOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id)
+    franchise_id INT(6) UNSIGNED NOT NULL,
+    area_id INT(6) UNSIGNED NOT NULL,
+    geofence_id INT(6) UNSIGNED NOT NULL,
+    location_name VARCHAR(100) NOT NULL,
+    delay INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (franchise_id) REFERENCES franchise(franchise_id) ON DELETE CASCADE,
+    FOREIGN KEY (area_id) REFERENCES area(area_id) ON DELETE CASCADE,
+    FOREIGN KEY (geofence_id) REFERENCES geofence(geofence_id) ON DELETE CASCADE
 );
 
 create table if not exists location_intervention (
