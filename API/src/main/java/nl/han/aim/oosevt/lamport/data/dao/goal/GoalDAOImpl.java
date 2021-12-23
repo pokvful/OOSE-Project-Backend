@@ -73,7 +73,7 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void updateGoal(int goalId, String name, List<ProfileQuestionRequestDTO> questions) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?)")) {
             statement.setInt(1, goalId);
             statement.setString(2, name);
 
@@ -97,7 +97,7 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     public List<ProfileQuestion> getProfileQuestionFromGoalId(int profileQuestionId, Connection connection) {
-        try (PreparedStatement statement = connection.prepareStatement("CALL getProfileQuestionFromGoalId(?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("CALL getProfileQuestionByGoalId(?)")) {
             statement.setInt(1, profileQuestionId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<ProfileQuestion> profileQuestions = new ArrayList<>();
@@ -105,7 +105,7 @@ public class GoalDAOImpl implements GoalDAO {
                 while (resultSet.next()) {
                     profileQuestions.add(new ProfileQuestion(
                             resultSet.getInt("profile_question_id"),
-                            resultSet.getString("profile_question_name")
+                            resultSet.getString("question")
                     ));
                 }
 
