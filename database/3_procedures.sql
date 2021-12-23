@@ -516,10 +516,11 @@ CREATE PROCEDURE createUser(
     IN param_name VARCHAR(255),
     IN param_email VARCHAR(255),
     IN param_password VARCHAR(255),
-    IN param_role_id INT
+    IN param_role_id INT,
+    IN param_goal_id INT
 ) BEGIN
-    INSERT INTO users(username, password, email, role_id)
-        VALUES(param_name, param_password, param_email, param_role_id);
+    INSERT INTO users(username, password, email, role_id, goal_id)
+        VALUES(param_name, param_password, param_email, param_role_id, param_goal_id);
 END //
 
 CREATE PROCEDURE getUsers()
@@ -561,14 +562,16 @@ CREATE PROCEDURE updateUser (
     IN param_username VARCHAR(255),
     IN param_password VARCHAR(255),
     IN param_email VARCHAR(255),
-    IN param_role_id INT
+    IN param_role_id INT,
+    IN param_goal_id INT
 ) BEGIN
     UPDATE users
     SET 
         username = param_username,
         password = param_password,
         email = param_email,
-        role_id = param_role_id
+        role_id = param_role_id,
+        goal_id = param_goal_id
     WHERE user_id = param_id;
 END //
 
