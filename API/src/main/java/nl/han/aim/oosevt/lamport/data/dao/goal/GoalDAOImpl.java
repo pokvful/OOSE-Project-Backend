@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionString;
 
 @Component
 public class GoalDAOImpl implements GoalDAO {
@@ -22,9 +19,14 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void createGoal(String name, List<ProfileQuestionRequestDTO> questions) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createGoal(?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL createGoal(?)")) {
             statement.setString(1, name);
-            statement.setString(2, questions.stream().map(Object::toString).collect(Collectors.joining(",")));
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    addProfileQuestionToGoal(resultSet.getInt("goal_id"), questions, connection);
+                }
+            }
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -40,7 +42,7 @@ public class GoalDAOImpl implements GoalDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return (goalFromResultSet(resultSet));
+                    return (goalFromResultSet(resultSet, connection));
                 }
             }
         } catch (SQLException e) {
@@ -58,7 +60,7 @@ public class GoalDAOImpl implements GoalDAO {
             List<Goal> getGoals = new ArrayList<>();
 
             while (resultSet.next()) {
-                getGoals.add(goalFromResultSet(resultSet));
+                getGoals.add(goalFromResultSet(resultSet, connection));
             }
             return getGoals;
 
@@ -74,7 +76,8 @@ public class GoalDAOImpl implements GoalDAO {
              PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?, ?)")) {
             statement.setInt(1, goalId);
             statement.setString(2, name);
-            statement.setString(3, questions.stream().map(Object::toString).collect(Collectors.joining(",")));
+
+            addProfileQuestionToGoal(goalId, questions, connection);
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -93,11 +96,9 @@ public class GoalDAOImpl implements GoalDAO {
         }
     }
 
-    public List<ProfileQuestion> getProfileQuestionFromGoalId(int profileQuestionId) {
-        try (Connection connection = DriverManager.getConnection(connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getProfileQuestionFromGoalId(?)")) {
+    public List<ProfileQuestion> getProfileQuestionFromGoalId(int profileQuestionId, Connection connection) {
+        try (PreparedStatement statement = connection.prepareStatement("CALL getProfileQuestionFromGoalId(?)")) {
             statement.setInt(1, profileQuestionId);
-
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<ProfileQuestion> profileQuestions = new ArrayList<>();
 
@@ -107,7 +108,10 @@ public class GoalDAOImpl implements GoalDAO {
                             resultSet.getString("profile_question_name")
                     ));
                 }
+
                 return profileQuestions;
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "getProfileQuestionFromGoalId::A database error occurred!", e);
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "getProfileQuestionFromGoalId::A database error occurred!", e);
@@ -115,17 +119,32 @@ public class GoalDAOImpl implements GoalDAO {
         return new ArrayList<>();
     }
 
-    private Goal goalFromResultSet(ResultSet resultSet) {
+    private Goal goalFromResultSet(ResultSet resultSet, Connection connection) {
         try {
             int goalId = resultSet.getInt("goal_id");
             return new Goal(
                     resultSet.getInt("goal_id"),
                     resultSet.getString("goal_name"),
-                    getProfileQuestionFromGoalId(goalId)
+                    getProfileQuestionFromGoalId(goalId, connection)
             );
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "locationFromResultSet::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "goalFromResultSet::A database error occurred!", e);
         }
         return null;
+    }
+
+    private void addProfileQuestionToGoal(int goalId, List<ProfileQuestionRequestDTO> questions, Connection connection) {
+        for (ProfileQuestionRequestDTO question : questions) {
+            String questionText = question.getName();
+
+            try (PreparedStatement statement = connection.prepareStatement("CALL addProfileQuestionToGoal(?, ?)")) {
+                statement.setInt(1, goalId);
+                statement.setString(2, questionText);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "addProfileQuestionToGoal::A database error occurred!", e);
+            }
+        }
     }
 }
