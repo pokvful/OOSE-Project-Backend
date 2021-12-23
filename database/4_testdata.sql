@@ -82,4 +82,10 @@ CALL createLocation("HP2 Kantoor", 10, 5.1100019, 52.0709499, 100, 3, 4, "4,5,6"
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 4, "");
 
 CALL createGoal("Afvallen");
+    CALL addProfileQuestionToGoal(1, "Wat is uw gewicht?");
+    CALL addProfileQuestionToGoal(1, "Hoeveel wilt u afvallen?");
+
 CALL createGoal("Geld Besparen");
+    CALL addProfileQuestionToGoal(2, "Wat is uw maandinkomen?");
+    CALL addProfileQuestionToGoal(2, "Hoeveel geeft u nu per maand uit?");
+    CALL addProfileQuestionToGoal(2, "Hoeveel wilt u per maand extra overhouden?");

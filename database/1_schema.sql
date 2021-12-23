@@ -168,5 +168,12 @@ create table if not exists sensitivity_action (
 
 create table if not exists goal (
     goal_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    goal_name VARCHAR(100)
+    goal_name VARCHAR(100) NOT NULL
+);
+
+create table if not exists profile_question (
+    profile_question_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(255) NOT NULL,
+    goal_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (goal_id) REFERENCES goal(goal_id) ON DELETE CASCADE
 );
