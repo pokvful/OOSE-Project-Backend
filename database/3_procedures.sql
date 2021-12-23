@@ -469,13 +469,33 @@ END //
 CREATE PROCEDURE createGoal(
     IN param_name VARCHAR(255)
 ) BEGIN
-    INSERT INTO goal(goal_name) VALUES (param_name);
+    INSERT INTO goal(goal_name)
+    VALUES (param_name);
+
+    SELECT LAST_INSERT_ID() AS goal_id;
 END //
 
 CREATE PROCEDURE deleteGoal(
     IN param_id INT
 ) BEGIN
-    DELETE FROM goal WHERE goal_id = param_id;
+    DELETE FROM goal
+    WHERE goal_id = param_id;
+END //
+
+CREATE PROCEDURE addProfileQuestionToGoal (
+    IN param_goal_id INT,
+    IN param_question VARCHAR(255)
+) BEGIN
+    INSERT INTO profile_question (goal_id, question)
+    VALUES (param_goal_id, param_question);
+END //
+
+CREATE PROCEDURE getProfileQuestionsByGoalId (
+    IN param_goal_id INT
+) BEGIN
+    SELECT *
+    FROM profileQuestionView
+    WHERE goal_id = param_goal_id;
 END //
 
 CREATE PROCEDURE updateGoal(
@@ -483,7 +503,11 @@ CREATE PROCEDURE updateGoal(
     IN param_name VARCHAR(255)
 ) BEGIN
     UPDATE goal
-        SET goal_name = param_name
+    SET goal_name = param_name
+    WHERE goal_id = param_id;
+
+    DELETE
+    FROM profile_question
     WHERE goal_id = param_id;
 END //
 

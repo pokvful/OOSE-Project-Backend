@@ -75,3 +75,9 @@ AS (
     SELECT goal_id, goal_name
     FROM goal
 );
+
+CREATE VIEW profileQuestionView
+AS (
+    SELECT profile_question_id, question, goal_id
+    FROM profile_question
+)
