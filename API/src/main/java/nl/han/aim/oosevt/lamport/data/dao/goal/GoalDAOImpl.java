@@ -20,6 +20,7 @@ public class GoalDAOImpl implements GoalDAO {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL createGoal(?)")) {
             statement.setString(1, name);
+
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "createGoal::A database error occurred!", e);

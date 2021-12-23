@@ -57,6 +57,7 @@ public class UserServiceImpl implements UserService {
         final String email = updateUserRequestDTO.getEmail();
         final String password = updateUserRequestDTO.getPassword();
         final int roleId = updateUserRequestDTO.getRoleId();
+        final int goalId = updateUserRequestDTO.getGoalId();
 
         final String hash = new BCryptPasswordEncoder().encode(password);
 
@@ -64,13 +65,13 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException();
         }
 
-        userDAO.updateUser(id, username, email, hash, roleId);
+        userDAO.updateUser(id, username, email, hash, roleId, goalId);
     }
 
     public void createUser(CreateUserRequestDTO create) {
         create.validate();
         final String hash = hashProvider.hash(create.getPassword());
-        userDAO.createUser(create.getUsername(), create.getEmail(), hash, create.getRoleId());
+        userDAO.createUser(create.getUsername(), create.getEmail(), hash, create.getRoleId(), create.getGoalId());
     }
 
     @Override
