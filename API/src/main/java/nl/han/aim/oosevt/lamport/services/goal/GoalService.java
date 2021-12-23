@@ -1,8 +1,8 @@
 package nl.han.aim.oosevt.lamport.services.goal;
 
-import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 
 import java.util.List;
 
