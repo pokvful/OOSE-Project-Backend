@@ -53,9 +53,10 @@ AS (
 
 CREATE VIEW userView
 AS (
-    SELECT user_id, username, password, email, users.role_id, role.role_name 
+    SELECT user_id, username, password, email, users.role_id, role.role_name, goal.goal_id, goal.goal_name
     FROM users
     LEFT OUTER JOIN role ON role.role_id = users.role_id
+    LEFT OUTER JOIN goal ON goal.goal_id = users.goal_id
 );
 
 CREATE VIEW roleView

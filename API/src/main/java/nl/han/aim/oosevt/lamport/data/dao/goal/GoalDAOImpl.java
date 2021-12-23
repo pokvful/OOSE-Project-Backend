@@ -19,14 +19,8 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void createGoal(String name, List<ProfileQuestionRequestDTO> questions) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL createGoal(?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL createGoal(?)")) {
             statement.setString(1, name);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    addProfileQuestionToGoal(resultSet.getInt("goal_id"), questions, connection);
-                }
-            }
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -37,7 +31,7 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public Goal getGoalById(int goalId) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getGoalById(?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL getGoalById(?)")) {
             statement.setInt(1, goalId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -54,8 +48,8 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public List<Goal> getGoals() {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL getGoals()");
-             ResultSet resultSet = statement.executeQuery()) {
+                PreparedStatement statement = connection.prepareStatement("CALL getGoals()");
+                ResultSet resultSet = statement.executeQuery()) {
 
             List<Goal> getGoals = new ArrayList<>();
 
@@ -73,7 +67,7 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void updateGoal(int goalId, String name, List<ProfileQuestionRequestDTO> questions) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?)")) {
             statement.setInt(1, goalId);
             statement.setString(2, name);
 
@@ -88,7 +82,7 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void deleteGoal(int goalId) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-             PreparedStatement statement = connection.prepareStatement("CALL deleteGoal(?)")) {
+                PreparedStatement statement = connection.prepareStatement("CALL deleteGoal(?)")) {
             statement.setInt(1, goalId);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -105,8 +99,7 @@ public class GoalDAOImpl implements GoalDAO {
                 while (resultSet.next()) {
                     profileQuestions.add(new ProfileQuestion(
                             resultSet.getInt("profile_question_id"),
-                            resultSet.getString("question")
-                    ));
+                            resultSet.getString("question")));
                 }
 
                 return profileQuestions;
@@ -125,15 +118,15 @@ public class GoalDAOImpl implements GoalDAO {
             return new Goal(
                     resultSet.getInt("goal_id"),
                     resultSet.getString("goal_name"),
-                    getProfileQuestionFromGoalId(goalId, connection)
-            );
+                    getProfileQuestionFromGoalId(goalId, connection));
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "goalFromResultSet::A database error occurred!", e);
         }
         return null;
     }
 
-    private void addProfileQuestionToGoal(int goalId, List<ProfileQuestionRequestDTO> questions, Connection connection) {
+    private void addProfileQuestionToGoal(int goalId, List<ProfileQuestionRequestDTO> questions,
+            Connection connection) {
         for (ProfileQuestionRequestDTO question : questions) {
             String questionText = question.getName();
 

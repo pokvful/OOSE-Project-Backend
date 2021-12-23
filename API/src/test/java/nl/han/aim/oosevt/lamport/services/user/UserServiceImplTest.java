@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.han.aim.oosevt.lamport.ObjectAssertions;
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UpdateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.CreateUserRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.user.dto.UserResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.role.RoleDAO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
@@ -34,15 +36,22 @@ public class UserServiceImplTest {
     private final String email = "b.barends@student.han.nl";
     private final String password = "SomePassword";
     private final String hash = "SomeHash";
+    private final int goalId = 1;
+    private final String goalName = "Doe wat";
 
     private Role mockRole;
     private User mockUser;
+    private Goal mockGoal;
+
     private UserResponseDTO mockUserResponseDTO;
     private RoleResponseDTO mockRoleResponseDTO;
+    private GoalResponseDTO mockGoalResponseDTO;
+
     private CreateUserRequestDTO mockCreateUserRequestDTO;
+    private UpdateUserRequestDTO updateUserRequestDTO;
+
     private ArrayList<UserResponseDTO> usersResponseDTO;
     private ArrayList<User> mockUsers;
-    private UpdateUserRequestDTO updateUserRequestDTO;
 
     private UserDAO userDAOFixture;
     private RoleDAO roleDAOFixture;
@@ -50,23 +59,28 @@ public class UserServiceImplTest {
 
     private UserServiceImpl sut;
 
+
     @BeforeEach
     public void setup() {
         mockRole = new Role(roleId, roleName, new ArrayList<>());
-        mockUser = new User(userId, username, email, password, mockRole);
+        mockGoal = new Goal(goalId, goalName, new ArrayList<>());
+        mockUser = new User(userId, username, email, password, mockRole, mockGoal);
 
         userDAOFixture = Mockito.mock(UserDAO.class);
         roleDAOFixture = Mockito.mock(RoleDAO.class);
 
-        updateUserRequestDTO = new UpdateUserRequestDTO(userId, username, email, password, roleId);
+        updateUserRequestDTO = new UpdateUserRequestDTO(userId, username, email, password, roleId, goalId);
         hashProviderFixture = Mockito.mock(HashProvider.class);
 
         mockCreateUserRequestDTO = Mockito.spy(
-                new CreateUserRequestDTO(username, email, password, roleId));
+                new CreateUserRequestDTO(username, email, password, roleId, goalId));
 
         mockRoleResponseDTO = new RoleResponseDTO(roleId, roleName, new ArrayList<>());
-        mockUserResponseDTO =
-                new UserResponseDTO(userId, username, email, mockRoleResponseDTO);
+
+        mockGoalResponseDTO = new GoalResponseDTO(goalId, goalName, new ArrayList<>());
+
+        mockUserResponseDTO = new UserResponseDTO(userId, username, email, mockRoleResponseDTO, mockGoalResponseDTO);
+
         mockUsers = new ArrayList<>();
         mockUsers.add(mockUser);
 
@@ -86,7 +100,7 @@ public class UserServiceImplTest {
         sut.updateUser(updateUserRequestDTO);
 
         //Assert
-        Mockito.verify(userDAOFixture).updateUser(eq(userId), eq(username), eq(email), any(String.class), eq(roleId));
+        Mockito.verify(userDAOFixture).updateUser(eq(userId), eq(username), eq(email), any(String.class), eq(roleId), eq(goalId));
     }
 
     @Test
@@ -99,7 +113,7 @@ public class UserServiceImplTest {
         sut.updateUser(updateUserRequestDTO);
 
         //Assert
-        Mockito.verify(userDAOFixture).updateUser(eq(userId), eq(username), eq(email), not(eq(password)), eq(roleId));
+        Mockito.verify(userDAOFixture).updateUser(eq(userId), eq(username), eq(email), not(eq(password)), eq(roleId), eq(goalId));
     }
 
     @Test
@@ -227,13 +241,13 @@ public class UserServiceImplTest {
         // Assert
         Mockito.verify(userDAOFixture)
                 .createUser(mockUser.getUsername(), mockUser.getEmail(), hashProviderFixture.hash(mockUser.getPassword()),
-                        mockUser.getRole().getRoleId());
+                        mockUser.getRole().getRoleId(), mockUser.getGoal().getGoalId());
     }
 
     @Test
     public void testDeleteLocation() {
         // Arrange
-        Mockito.when(userDAOFixture.getUserById(Mockito.anyInt())).thenReturn(new User(userId, username, email, password, mockRole));
+        Mockito.when(userDAOFixture.getUserById(Mockito.anyInt())).thenReturn(new User(userId, username, email, password, mockRole, mockGoal));
         Mockito.doNothing().when(this.userDAOFixture).deleteUser(Mockito.anyInt());
 
         // Act
@@ -249,5 +263,4 @@ public class UserServiceImplTest {
 
         assertThrows(NotFoundException.class, () -> sut.deleteUser(exceptionId));
     }
-
 }

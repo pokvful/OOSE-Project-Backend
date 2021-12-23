@@ -12,13 +12,20 @@ create table if not exists role_permission (
     PRIMARY KEY(role_id, permission)
 );
 
+create table if not exists goal (
+    goal_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    goal_name VARCHAR(100) NOT NULL
+);
+
 create table if not exists users (
     user_id INT(6) UNSIGNED auto_increment PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     role_id INT(6) UNSIGNED NOT NULL,
-    FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE
+    goal_id INT(6) UNSIGNED NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES role(role_id) ON DELETE CASCADE,
+    FOREIGN KEY (goal_id) REFERENCES goal(goal_id) ON DELETE CASCADE
 );
 
 create table if not exists geofence (
@@ -164,11 +171,6 @@ create table if not exists sensitivity_action (
     question_id INT(6) UNSIGNED,
     FOREIGN KEY (action_id) REFERENCES action(action_id),
     FOREIGN KEY (question_id) REFERENCES question(question_id)
-);
-
-create table if not exists goal (
-    goal_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    goal_name VARCHAR(100) NOT NULL
 );
 
 create table if not exists profile_question (

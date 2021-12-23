@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.services.auth;
 
 import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
+import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.UnauthorizedException;
@@ -21,7 +22,8 @@ public class LoginServiceImplTest {
 
     private final LoginRequestDTO loginRequestDto = new LoginRequestDTO(loginUsername, loginPassword);
     private final Role role = new Role(1, "test", new ArrayList<>());
-    private final User loginUser = new User(1, loginUsername, "test@test.nl", correctHash, role);
+    private final Goal goal = new Goal(1, "test", new ArrayList<>());
+    private final User loginUser = new User(1, loginUsername, "test@test.nl", correctHash, role, goal);
     private LoginServiceImpl sut;
     private UserDAO userDAOFixture;
     private HashProvider hashProviderFixture;
