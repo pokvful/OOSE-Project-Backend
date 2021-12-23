@@ -79,3 +79,4 @@ CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 4, "");
 
 CALL createGoal("Afvallen");
 CALL createGoal("Geld Besparen");
+CALL createGoal("ADMIN");
