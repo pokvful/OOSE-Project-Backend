@@ -1,11 +1,10 @@
 package nl.han.aim.oosevt.lamport.services.goal;
 
 import nl.han.aim.oosevt.lamport.ObjectAssertions;
-import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
-import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
-import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.goal.dto.*;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
+import nl.han.aim.oosevt.lamport.data.entity.ProfileQuestion;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,33 +13,55 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GoalServiceImplTest {
     private final int id = 2;
     private final String name = "Ga lopen";
+    private final String profileQuestionName = "Mooie vraag";
 
     private GoalDAO goalDAOFixture;
+
     private Goal goal;
+    private ProfileQuestion profileQuestion;
+
     private GoalServiceImpl sut;
+
     private GoalResponseDTO goalResponseDTO;
+
     private UpdateGoalRequestDTO updateGoalRequestDTO;
     private CreateGoalRequestDTO createGoalRequestDTO;
 
+    private List<ProfileQuestionRequestDTO> profileQuestionsList;
+    private List<ProfileQuestionResponseDTO> profileQuestionResponseDTOList;
+    private List<ProfileQuestion> profileQuestions;
+
     @BeforeEach
     public void setup() {
+        profileQuestionsList = new ArrayList<>();
+        profileQuestionResponseDTOList = new ArrayList<>();
+        profileQuestions = new ArrayList<>();
+
+        profileQuestions.add(new ProfileQuestion(id, name));
+        profileQuestionsList.add(new ProfileQuestionRequestDTO(profileQuestionName));
+        profileQuestionResponseDTOList.add(new ProfileQuestionResponseDTO(id, name));
+
         // Arrange create DTO
         createGoalRequestDTO = Mockito.spy(
-                new CreateGoalRequestDTO(name));
+                new CreateGoalRequestDTO(name, profileQuestionsList));
 
         goalDAOFixture = Mockito.mock(GoalDAO.class);
 
-        goal = new Goal(id, name);
+        goal = new Goal(id, name, profileQuestions);
 
-        goalResponseDTO = new GoalResponseDTO(id, name);
+        profileQuestion = new ProfileQuestion(id, name);
 
-        updateGoalRequestDTO = new UpdateGoalRequestDTO(name, id);
+        goalResponseDTO = new GoalResponseDTO(id, name, profileQuestionResponseDTOList);
+
+        updateGoalRequestDTO = new UpdateGoalRequestDTO(name, profileQuestionsList, id);
+
         // instantiate SUT
         sut = new GoalServiceImpl(goalDAOFixture);
     }
@@ -67,7 +88,8 @@ public class GoalServiceImplTest {
 
         // Assert
         Mockito.verify(goalDAOFixture).createGoal(
-                name
+                name,
+                profileQuestionsList
         );
     }
 
@@ -82,7 +104,8 @@ public class GoalServiceImplTest {
         // Assert
         Mockito.verify(goalDAOFixture).updateGoal(
                 id,
-                name
+                name,
+                profileQuestionsList
         );
     }
 
@@ -130,9 +153,9 @@ public class GoalServiceImplTest {
         int expected = 3;
 
         Mockito.when(this.goalDAOFixture.getGoals()).thenReturn(new ArrayList<>() {{
-            add(new Goal(id, name));
-            add(new Goal(id, name));
-            add(new Goal(id, name));
+            add(new Goal(id, name, profileQuestions));
+            add(new Goal(id, name, profileQuestions));
+            add(new Goal(id, name, profileQuestions));
         }});
 
         //Act
@@ -153,7 +176,7 @@ public class GoalServiceImplTest {
     }
 
     @Test
-    public void getLocation() {
+    public void getGoal() {
         // Arrange
         Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(goal);
 
