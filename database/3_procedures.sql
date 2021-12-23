@@ -12,7 +12,7 @@ CREATE PROCEDURE getAreaById (
     IN param_id INT
 ) BEGIN
     SELECT *
-    FROM areaView;
+    FROM areaView
     WHERE area_id = param_id;
 END //
 
