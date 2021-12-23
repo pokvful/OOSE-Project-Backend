@@ -4,14 +4,15 @@ DELIMITER //
 
 CREATE PROCEDURE getAreas()
 BEGIN
-	SELECT *
+    SELECT *
     FROM areaView;
 END //
 
-CREATE PROCEDURE getAreaById(IN param_id INT)
-BEGIN
-	SELECT *
-    FROM areaView
+CREATE PROCEDURE getAreaById (
+    IN param_id INT
+) BEGIN
+    SELECT *
+    FROM areaView;
     WHERE area_id = param_id;
 END //
 

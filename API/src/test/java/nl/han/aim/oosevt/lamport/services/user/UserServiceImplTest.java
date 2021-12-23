@@ -63,8 +63,8 @@ public class UserServiceImplTest {
     @BeforeEach
     public void setup() {
         mockRole = new Role(roleId, roleName, new ArrayList<>());
-        mockUser = new User(userId, username, email, password, mockRole, mockGoal);
         mockGoal = new Goal(goalId, goalName);
+        mockUser = new User(userId, username, email, password, mockRole, mockGoal);
 
         userDAOFixture = Mockito.mock(UserDAO.class);
         roleDAOFixture = Mockito.mock(RoleDAO.class);

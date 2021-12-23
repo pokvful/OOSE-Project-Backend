@@ -61,6 +61,8 @@ public class LocationServiceImplTest {
     private CreateLocationRequestDTO createLocationRequestDTO;
     private UpdateLocationRequestDTO updateLocationRequestDTO;
     private Location mockLocation;
+
+    private List<Location> mockLocations;
     private Area mockArea;
     private Franchise mockFranchise;
     private List<Intervention> linkedInterventions;
@@ -74,6 +76,7 @@ public class LocationServiceImplTest {
     private List<InterventionResponseDTO> interventionResponseDTOs;
     private AreaResponseDTO areaResponseDTO;
     private FranchiseResponseDTO franchiseResponseDTO;
+    private List<LocationResponseDTO> locationResponseDTOS;
     private Answer answerA;
     private Answer answerB;
     private Answer answerC;
@@ -130,6 +133,11 @@ public class LocationServiceImplTest {
         mockFranchise = new Franchise(franchiseId, franchiseName);
         mockLocation = new Location(id, name, delay, longitude, latitude, radius, mockArea, mockFranchise, linkedInterventions);
 
+        mockLocations = new ArrayList<>();
+        mockLocations.add(mockLocation);
+        mockLocations.add(mockLocation);
+        mockLocations.add(mockLocation);
+
         areaResponseDTO = AreaResponseDTO.fromData(mockArea);
         franchiseResponseDTO = FranchiseResponseDTO.fromData(mockFranchise);
 
@@ -140,6 +148,10 @@ public class LocationServiceImplTest {
 
         locationResponseDTO = new LocationResponseDTO(id, name, longitude, latitude, radius, areaResponseDTO, franchiseResponseDTO, delay, interventionResponseDTOs);
 
+        locationResponseDTOS = new ArrayList<>();
+        locationResponseDTOS.add(locationResponseDTO);
+        locationResponseDTOS.add(locationResponseDTO);
+        locationResponseDTOS.add(locationResponseDTO);
 
         // instantiate SUT
         sut = new LocationServiceImpl(locationDAOFixture, areaDAOFixture, franchiseDAOFixture);
@@ -152,6 +164,18 @@ public class LocationServiceImplTest {
 
         // Act/Assert
         assertThrows(NotFoundException.class, () -> sut.getLocation(id));
+    }
+
+    @Test
+    public void testGetExistingLocations() {
+        //Arrange
+        Mockito.when(locationDAOFixture.getLocations()).thenReturn(mockLocations);
+
+        //Act
+        List<LocationResponseDTO> foundLocationDTOs = sut.getLocations();
+
+        //Assert
+        ObjectAssertions.assertEquals(locationResponseDTOS, foundLocationDTOs);
     }
 
     @Test
