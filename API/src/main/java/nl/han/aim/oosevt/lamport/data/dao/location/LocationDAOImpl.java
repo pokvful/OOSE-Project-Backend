@@ -26,7 +26,6 @@ public class LocationDAOImpl implements LocationDAO {
     public LocationDAOImpl(InterventionDAO interventionDAO) {
         this.interventionDAO = interventionDAO;
     }
-
     private Location locationFromResultSet(ResultSet resultSet) {
         try {
             int locationId = resultSet.getInt("location_id");
