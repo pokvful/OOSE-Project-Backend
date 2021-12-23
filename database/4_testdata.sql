@@ -7,6 +7,7 @@ CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXV
 CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
 CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
 CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
+CALL createUser("E2E", "E2E@test.com", "$2a$10$05wHGeEWamm3WaNC5pI8guMxgiPoAaB.OjEhXv0FsEhqCJ0kYPi1i", 2);
 
 CALL createCommand("Volkoren brood", "Welkom bij de Subway, kiest u voor een volkoren broodje?");
 CALL createCommand("Salade", "Koop een salade");
@@ -54,11 +55,6 @@ CALL createQuestionnaire("Konijnen");
         CALL addAnswerToQuestion(@question_id, "Hooi");
         CALL addAnswerToQuestion(@question_id, "Voer");
         CALL addAnswerToQuestion(@question_id, "Blaadjes");
-    CALL addQuestionToQuestionnaire(@questionnaire_id, "Wie denkt de baas te zijn in de relatie konijn-eigenaar?");
-        SET @question_id = LAST_INSERT_ID();
-        CALL addAnswerToQuestion(@question_id, "Het konijn");
-        CALL addAnswerToQuestion(@question_id, "De eigenaar");
-        CALL addAnswerToQuestion(@question_id, "Beide");
     CALL addQuestionToQuestionnaire(@questionnaire_id, "Welk konijn heeft een eigen strip in de Donald Duck?");
         SET @question_id = LAST_INSERT_ID();
         CALL addAnswerToQuestion(@question_id, "Lodewyck");
@@ -71,7 +67,7 @@ CALL createArea("Utrecht", 5.104480, 52.092876, 3500);
 
 CALL createFranchise("McDonalds");
 CALL createFranchise("Gaia_building (office)");
-CALL createFranchise("Snumbwae");
+CALL createFranchise("Subway");
 CALL createFranchise("HP2 Consulting");
 
 CALL createLocation("Mcdonalds Molenstraat", 5, 5.4323454, 51.987321321, 30, 1, 1, "2,4,5,7");

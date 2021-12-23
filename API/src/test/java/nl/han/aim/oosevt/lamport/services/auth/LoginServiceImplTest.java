@@ -4,6 +4,7 @@ import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
+import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.UnauthorizedException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.junit.jupiter.api.Assertions;
@@ -40,7 +41,7 @@ public class LoginServiceImplTest {
         Mockito.when(userDAOFixture.getUserByUsername(loginUsername)).thenReturn(null);
 
         // Assert
-        Assertions.assertThrows(UnauthorizedException.class, () -> sut.login(loginRequestDto));
+        Assertions.assertThrows(InvalidDTOException.class, () -> sut.login(loginRequestDto));
     }
 
     @Test
@@ -50,7 +51,7 @@ public class LoginServiceImplTest {
         Mockito.when(hashProviderFixture.hash(loginPassword)).thenReturn("incorrectHash");
 
         // Assert
-        Assertions.assertThrows(UnauthorizedException.class, () -> sut.login(loginRequestDto));
+        Assertions.assertThrows(InvalidDTOException.class, () -> sut.login(loginRequestDto));
     }
 
     @Test
