@@ -3,11 +3,23 @@ use lbc;
 CALL createRole("Gebruiker", "GET_AREAS,GET_FRANCHISES,GET_GOALS,GET_INTERVENTIONS,GET_LOCATIONS,GET_ROLES,GET_USERS");
 CALL createRole("Beheerder", "GET_AREAS,UPDATE_AREAS,CREATE_AREAS,DELETE_AREAS,GET_FRANCHISES,UPDATE_FRANCHISES,CREATE_FRANCHISES,DELETE_FRANCHISES,GET_GOALS,UPDATE_GOALS,CREATE_GOALS,DELETE_GOALS,GET_INTERVENTIONS,UPDATE_INTERVENTIONS,CREATE_INTERVENTIONS,DELETE_INTERVENTIONS,GET_LOCATIONS,UPDATE_LOCATIONS,CREATE_LOCATIONS,DELETE_LOCATIONS,GET_ROLES,UPDATE_ROLES,CREATE_ROLES,DELETE_ROLES,GET_USERS,UPDATE_USERS,CREATE_USERS,DELETE_USERS");
 
-CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
-CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
-CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
-CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2);
-CALL createUser("E2E", "E2E@test.com", "$2a$10$05wHGeEWamm3WaNC5pI8guMxgiPoAaB.OjEhXv0FsEhqCJ0kYPi1i", 2);
+
+CALL createGoal("Afvallen");
+    CALL addProfileQuestionToGoal(1, "Wat is uw gewicht?");
+    CALL addProfileQuestionToGoal(1, "Hoeveel wilt u afvallen?");
+
+CALL createGoal("Geld Besparen");
+    CALL addProfileQuestionToGoal(2, "Wat is uw maandinkomen?");
+    CALL addProfileQuestionToGoal(2, "Hoeveel geeft u nu per maand uit?");
+    CALL addProfileQuestionToGoal(2, "Hoeveel wilt u per maand extra overhouden?");
+    
+CALL createGoal("Afvallen");
+CALL createGoal("Geld Besparen");
+CALL createGoal("ADMIN");
+CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 1);
+CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 2);
+CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 1);
+CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 2);
 
 CALL createCommand("Volkoren brood", "Welkom bij de Subway, kiest u voor een volkoren broodje?");
 CALL createCommand("Salade", "Koop een salade");
@@ -76,7 +88,3 @@ CALL createLocation("Subway", 5, 5.664095127000053, 51.983383490000051, 100, 1, 
 CALL createLocation("Subway Utrecht", 5, 5.1088383, 52.0672984, 100, 3, 3, "1,2,7,8");
 CALL createLocation("HP2 Kantoor", 10, 5.1100019, 52.0709499, 100, 3, 4, "4,5,6");
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 4, "");
-
-CALL createGoal("Afvallen");
-CALL createGoal("Geld Besparen");
-CALL createGoal("ADMIN");

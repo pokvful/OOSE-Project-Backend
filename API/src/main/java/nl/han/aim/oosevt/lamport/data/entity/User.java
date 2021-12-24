@@ -6,13 +6,15 @@ public class User {
     private final String email;
     private final String password;
     private final Role role;
+    private final Goal goal;
 
-    public User(int userId, String username, String email, String password, Role role) {
+    public User(int userId, String username, String email, String password, Role role, Goal goal) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.goal = goal;
     }
 
     public int getUserId() {
@@ -33,5 +35,9 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public Goal getGoal() {
+        return goal;
     }
 }

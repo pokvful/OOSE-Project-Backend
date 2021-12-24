@@ -14,26 +14,26 @@ public class UpdateDTOValidationTest {
 
     @ParameterizedTest()
     @MethodSource
-    public void invalidDTOsThrowException(String userName, String email, String password, int roleId) {
-        final UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO(1, userName, email, password, roleId);
+    public void invalidDTOsThrowException(String userName, String email, String password, int roleId, int goalId) {
+        final UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO(1, userName, email, password, roleId, goalId);
 
         Assertions.assertThrows(InvalidDTOException.class, updateUserRequestDTO::validate);
     }
 
     @Test
     public void validDTOPasses() {
-        final UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO(1, "username", "email", "password", 1);
+        final UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO(1, "username", "email", "password", 1, 1);
 
         Assertions.assertDoesNotThrow(updateUserRequestDTO::validate);
     }
 
     private static Stream<Arguments> invalidDTOsThrowException() {
         return Stream.of(
-                Arguments.arguments("", "test@email.com", "password", 1),
-                Arguments.arguments("username", "", "password", 1),
-                Arguments.arguments("username", "test@email.com", "", 1),
-                Arguments.arguments("username", "test@email.com", "password", 0),
-                Arguments.arguments("", "", "", 0)
+                Arguments.arguments("", "test@email.com", "password", 1, 1),
+                Arguments.arguments("username", "", "password", 1, 1),
+                Arguments.arguments("username", "test@email.com", "", 1, 1),
+                Arguments.arguments("username", "test@email.com", "password", 0, 0),
+                Arguments.arguments("", "", "", 0, 0)
         );
     }
 }

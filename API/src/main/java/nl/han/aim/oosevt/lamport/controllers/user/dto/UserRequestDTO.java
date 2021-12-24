@@ -16,6 +16,9 @@ public class UserRequestDTO extends RequestDTO {
     @NotEmpty
     private int roleId;
 
+    @NotEmpty
+    private int goalId;
+
     public String getUsername() {
         return username;
     }
@@ -48,11 +51,20 @@ public class UserRequestDTO extends RequestDTO {
         this.password = password;
     }
 
-    public UserRequestDTO(String username, String email, String password, int roleId) {
+    public int getGoalId() {
+        return goalId;
+    }
+
+    public void setGoalId(int goalId) {
+        this.goalId = goalId;
+    }
+
+    public UserRequestDTO(String username, String email, String password, int roleId, int goalId) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.roleId = roleId;
+        this.goalId = goalId;
     }
 
     public UserRequestDTO() {

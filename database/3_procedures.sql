@@ -4,13 +4,14 @@ DELIMITER //
 
 CREATE PROCEDURE getAreas()
 BEGIN
-	SELECT *
+    SELECT *
     FROM areaView;
 END //
 
-CREATE PROCEDURE getAreaById(IN param_id INT)
-BEGIN
-	SELECT *
+CREATE PROCEDURE getAreaById (
+    IN param_id INT
+) BEGIN
+    SELECT *
     FROM areaView
     WHERE area_id = param_id;
 END //
@@ -468,13 +469,33 @@ END //
 CREATE PROCEDURE createGoal(
     IN param_name VARCHAR(255)
 ) BEGIN
-    INSERT INTO goal(goal_name) VALUES (param_name);
+    INSERT INTO goal(goal_name)
+    VALUES (param_name);
+
+    SELECT LAST_INSERT_ID() AS goal_id;
 END //
 
 CREATE PROCEDURE deleteGoal(
     IN param_id INT
 ) BEGIN
-    DELETE FROM goal WHERE goal_id = param_id;
+    DELETE FROM goal
+    WHERE goal_id = param_id;
+END //
+
+CREATE PROCEDURE addProfileQuestionToGoal (
+    IN param_goal_id INT,
+    IN param_question VARCHAR(255)
+) BEGIN
+    INSERT INTO profile_question (goal_id, question)
+    VALUES (param_goal_id, param_question);
+END //
+
+CREATE PROCEDURE getProfileQuestionsByGoalId (
+    IN param_goal_id INT
+) BEGIN
+    SELECT *
+    FROM profileQuestionView
+    WHERE goal_id = param_goal_id;
 END //
 
 CREATE PROCEDURE updateGoal(
@@ -482,7 +503,11 @@ CREATE PROCEDURE updateGoal(
     IN param_name VARCHAR(255)
 ) BEGIN
     UPDATE goal
-        SET goal_name = param_name
+    SET goal_name = param_name
+    WHERE goal_id = param_id;
+
+    DELETE
+    FROM profile_question
     WHERE goal_id = param_id;
 END //
 
@@ -490,10 +515,11 @@ CREATE PROCEDURE createUser(
     IN param_name VARCHAR(255),
     IN param_email VARCHAR(255),
     IN param_password VARCHAR(255),
-    IN param_role_id INT
+    IN param_role_id INT,
+    IN param_goal_id INT
 ) BEGIN
-    INSERT INTO users(username, password, email, role_id)
-        VALUES(param_name, param_password, param_email, param_role_id);
+    INSERT INTO users(username, password, email, role_id, goal_id)
+        VALUES(param_name, param_password, param_email, param_role_id, param_goal_id);
 END //
 
 CREATE PROCEDURE getUsers()
@@ -535,14 +561,16 @@ CREATE PROCEDURE updateUser (
     IN param_username VARCHAR(255),
     IN param_password VARCHAR(255),
     IN param_email VARCHAR(255),
-    IN param_role_id INT
+    IN param_role_id INT,
+    IN param_goal_id INT
 ) BEGIN
     UPDATE users
     SET 
         username = param_username,
         password = param_password,
         email = param_email,
-        role_id = param_role_id
+        role_id = param_role_id,
+        goal_id = param_goal_id
     WHERE user_id = param_id;
 END //
 
