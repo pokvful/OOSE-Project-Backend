@@ -71,9 +71,9 @@ public class GoalDAOImpl implements GoalDAO {
             statement.setInt(1, goalId);
             statement.setString(2, name);
 
-            addProfileQuestionToGoal(goalId, questions, connection);
-
             statement.executeUpdate();
+
+            addProfileQuestionToGoal(goalId, questions, connection);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "updateGoal::A database error occurred!", e);
         }
@@ -91,7 +91,7 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     public List<ProfileQuestion> getProfileQuestionFromGoalId(int profileQuestionId, Connection connection) {
-        try (PreparedStatement statement = connection.prepareStatement("CALL getProfileQuestionByGoalId(?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("CALL getProfileQuestionsByGoalId(?)")) {
             statement.setInt(1, profileQuestionId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 List<ProfileQuestion> profileQuestions = new ArrayList<>();
