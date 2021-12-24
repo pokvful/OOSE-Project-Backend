@@ -6,4 +6,7 @@ public class CreateRoleRequestDTO extends RoleRequestDTO {
     public CreateRoleRequestDTO(List<String> allowedPermissions, String name) {
         super(allowedPermissions, name);
     }
+
+    public CreateRoleRequestDTO() {
+    }
 }

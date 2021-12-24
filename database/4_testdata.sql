@@ -12,7 +12,10 @@ CALL createGoal("Geld Besparen");
     CALL addProfileQuestionToGoal(2, "Wat is uw maandinkomen?");
     CALL addProfileQuestionToGoal(2, "Hoeveel geeft u nu per maand uit?");
     CALL addProfileQuestionToGoal(2, "Hoeveel wilt u per maand extra overhouden?");
-
+    
+CALL createGoal("Afvallen");
+CALL createGoal("Geld Besparen");
+CALL createGoal("ADMIN");
 CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 1);
 CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 2);
 CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 1);
@@ -64,11 +67,6 @@ CALL createQuestionnaire("Konijnen");
         CALL addAnswerToQuestion(@question_id, "Hooi");
         CALL addAnswerToQuestion(@question_id, "Voer");
         CALL addAnswerToQuestion(@question_id, "Blaadjes");
-    CALL addQuestionToQuestionnaire(@questionnaire_id, "Wie denkt de baas te zijn in de relatie konijn-eigenaar?");
-        SET @question_id = LAST_INSERT_ID();
-        CALL addAnswerToQuestion(@question_id, "Het konijn");
-        CALL addAnswerToQuestion(@question_id, "De eigenaar");
-        CALL addAnswerToQuestion(@question_id, "Beide");
     CALL addQuestionToQuestionnaire(@questionnaire_id, "Welk konijn heeft een eigen strip in de Donald Duck?");
         SET @question_id = LAST_INSERT_ID();
         CALL addAnswerToQuestion(@question_id, "Lodewyck");
@@ -81,7 +79,7 @@ CALL createArea("Utrecht", 5.104480, 52.092876, 3500);
 
 CALL createFranchise("McDonalds");
 CALL createFranchise("Gaia_building (office)");
-CALL createFranchise("Snumbwae");
+CALL createFranchise("Subway");
 CALL createFranchise("HP2 Consulting");
 
 CALL createLocation("Mcdonalds Molenstraat", 5, 5.4323454, 51.987321321, 30, 1, 1, "2,4,5,7");
@@ -90,4 +88,3 @@ CALL createLocation("Subway", 5, 5.664095127000053, 51.983383490000051, 100, 1, 
 CALL createLocation("Subway Utrecht", 5, 5.1088383, 52.0672984, 100, 3, 3, "1,2,7,8");
 CALL createLocation("HP2 Kantoor", 10, 5.1100019, 52.0709499, 100, 3, 4, "4,5,6");
 CALL createLocation("Danny's autopaleis", 10, 21.3221, 3.321, 100, 3, 4, "");
-
