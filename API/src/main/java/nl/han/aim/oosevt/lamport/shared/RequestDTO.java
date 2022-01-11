@@ -63,7 +63,7 @@ public abstract class RequestDTO {
     private boolean fieldIsEmpty(Field field, Object object) throws IllegalAccessException {
         //The field is empty if 'null', if the field is a string and the string is "" or if its a number field and the value is 0
         return  field.get(object) == null ||
-                (field.getType().equals(String.class) && field.get(object).equals("")) ||
+                (field.getType().equals(String.class) && "".equals(field.get(object))) ||
                 ((field.getType().equals(int.class) || field.getType().equals(Integer.class)) && (int)field.get(object) == 0) ||
                 ((field.getType().equals(double.class) || field.getType().equals(Double.class)) && (double)field.get(object) == 0) ||
                 ((field.getType().equals(float.class) || field.getType().equals(Float.class)) && (float)field.get(object) == 0);

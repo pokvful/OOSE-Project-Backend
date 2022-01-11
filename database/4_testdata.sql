@@ -12,14 +12,13 @@ CALL createGoal("Geld Besparen");
     CALL addProfileQuestionToGoal(2, "Wat is uw maandinkomen?");
     CALL addProfileQuestionToGoal(2, "Hoeveel geeft u nu per maand uit?");
     CALL addProfileQuestionToGoal(2, "Hoeveel wilt u per maand extra overhouden?");
-    
-CALL createGoal("Afvallen");
-CALL createGoal("Geld Besparen");
 CALL createGoal("ADMIN");
+
 CALL createUser("Ivan", "ivan@hp2.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 1);
 CALL createUser("wur", "info@wur.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 2);
 CALL createUser("Bart", "bart@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 1);
 CALL createUser("Tim", "tim@han.nl", "$2a$10$hMGclFII4roSvokU7PQJeuWecWo1/DmXVloWzETgZjS1JzgzoyO7C", 2, 2);
+CALL createUser("E2E", "E2E", "$2a$10$nQ/qBXFiVPoVRuRSfJtf1eRG/dftAV6BHtwiDkZCamq8hgXlq.Jo6", 2, 2);
 
 CALL createCommand("Volkoren brood", "Welkom bij de Subway, kiest u voor een volkoren broodje?");
 CALL createCommand("Salade", "Koop een salade");
