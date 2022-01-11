@@ -48,20 +48,21 @@ public class LoginServiceImpl implements LoginService {
                     .getRole()
                     .getAllowedPermissions()
                     .toArray(new String[0]);
-            return new LoginResponseDTO(getToken(loginRequestDTO, permissions));
+            return new LoginResponseDTO(getToken(user, permissions));
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(Level.SEVERE, "UnsupportedEncodingException", e);
         }
         return null;
     }
 
-    private String getToken(LoginRequestDTO loginRequestDTO, String[] permissions) throws UnsupportedEncodingException {
+    private String getToken(User user, String[] permissions) throws UnsupportedEncodingException {
         return JWT
                 .create()
                 .withIssuer("JITAI")
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(new Date().toInstant().plus(2, ChronoUnit.DAYS).toEpochMilli()))
-                .withClaim("name", loginRequestDTO.getUsername())
+                .withClaim("name", user.getUsername())
+                .withClaim("id", user.getUserId())
                 .withArrayClaim("permissions", permissions)
                 .sign(Algorithm.HMAC256(getJWTSecret()));
     }
