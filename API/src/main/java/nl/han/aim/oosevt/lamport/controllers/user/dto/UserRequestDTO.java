@@ -2,15 +2,19 @@ package nl.han.aim.oosevt.lamport.controllers.user.dto;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.TranslatedName;
 
 public class UserRequestDTO extends RequestDTO {
     @NotEmpty
+    @TranslatedName(name = "Gebruikersnaam")
     private String username;
 
     @NotEmpty
+    @TranslatedName(name = "Email")
     private String email;
 
     @NotEmpty
+    @TranslatedName(name = "Wachtwoord")
     private String password;
 
     @NotEmpty

@@ -27,7 +27,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
                 statement.executeUpdate();
             } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+                LOGGER.log(Level.SEVERE, "setAnswersForQuestion::A database error occurred!", e);
             }
         }
     }
@@ -49,7 +49,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                     }
                 }
             } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+                LOGGER.log(Level.SEVERE, "setQuestionsForQuestionnaire::A database error occurred!", e);
             }
         }
     }
@@ -280,7 +280,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
             setQuestionsForQuestionnaire(id, questions, connection);
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "updateQuestionnaire::A database error occurred!", e);
         }
     }
 
@@ -299,7 +299,7 @@ public class InterventionDAOImpl implements InterventionDAO {
                 setQuestionsForQuestionnaire(questionnaireId, questions, connection);
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "createQuestionnaire::A database error occurred!", e);
         }
     }
 
@@ -313,7 +313,7 @@ public class InterventionDAOImpl implements InterventionDAO {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "updateQuestion::A database error occurred!", e);
+            LOGGER.log(Level.SEVERE, "deleteIntervention::A database error occurred!", e);
         }
     }
 

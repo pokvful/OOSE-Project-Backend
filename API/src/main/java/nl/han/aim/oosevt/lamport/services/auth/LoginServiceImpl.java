@@ -7,7 +7,6 @@ import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
-import nl.han.aim.oosevt.lamport.exceptions.UnauthorizedException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

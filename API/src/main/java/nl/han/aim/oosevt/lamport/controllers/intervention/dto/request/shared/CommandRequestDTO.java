@@ -1,9 +1,11 @@
 package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
 import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.TranslatedName;
 
 public abstract class CommandRequestDTO extends InterventionRequestDTO {
     @NotEmpty
+    @TranslatedName(name = "Tekst")
     private String commandText;
 
     public CommandRequestDTO() {

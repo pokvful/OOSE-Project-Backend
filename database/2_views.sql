@@ -57,6 +57,7 @@ AS (
     FROM users
     LEFT OUTER JOIN role ON role.role_id = users.role_id
     LEFT OUTER JOIN goal ON goal.goal_id = users.goal_id
+    ORDER BY user_id
 );
 
 CREATE VIEW roleView
