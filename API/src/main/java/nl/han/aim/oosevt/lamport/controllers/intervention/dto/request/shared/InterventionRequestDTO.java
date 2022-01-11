@@ -2,9 +2,11 @@ package nl.han.aim.oosevt.lamport.controllers.intervention.dto.request.shared;
 
 import nl.han.aim.oosevt.lamport.shared.RequestDTO;
 import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
+import nl.han.aim.oosevt.lamport.shared.validator.annotations.TranslatedName;
 
 public abstract class InterventionRequestDTO extends RequestDTO {
     @NotEmpty
+    @TranslatedName(name = "Naam")
     protected String name;
 
     public InterventionRequestDTO() {}
