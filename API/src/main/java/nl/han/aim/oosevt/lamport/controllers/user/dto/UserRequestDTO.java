@@ -20,8 +20,8 @@ public class UserRequestDTO extends RequestDTO {
     @NotEmpty
     private int roleId;
 
-//    @NotEmpty
-    private int goalId = 1;
+    @NotEmpty
+    private int goalId;
 
     public String getUsername() {
         return username;
