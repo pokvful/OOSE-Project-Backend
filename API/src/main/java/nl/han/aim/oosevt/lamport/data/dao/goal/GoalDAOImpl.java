@@ -46,6 +46,24 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     @Override
+    public int getUserCountByGoalId(int goalId) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+             PreparedStatement statement = connection.prepareStatement("CALL getUserCountByGoalId   (?)")) {
+
+            statement.setInt(1, goalId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) {
+                    return resultSet.getInt("count");
+                }
+                return 0;
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "getUserCountByGoalId::A database error occurred!", e);
+        }
+        return 0;
+    }
+
+    @Override
     public List<Goal> getGoals() {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
                 PreparedStatement statement = connection.prepareStatement("CALL getGoals()");

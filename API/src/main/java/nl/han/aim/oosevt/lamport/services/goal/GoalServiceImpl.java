@@ -5,6 +5,7 @@ import nl.han.aim.oosevt.lamport.controllers.goal.dto.UpdateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.CreateGoalRequestDTO;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
+import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -62,6 +63,11 @@ public class GoalServiceImpl implements GoalService {
     @Override
     public void deleteGoal(int id) {
         assertGoalExists(id);
+
+        if(goalDAO.getUserCountByGoalId(id) > 0) {
+            throw new InvalidDTOException();
+        }
+
         goalDAO.deleteGoal(id);
     }
 }

@@ -420,6 +420,14 @@ CREATE PROCEDURE getUserCountByRoleId(
     WHERE role_id = param_id;
 END //
 
+CREATE PROCEDURE getUserCountByGoalId(
+    IN param_id INT
+) BEGIN
+    SELECT COUNT(*) AS count
+    FROM users
+    WHERE goal_id = param_id;
+END //
+
 CREATE PROCEDURE deleteFranchise(
     IN param_id INT
 ) BEGIN
