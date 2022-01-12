@@ -15,6 +15,5 @@ FROM openjdk:11-jre-slim
 # WORKDIR /app
 COPY --from=builder /backend/target app
 
+# Start the server
 ENTRYPOINT ["java","-jar","/app/API-1.0-SNAPSHOT.jar"]
-# CMD ls -lah /app && whoami
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
