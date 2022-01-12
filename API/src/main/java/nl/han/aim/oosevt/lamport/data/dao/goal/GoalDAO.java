@@ -9,6 +9,7 @@ public interface GoalDAO {
     void createGoal(String name, List<ProfileQuestionRequestDTO> questions);
     Goal getGoalById(int goalId);
     List<Goal> getGoals();
+    int getUserCountByGoalId(int goalId);
     void updateGoal(int goalId, String name, List<ProfileQuestionRequestDTO> questions);
     void deleteGoal(int goalId);
 }
