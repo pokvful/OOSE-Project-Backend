@@ -1,12 +1,12 @@
 package nl.han.aim.oosevt.lamport.services.auth;
 
 import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginRequestDTO;
+import nl.han.aim.oosevt.lamport.controllers.auth.dto.LoginResponseDTO;
 import nl.han.aim.oosevt.lamport.data.dao.user.UserDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
-import nl.han.aim.oosevt.lamport.exceptions.UnauthorizedException;
 import nl.han.aim.oosevt.lamport.shared.HashProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,6 +64,9 @@ public class LoginServiceImplTest {
         Mockito.when(sut.getJWTSecret()).thenReturn("JWT_SECRET");
 
         // Assert
-        sut.login(loginRequestDto);
+        final LoginResponseDTO loginResponseDTO = sut.login(loginRequestDto);
+
+        Assertions.assertNotNull(loginResponseDTO);
+        Assertions.assertNotNull(loginResponseDTO.getToken());
     }
 }

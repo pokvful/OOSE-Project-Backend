@@ -11,14 +11,11 @@ public class ProfileQuestionRequestDTO extends RequestDTO {
         this.name = name;
     }
 
-    public ProfileQuestionRequestDTO() {
-    }
+    public ProfileQuestionRequestDTO() {}
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 }

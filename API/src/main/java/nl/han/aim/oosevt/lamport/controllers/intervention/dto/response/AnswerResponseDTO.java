@@ -3,8 +3,8 @@ package nl.han.aim.oosevt.lamport.controllers.intervention.dto.response;
 import nl.han.aim.oosevt.lamport.data.entity.Answer;
 
 public class AnswerResponseDTO {
-    private String answer;
-    private int id;
+    private final String answer;
+    private final int id;
 
     public AnswerResponseDTO(int id, String answer) {
         this.id = id;

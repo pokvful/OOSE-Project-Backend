@@ -8,7 +8,6 @@ import java.util.List;
 public class CreateQuestionRequestDTO extends QuestionRequestDTO {
     public CreateQuestionRequestDTO(String name, List<AnswerRequestDTO> answers, String question) {
         super(name, answers, question);
-
     }
 
     public CreateQuestionRequestDTO() {}

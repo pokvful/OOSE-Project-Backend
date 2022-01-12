@@ -10,14 +10,11 @@ public class UpdateRoleRequestDTO extends RoleRequestDTO {
         this.id = id;
     }
 
-    public UpdateRoleRequestDTO() {
-    }
+    public UpdateRoleRequestDTO() {}
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 }

@@ -10,6 +10,5 @@ public class CreateQuestionnaireRequestDTO extends QuestionnaireRequestDTO {
         super(name, questions);
     }
 
-    public CreateQuestionnaireRequestDTO() {
-    }
+    public CreateQuestionnaireRequestDTO() {}
 }

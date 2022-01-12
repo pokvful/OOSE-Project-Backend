@@ -7,6 +7,5 @@ public class CreateCommandRequestDTO extends CommandRequestDTO {
         super(name, command);
     }
 
-    public CreateCommandRequestDTO() {
-    }
+    public CreateCommandRequestDTO() {}
 }

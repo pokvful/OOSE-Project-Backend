@@ -1,72 +1,24 @@
 package nl.han.aim.oosevt.lamport.controllers.area.dto;
 
-import nl.han.aim.oosevt.lamport.shared.RequestDTO;
-import nl.han.aim.oosevt.lamport.shared.validator.annotations.MaxValue;
-import nl.han.aim.oosevt.lamport.shared.validator.annotations.MinValue;
+import nl.han.aim.oosevt.lamport.controllers.shared.dto.GeoFenceRequestDTO;
 import nl.han.aim.oosevt.lamport.shared.validator.annotations.NotEmpty;
 import nl.han.aim.oosevt.lamport.shared.validator.annotations.TranslatedName;
 
-public abstract class AreaRequestDTO extends RequestDTO {
+public abstract class AreaRequestDTO extends GeoFenceRequestDTO {
     @NotEmpty
     @TranslatedName(name = "Naam")
     private String name;
 
-    @NotEmpty
-    @MinValue(value = -180)
-    @MaxValue(value = 180)
-    @TranslatedName(name = "Lengtegraad")
-    private double longitude;
-
-    @NotEmpty
-    @MinValue(value = -90)
-    @MaxValue(value = 90)
-    @TranslatedName(name = "Breedtegraad")
-    private double latitude;
-
-    @MinValue(value = 0)
-    @NotEmpty
-    @TranslatedName(name = "Straal")
-    private int radius;
-
-    public AreaRequestDTO() {
-    }
+    public AreaRequestDTO() {}
 
     public AreaRequestDTO(String name, double longitude, double latitude, int radius) {
+        super(longitude, latitude, radius);
         this.name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.radius = radius;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
+    public void setName(String name) { this.name = name; }
 }

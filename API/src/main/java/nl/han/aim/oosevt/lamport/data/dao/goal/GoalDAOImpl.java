@@ -3,6 +3,7 @@ package nl.han.aim.oosevt.lamport.data.dao.goal;
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.ProfileQuestionRequestDTO;
 import nl.han.aim.oosevt.lamport.data.entity.*;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -15,6 +16,12 @@ import java.util.logging.Logger;
 public class GoalDAOImpl implements GoalDAO {
 
     private static final Logger LOGGER = Logger.getLogger(GoalDAOImpl.class.getName());
+    private final GoalDataMapper goalDataMapper;
+
+    @Autowired
+    public GoalDAOImpl(GoalDataMapper goalDataMapper) {
+        this.goalDataMapper = goalDataMapper;
+    }
 
     @Override
     public void createGoal(String name, List<ProfileQuestionRequestDTO> questions) {
@@ -66,8 +73,8 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public List<Goal> getGoals() {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-                PreparedStatement statement = connection.prepareStatement("CALL getGoals()");
-                ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement("CALL getGoals()");
+             ResultSet resultSet = statement.executeQuery()) {
 
             List<Goal> getGoals = new ArrayList<>();
 
@@ -85,7 +92,7 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void updateGoal(int goalId, String name, List<ProfileQuestionRequestDTO> questions) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-                PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL updateGoal(?, ?)")) {
             statement.setInt(1, goalId);
             statement.setString(2, name);
 
@@ -100,7 +107,7 @@ public class GoalDAOImpl implements GoalDAO {
     @Override
     public void deleteGoal(int goalId) {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-                PreparedStatement statement = connection.prepareStatement("CALL deleteGoal(?)")) {
+             PreparedStatement statement = connection.prepareStatement("CALL deleteGoal(?)")) {
             statement.setInt(1, goalId);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -121,8 +128,6 @@ public class GoalDAOImpl implements GoalDAO {
                 }
 
                 return profileQuestions;
-            } catch (SQLException e) {
-                LOGGER.log(Level.SEVERE, "getProfileQuestionFromGoalId::A database error occurred!", e);
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "getProfileQuestionFromGoalId::A database error occurred!", e);
@@ -131,26 +136,17 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     private Goal goalFromResultSet(ResultSet resultSet, Connection connection) {
-        try {
-            int goalId = resultSet.getInt("goal_id");
-            return new Goal(
-                    resultSet.getInt("goal_id"),
-                    resultSet.getString("goal_name"),
-                    getProfileQuestionFromGoalId(goalId, connection));
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "goalFromResultSet::A database error occurred!", e);
-        }
-        return null;
+        final Goal goal = goalDataMapper.getFromResultSet(resultSet);
+        goal.getProfileQuestions().addAll(getProfileQuestionFromGoalId(goal.getGoalId(), connection));
+
+        return goal;
     }
 
-    private void addProfileQuestionToGoal(int goalId, List<ProfileQuestionRequestDTO> questions,
-            Connection connection) {
+    private void addProfileQuestionToGoal(int goalId, List<ProfileQuestionRequestDTO> questions, Connection connection) {
         for (ProfileQuestionRequestDTO question : questions) {
-            String questionText = question.getName();
-
             try (PreparedStatement statement = connection.prepareStatement("CALL addProfileQuestionToGoal(?, ?)")) {
                 statement.setInt(1, goalId);
-                statement.setString(2, questionText);
+                statement.setString(2, question.getName());
 
                 statement.executeUpdate();
             } catch (SQLException e) {

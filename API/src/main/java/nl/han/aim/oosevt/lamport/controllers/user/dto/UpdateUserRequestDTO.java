@@ -8,15 +8,11 @@ public class UpdateUserRequestDTO extends UserRequestDTO {
         this.id = id;
     }
 
-    public UpdateUserRequestDTO() {
-
-    }
+    public UpdateUserRequestDTO() {}
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 }

@@ -2,7 +2,6 @@ package nl.han.aim.oosevt.lamport.controllers.user.dto;
 
 import nl.han.aim.oosevt.lamport.controllers.goal.dto.GoalResponseDTO;
 import nl.han.aim.oosevt.lamport.controllers.role.dto.RoleResponseDTO;
-import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.entity.User;
 
 public class UserResponseDTO {

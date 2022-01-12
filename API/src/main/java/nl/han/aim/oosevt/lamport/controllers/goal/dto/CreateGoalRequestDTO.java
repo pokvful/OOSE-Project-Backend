@@ -7,6 +7,5 @@ public class CreateGoalRequestDTO extends GoalRequestDTO {
         super(name, profileQuestions);
     }
 
-    public CreateGoalRequestDTO() {
-    }
+    public CreateGoalRequestDTO() {}
 }

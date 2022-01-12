@@ -8,9 +8,7 @@ public abstract class CommandRequestDTO extends InterventionRequestDTO {
     @TranslatedName(name = "Tekst")
     private String commandText;
 
-    public CommandRequestDTO() {
-        super();
-    }
+    public CommandRequestDTO() {}
 
     public CommandRequestDTO(String name, String command) {
         super(name);
@@ -21,7 +19,5 @@ public abstract class CommandRequestDTO extends InterventionRequestDTO {
         return commandText;
     }
 
-    public void setCommandText(String commandText) {
-        this.commandText = commandText;
-    }
+    public void setCommandText(String commandText) { this.commandText = commandText; }
 }

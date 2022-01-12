@@ -23,15 +23,11 @@ public class RoleRequestDTO extends RequestDTO {
         return allowedPermissions;
     }
 
-    public void setAllowedPermissions(List<String> allowedPermissions) {
-        this.allowedPermissions = allowedPermissions;
-    }
+    public void setAllowedPermissions(List<String> allowedPermissions) { this.allowedPermissions = allowedPermissions; }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 }

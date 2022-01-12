@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.data.dao.franchise;
 
 import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -13,6 +14,13 @@ import java.util.logging.Logger;
 @Component
 public class FranchiseDAOImpl implements FranchiseDAO {
     private static final Logger LOGGER = Logger.getLogger(FranchiseDAOImpl.class.getName());
+
+    private final FranchiseDataMapper franchiseDataMapper;
+
+    @Autowired
+    public FranchiseDAOImpl(FranchiseDataMapper franchiseDataMapper) {
+        this.franchiseDataMapper = franchiseDataMapper;
+    }
 
     @Override
     public void createFranchise(String name) {
@@ -33,9 +41,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new Franchise(
-                            resultSet.getInt("franchise_id"),
-                            resultSet.getString("franchise_name"));
+                    return franchiseDataMapper.getFromResultSet(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -52,9 +58,7 @@ public class FranchiseDAOImpl implements FranchiseDAO {
 
             List<Franchise> foundFranchises = new ArrayList<>();
             while (resultSet.next()) {
-                foundFranchises.add(new Franchise(
-                        resultSet.getInt("franchise_id"),
-                        resultSet.getString("franchise_name")));
+                foundFranchises.add(franchiseDataMapper.getFromResultSet(resultSet));
             }
             return foundFranchises;
 

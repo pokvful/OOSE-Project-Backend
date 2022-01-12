@@ -5,8 +5,7 @@ import java.util.List;
 public class UpdateLocationRequestDTO extends LocationRequestDTO {
     private int id;
 
-    public UpdateLocationRequestDTO() {
-    }
+    public UpdateLocationRequestDTO() {}
 
     public UpdateLocationRequestDTO(int id, String name, int delay, double longitude, double latitude, int radius, int areaId, int franchiseId, List<Integer> linkedInterventions) {
         super(name, delay, longitude, latitude, radius, areaId, franchiseId, linkedInterventions);
@@ -17,7 +16,5 @@ public class UpdateLocationRequestDTO extends LocationRequestDTO {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 }

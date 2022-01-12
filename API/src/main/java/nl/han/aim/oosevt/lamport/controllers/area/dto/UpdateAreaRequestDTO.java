@@ -3,8 +3,7 @@ package nl.han.aim.oosevt.lamport.controllers.area.dto;
 public class UpdateAreaRequestDTO extends AreaRequestDTO {
     private int id;
 
-    public UpdateAreaRequestDTO() {
-    }
+    public UpdateAreaRequestDTO() {}
 
     public UpdateAreaRequestDTO(int id, String name, double longitude, double latitude, int radius) {
         super(name,longitude,latitude,radius);
@@ -15,7 +14,5 @@ public class UpdateAreaRequestDTO extends AreaRequestDTO {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 }

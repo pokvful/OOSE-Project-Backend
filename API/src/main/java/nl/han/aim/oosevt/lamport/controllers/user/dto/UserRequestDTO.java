@@ -27,41 +27,31 @@ public class UserRequestDTO extends RequestDTO {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) { this.username = username; }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) { this.email = email; }
 
     public int getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
+    public void setRoleId(int roleId) { this.roleId = roleId; }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public void setPassword(String password) { this.password = password; }
 
     public int getGoalId() {
         return goalId;
     }
 
-    public void setGoalId(int goalId) {
-        this.goalId = goalId;
-    }
+    public void setGoalId(int goalId) { this.goalId = goalId; }
 
     public UserRequestDTO(String username, String email, String password, int roleId, int goalId) {
         this.username = username;
@@ -71,7 +61,5 @@ public class UserRequestDTO extends RequestDTO {
         this.goalId = goalId;
     }
 
-    public UserRequestDTO() {
-
-    }
+    public UserRequestDTO() {}
 }

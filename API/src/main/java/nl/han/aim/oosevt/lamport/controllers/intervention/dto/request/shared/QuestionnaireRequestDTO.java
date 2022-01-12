@@ -16,7 +16,5 @@ public class QuestionnaireRequestDTO extends InterventionRequestDTO {
         return questions;
     }
 
-    public void setQuestions(List<QuestionRequestDTO> questions) {
-        this.questions = questions;
-    }
+    public void setQuestions(List<QuestionRequestDTO> questions) { this.questions = questions; }
 }
