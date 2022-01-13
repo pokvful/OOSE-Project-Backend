@@ -18,9 +18,11 @@ public class UserRequestDTO extends RequestDTO {
     private String password;
 
     @NotEmpty
+    @TranslatedName(name = "Rol")
     private int roleId;
 
     @NotEmpty
+    @TranslatedName(name = "Doelstelling")
     private int goalId;
 
     public String getUsername() {
