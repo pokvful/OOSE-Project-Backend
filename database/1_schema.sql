@@ -92,7 +92,7 @@ create table if not exists franchise_intervention (
 
 create table if not exists location (
     location_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    franchise_id INT(6) UNSIGNED NOT NULL,
+    franchise_id INT(6) UNSIGNED,
     area_id INT(6) UNSIGNED NOT NULL,
     geofence_id INT(6) UNSIGNED NOT NULL,
     location_name VARCHAR(100) NOT NULL,
