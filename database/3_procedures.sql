@@ -16,14 +16,6 @@ CREATE PROCEDURE getAreaById (
     WHERE area_id = param_id;
 END //
 
-CREATE PROCEDURE getAreasBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SELECT *
-    FROM areaView
-    WHERE area_name LIKE CONCAT("%", query, "%");
-END //
-
 CREATE PROCEDURE getRoles()
 BEGIN
     SELECT *
@@ -36,14 +28,6 @@ CREATE PROCEDURE getRoleById (
     SELECT *
     FROM roleView
     WHERE role_id = param_id;
-END //
-
-CREATE PROCEDURE getRolesBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SELECT *
-    FROM roleView
-    WHERE role_name LIKE CONCAT("%", query, "%");
 END //
 
 CREATE PROCEDURE getPermissionsByRoleId (
@@ -148,15 +132,6 @@ BEGIN
     FROM interventionView
     LEFT OUTER JOIN location_intervention ON location_intervention.intervention_id = interventionView.intervention_id
     WHERE location_intervention.location_id = param_location_id;
-END //
-
-CREATE PROCEDURE getInterventionsBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SELECT *
-    FROM interventionView
-    WHERE intervention_name LIKE CONCAT("%", query, "%")
-    OR intervention_type = query;
 END //
 
 CREATE PROCEDURE createCommand (
@@ -329,16 +304,6 @@ CREATE PROCEDURE getLocationById(
     WHERE location_id = id;
 END //
 
-CREATE PROCEDURE getLocationsBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SELECT *
-    FROM locationView
-    WHERE location_name LIKE CONCAT("%", query, "%")
-    OR area_name = query
-    OR franchise_name = query;
-END //
-
 CREATE PROCEDURE getLocations()
 BEGIN
     SELECT *
@@ -404,14 +369,6 @@ BEGIN
     FROM franchiseView;
 END //
 
-CREATE PROCEDURE getFranchisesBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SELECT *
-    FROM franchiseView
-    WHERE franchise_name LIKE CONCAT("%", query, "%");
-END //
-
 CREATE PROCEDURE getUserCountByRoleId(
     IN param_id INT
 ) BEGIN
@@ -464,14 +421,6 @@ CREATE PROCEDURE getGoals()
 BEGIN
     SELECT *
     FROM goalView;
-END //
-
-CREATE PROCEDURE getGoalsBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SELECT *
-    FROM goalView
-    WHERE goal_name LIKE CONCAT("%", query, "%");
 END //
 
 CREATE PROCEDURE createGoal(
@@ -550,18 +499,6 @@ CREATE PROCEDURE getUserByUsername (
     SELECT *
     FROM userView
     WHERE username = param_user_name;
-END //
-
-CREATE PROCEDURE getUsersBySearch(
-    IN query VARCHAR(255)
-) BEGIN
-    SET @queryWildcards = CONCAT("%", query, "%");
-
-    SELECT *
-    FROM userView
-    WHERE username LIKE @queryWildcards
-    OR email LIKE @queryWildcards
-    OR role_name = query;
 END //
 
 CREATE PROCEDURE updateUser (
