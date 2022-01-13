@@ -22,6 +22,7 @@ AS (
     LEFT OUTER JOIN area ON location.area_id = area.area_id
     LEFT OUTER JOIN franchise ON location.franchise_id = franchise.franchise_id
     LEFT OUTER JOIN geofence AS area_geofence ON area_geofence.geofence_id = area.geofence_id
+    ORDER BY location_id
 );
 
 CREATE VIEW interventionView
