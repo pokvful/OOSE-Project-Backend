@@ -18,22 +18,17 @@ public class GoalRequestDTO extends RequestDTO {
         this.profileQuestions = profileQuestions;
     }
 
-    public GoalRequestDTO() {
-    }
+    public GoalRequestDTO() {}
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
     public List<ProfileQuestionRequestDTO> getProfileQuestions() {
         return profileQuestions;
     }
 
-    public void setProfileQuestions(List<ProfileQuestionRequestDTO> profileQuestions) {
-        this.profileQuestions = profileQuestions;
-    }
+    public void setProfileQuestions(List<ProfileQuestionRequestDTO> profileQuestions) { this.profileQuestions = profileQuestions; }
 }

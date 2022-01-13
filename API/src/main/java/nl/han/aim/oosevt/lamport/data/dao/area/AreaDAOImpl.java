@@ -1,7 +1,9 @@
 package nl.han.aim.oosevt.lamport.data.dao.area;
 
 import nl.han.aim.oosevt.lamport.data.entity.Area;
+import nl.han.aim.oosevt.lamport.data.util.DataMapper;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -13,6 +15,12 @@ import java.util.logging.Logger;
 @Component
 public class AreaDAOImpl implements AreaDAO {
     private static final Logger LOGGER = Logger.getLogger(AreaDAOImpl.class.getName());
+    private final DataMapper<Area> areaDataMapper;
+
+    @Autowired
+    public AreaDAOImpl(DataMapper<Area> areaDataMapper) {
+        this.areaDataMapper = areaDataMapper;
+    }
 
     @Override
     public void createArea(String name, double longitude, double latitude, int radius) {
@@ -36,7 +44,7 @@ public class AreaDAOImpl implements AreaDAO {
 
             List<Area> foundAreas = new ArrayList<>();
             while (resultSet.next()) {
-                foundAreas.add(getAreaFromResultSet(resultSet));
+                foundAreas.add(areaDataMapper.getFromResultSet(resultSet));
             }
             return foundAreas;
 
@@ -54,7 +62,7 @@ public class AreaDAOImpl implements AreaDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return getAreaFromResultSet(resultSet);
+                    return areaDataMapper.getFromResultSet(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -87,19 +95,5 @@ public class AreaDAOImpl implements AreaDAO {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "deleteArea::A database error occurred!", e);
         }
-    }
-
-    private Area getAreaFromResultSet(ResultSet resultSet) {
-        try {
-            return new Area(
-                    resultSet.getInt("area_id"),
-                    resultSet.getString("area_name"),
-                    resultSet.getDouble("longitude"),
-                    resultSet.getDouble("latitude"),
-                    resultSet.getInt("radius"));
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "getAreaFromResultSet::A database error occurred!", e);
-        }
-        return null;
     }
 }

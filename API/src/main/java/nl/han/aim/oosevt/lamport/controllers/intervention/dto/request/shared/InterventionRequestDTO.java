@@ -19,7 +19,5 @@ public abstract class InterventionRequestDTO extends RequestDTO {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 }

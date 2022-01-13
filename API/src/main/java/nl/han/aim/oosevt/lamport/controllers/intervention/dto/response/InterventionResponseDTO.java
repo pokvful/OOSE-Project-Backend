@@ -6,8 +6,8 @@ import nl.han.aim.oosevt.lamport.data.entity.Question;
 import nl.han.aim.oosevt.lamport.data.entity.Questionnaire;
 
 public abstract class InterventionResponseDTO {
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public InterventionResponseDTO(int id, String name) {
         this.id = id;

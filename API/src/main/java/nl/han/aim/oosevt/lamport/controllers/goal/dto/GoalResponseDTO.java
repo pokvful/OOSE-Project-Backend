@@ -32,8 +32,7 @@ public class GoalResponseDTO {
         return new GoalResponseDTO(
                 goal.getGoalId(),
                 goal.getGoalName(),
-                goal
-                        .getProfileQuestions()
+                goal.getProfileQuestions()
                         .stream()
                         .map(ProfileQuestionResponseDTO::fromData)
                         .collect(Collectors.toList())

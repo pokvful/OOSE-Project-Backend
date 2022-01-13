@@ -7,6 +7,5 @@ public class CreateRoleRequestDTO extends RoleRequestDTO {
         super(allowedPermissions, name);
     }
 
-    public CreateRoleRequestDTO() {
-    }
+    public CreateRoleRequestDTO() {}
 }

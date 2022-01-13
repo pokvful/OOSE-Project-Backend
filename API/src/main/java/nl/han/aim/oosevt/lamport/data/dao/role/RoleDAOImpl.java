@@ -2,6 +2,7 @@ package nl.han.aim.oosevt.lamport.data.dao.role;
 
 import nl.han.aim.oosevt.lamport.data.entity.Role;
 import nl.han.aim.oosevt.lamport.data.util.DatabaseProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -16,23 +17,32 @@ import static nl.han.aim.oosevt.lamport.data.util.DatabaseProperties.connectionS
 public class RoleDAOImpl implements RoleDAO {
 
     private static final Logger LOGGER = Logger.getLogger(RoleDAOImpl.class.getName());
+    private final RoleDataMapper roleDataMapper;
+
+    @Autowired
+    public RoleDAOImpl(RoleDataMapper roleDataMapper) {
+        this.roleDataMapper = roleDataMapper;
+    }
+
+    private Role getRoleFromResultSet(ResultSet resultSet, Connection connection) {
+        final Role role = roleDataMapper.getFromResultSet(resultSet);
+
+        role.getAllowedPermissions().addAll(getRolePermissions(connection, role.getRoleId()));
+
+        return role;
+    }
 
     @Override
     public List<Role> getRoles() {
-        try (
-                Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
-                PreparedStatement statement = connection.prepareStatement("CALL getRoles()");
-                ResultSet resultSet = statement.executeQuery()
-        ) {
+        try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("CALL getRoles()");
+            ResultSet resultSet = statement.executeQuery()) {
             List<Role> roles = new ArrayList<>();
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("role_id");
-                String name = resultSet.getString("role_name");
-
-                Role role = new Role(id, name, getRolePermissions(connection, id));
-
-                roles.add(role);
+                roles.add(getRoleFromResultSet(resultSet, connection));
             }
+
             return roles;
 
         } catch (SQLException e) {
@@ -49,11 +59,7 @@ public class RoleDAOImpl implements RoleDAO {
 
             try(ResultSet resultSet = statement.executeQuery()) {
                 if(resultSet.next()) {
-                    final int roleId = resultSet.getInt("role_id");
-                    return new Role(
-                            roleId,
-                            resultSet.getString("role_name"),
-                            getRolePermissions(connection, roleId));
+                    return getRoleFromResultSet(resultSet, connection);
                 }
             }
         } catch (SQLException e) {
@@ -98,6 +104,7 @@ public class RoleDAOImpl implements RoleDAO {
         try (Connection connection = DriverManager.getConnection(DatabaseProperties.connectionString());
              PreparedStatement statement = connection.prepareStatement("CALL deleteRole(?)")) {
             statement.setInt(1, roleId);
+
             statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "deleteRole::A database error occured!", e);
@@ -115,7 +122,6 @@ public class RoleDAOImpl implements RoleDAO {
                 if(resultSet.next()) {
                     return resultSet.getInt("count");
                 }
-                return 0;
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "getUsersByRoleId::A database error occurred!", e);

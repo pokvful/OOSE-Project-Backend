@@ -13,14 +13,11 @@ public class FranchiseRequestDTO extends RequestDTO {
         this.name = name;
     }
 
-    public FranchiseRequestDTO() {
-    }
+    public FranchiseRequestDTO() {}
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 }

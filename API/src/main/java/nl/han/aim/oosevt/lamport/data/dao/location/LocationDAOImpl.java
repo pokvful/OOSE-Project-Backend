@@ -1,8 +1,6 @@
 package nl.han.aim.oosevt.lamport.data.dao.location;
 
 import nl.han.aim.oosevt.lamport.data.dao.intervention.InterventionDAO;
-import nl.han.aim.oosevt.lamport.data.entity.Area;
-import nl.han.aim.oosevt.lamport.data.entity.Franchise;
 import nl.han.aim.oosevt.lamport.data.entity.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,39 +19,18 @@ public class LocationDAOImpl implements LocationDAO {
 
     private static final Logger LOGGER = Logger.getLogger(LocationDAOImpl.class.getName());
     private final InterventionDAO interventionDAO;
+    private final LocationDataMapper locationDataMapper;
 
     @Autowired
-    public LocationDAOImpl(InterventionDAO interventionDAO) {
+    public LocationDAOImpl(InterventionDAO interventionDAO, LocationDataMapper locationDataMapper) {
         this.interventionDAO = interventionDAO;
+        this.locationDataMapper = locationDataMapper;
     }
     private Location locationFromResultSet(ResultSet resultSet) {
-        try {
-            int locationId = resultSet.getInt("location_id");
-            return new Location(
-                    locationId,
-                    resultSet.getString("location_name"),
-                    resultSet.getInt("delay"),
-                    resultSet.getDouble("longitude"),
-                    resultSet.getDouble("latitude"),
-                    resultSet.getInt("radius"),
-                    new Area(
-                            resultSet.getInt("area_id"),
-                            resultSet.getString("area_name"),
-                            resultSet.getDouble("area_longitude"),
-                            resultSet.getDouble("area_latitude"),
-                            resultSet.getInt("area_radius")
-                    ),
-                    new Franchise(
-                            resultSet.getInt("franchise_id"),
-                            resultSet.getString("franchise_name")
-                    ),
-                    interventionDAO.getInterventionsByLocationId(locationId)
-            );
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "locationFromResultSet::A database error occurred!", e);
-        }
+        final Location location = locationDataMapper.getFromResultSet(resultSet);
+        location.getLinkedInterventions().addAll(interventionDAO.getInterventionsByLocationId(location.getId()));
 
-        return null;
+        return location;
     }
 
     @Override

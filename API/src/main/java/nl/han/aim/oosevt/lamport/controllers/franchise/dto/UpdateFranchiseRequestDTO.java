@@ -8,14 +8,11 @@ public class UpdateFranchiseRequestDTO extends FranchiseRequestDTO {
         this.id = id;
     }
 
-    public UpdateFranchiseRequestDTO() {
-    }
+    public UpdateFranchiseRequestDTO() {}
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 }

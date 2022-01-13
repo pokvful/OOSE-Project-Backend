@@ -5,6 +5,5 @@ public class CreateFranchiseRequestDTO extends FranchiseRequestDTO {
         super(name);
     }
 
-    public CreateFranchiseRequestDTO() {
-    }
+    public CreateFranchiseRequestDTO() {}
 }

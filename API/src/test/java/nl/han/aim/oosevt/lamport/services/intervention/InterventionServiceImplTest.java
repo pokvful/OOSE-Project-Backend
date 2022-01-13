@@ -81,7 +81,6 @@ public class InterventionServiceImplTest {
     private List<Intervention> interventions;
     private List<InterventionResponseDTO> interventionDTOS;
     private CreateQuestionnaireRequestDTO createQuestionnaireRequestDTO;
-    private List<AnswerResponseDTO> answerResponseDTO;
     private CommandResponseDTO commandResponseDTO;
 
     private ArgumentCaptor<Object> objectCaptor;
@@ -108,12 +107,6 @@ public class InterventionServiceImplTest {
         answerRequestDTO.add(new AnswerRequestDTO(answerAAnswer));
         answerRequestDTO.add(new AnswerRequestDTO(answerBAnswer));
         answerRequestDTO.add(new AnswerRequestDTO(answerCAnswer));
-
-        answerResponseDTO = new ArrayList<>();
-
-        answerResponseDTO.add(new AnswerResponseDTO(answerIdA, answerAAnswer));
-        answerResponseDTO.add(new AnswerResponseDTO(answerIdB, answerBAnswer));
-        answerResponseDTO.add(new AnswerResponseDTO(answerIdC, answerCAnswer));
 
         questions = new ArrayList<>();
 

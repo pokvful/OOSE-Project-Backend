@@ -4,8 +4,7 @@ import java.util.List;
 
 public class CreateLocationRequestDTO extends LocationRequestDTO {
 
-    public CreateLocationRequestDTO() {
-    }
+    public CreateLocationRequestDTO() {}
 
     public CreateLocationRequestDTO(String name, int delay, double longitude, double latitude, int radius, int areaId, int franchiseId, List<Integer> linkedInterventions) {
         super(name, delay, longitude, latitude, radius, areaId, franchiseId, linkedInterventions);

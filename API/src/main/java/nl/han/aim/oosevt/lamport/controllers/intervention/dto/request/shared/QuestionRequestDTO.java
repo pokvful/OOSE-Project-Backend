@@ -23,15 +23,11 @@ public class QuestionRequestDTO extends InterventionRequestDTO {
         return answers;
     }
 
-    public void setAnswers(List<AnswerRequestDTO> answers) {
-        this.answers = answers;
-    }
+    public void setAnswers(List<AnswerRequestDTO> answers) { this.answers = answers; }
 
     public String getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
+    public void setQuestion(String question) { this.question = question; }
 }

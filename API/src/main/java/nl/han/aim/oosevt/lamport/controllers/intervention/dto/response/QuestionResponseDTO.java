@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class QuestionResponseDTO extends InterventionResponseDTO {
-    private List<AnswerResponseDTO> answers;
-    private String question;
+    private final List<AnswerResponseDTO> answers;
+    private final String question;
     private static final String type = "vraag";
 
     public QuestionResponseDTO(int id, String name, List<AnswerResponseDTO> answers, String question) {

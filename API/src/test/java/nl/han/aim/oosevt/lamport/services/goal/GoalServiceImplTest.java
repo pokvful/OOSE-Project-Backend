@@ -5,6 +5,7 @@ import nl.han.aim.oosevt.lamport.controllers.goal.dto.*;
 import nl.han.aim.oosevt.lamport.data.dao.goal.GoalDAO;
 import nl.han.aim.oosevt.lamport.data.entity.Goal;
 import nl.han.aim.oosevt.lamport.data.entity.ProfileQuestion;
+import nl.han.aim.oosevt.lamport.exceptions.InvalidDTOException;
 import nl.han.aim.oosevt.lamport.exceptions.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -206,5 +207,15 @@ public class GoalServiceImplTest {
 
         //Act
         Assertions.assertThrows(NotFoundException.class, () -> sut.deleteGoal(id));
+    }
+
+    @Test
+    void deleteGoalThrowsExceptionOnGoalWithUsers() {
+        //Arrange
+        Mockito.when(goalDAOFixture.getGoalById(id)).thenReturn(goal);
+        Mockito.when(goalDAOFixture.getUserCountByGoalId(id)).thenReturn(1);
+
+        //Act
+        Assertions.assertThrows(InvalidDTOException.class, () -> sut.deleteGoal(id));
     }
 }

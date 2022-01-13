@@ -6,7 +6,5 @@ public class CreateUserRequestDTO extends UserRequestDTO {
         super(username, email, password, roleId, goalId);
     }
 
-    public CreateUserRequestDTO() {
-    }
-
+    public CreateUserRequestDTO() { }
 }

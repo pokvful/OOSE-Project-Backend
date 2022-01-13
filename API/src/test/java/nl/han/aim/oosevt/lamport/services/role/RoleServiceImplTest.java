@@ -29,14 +29,13 @@ public class RoleServiceImplTest {
     private final int roleId = 1;
     private final int updateRoleId = 1;
     private final String updateRoleName = "updated";
-    private String roleName = "Onderzoeker";
-    private ArrayList<String> allowedPermissions;
+    private final String roleName = "Onderzoeker";
     private RoleServiceImpl sut;
 
     private RoleDAO roleDAOFixture;
     private RoleResponseDTO mockRoleResponseDto;
     private final List<RoleResponseDTO> mockRolesResponse = new ArrayList<>();
-    private final Role mockRole = new Role(roleId, roleName, new ArrayList<>());
+    private final Role mockRole = new Role(roleId, roleName, Arrays.asList(Permissions.CREATE_AREAS.name(), Permissions.CREATE_GOALS.name()));
     private final List<Role> mockRoles = new ArrayList<>();
     private UpdateRoleRequestDTO updateRoleRequestDto;
     private final ArrayList<String> updateRolePermissions = new ArrayList<>();
@@ -50,9 +49,7 @@ public class RoleServiceImplTest {
         roleDAOFixture = Mockito.mock(RoleDAO.class);
 
         sut = new RoleServiceImpl(roleDAOFixture);
-        allowedPermissions = new ArrayList<>();
-        allowedPermissions.add("OnderzoekersRechten");
-        mockRoleResponseDto = new RoleResponseDTO(roleId, roleName, new ArrayList<>());
+        mockRoleResponseDto = new RoleResponseDTO(roleId, roleName, Arrays.asList(new PermissionResponseDTO(Permissions.CREATE_AREAS.name(), Permissions.CREATE_AREAS.getDisplay()), new PermissionResponseDTO(Permissions.CREATE_GOALS.name(), Permissions.CREATE_GOALS.getDisplay())));
         mockRolesResponse.clear();
         mockRolesResponse.add(mockRoleResponseDto);
         mockRoles.clear();
