@@ -25,7 +25,7 @@ De backend start op na dat de database is opgestart. Dit gebeurt d.m.v. een java
 
 ## PHPMyAdmin
 
-PHPMyAdmin fungerrt als beheersysteem voor de database, deze container is echter niet nodig voor het draaien van de applicatie, en kan daarom ook verwijderd worden als dit nodig is.
+PHPMyAdmin fungeert als beheersysteem voor de database, deze container is echter niet nodig voor het draaien van de applicatie, en kan daarom ook verwijderd worden als dit nodig is.
 
 PHPMyAdmin is te benaderen op poort 8081.
 
