@@ -1,6 +1,6 @@
 # OOSE-Project-Backend
 
-Backend for management application, developed during project period in my second school year of the HAN.
+Backend for a management application, developed during project period in my second school year of the HAN.
 
 ## Containers
 
